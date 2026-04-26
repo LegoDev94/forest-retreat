@@ -11,6 +11,7 @@ import ReviewCard from '../components/ReviewCard';
 import DateField from '../components/DateField';
 import Icon from '../components/Icon';
 import useMagnetic from '../hooks/useMagnetic';
+import Faq from '../components/Faq';
 
 const HERO_VIDEO = 'https://videos.pexels.com/video-files/3209663/3209663-hd_1920_1080_25fps.mp4';
 
