@@ -1,4 +1,5 @@
 node_modules/
+dist/
 .vercel
 .env
 .env.local
@@ -6,4 +7,5 @@ node_modules/
 Thumbs.db
 *.log
 
-.vercel
+# Old vanilla site (kept locally until IDE releases lock)
+content/
