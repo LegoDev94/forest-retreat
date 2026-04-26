@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://forest-retreat-xi.vercel.app/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://forest-retreat-xi.vercel.app/?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="lv" href="https://forest-retreat-xi.vercel.app/?lang=lv" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://forest-retreat-xi.vercel.app/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://forest-retreat-xi.vercel.app/" />
+    <image:image>
+      <image:loc>https://forest-retreat-xi.vercel.app/content/dragon-house/photo/268163332.jpg</image:loc>
+      <image:title>Dragon House — tree house with jacuzzi</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://forest-retreat-xi.vercel.app/cottage/dragon</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://forest-retreat-xi.vercel.app/cottage/dragon?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="lv" href="https://forest-retreat-xi.vercel.app/cottage/dragon?lang=lv" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://forest-retreat-xi.vercel.app/cottage/dragon?lang=en" />
+    <image:image>
+      <image:loc>https://forest-retreat-xi.vercel.app/content/dragon-house/photo/268163332.jpg</image:loc>
+      <image:title>Dragon House — Latvian tree house with jacuzzi and cinema</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://forest-retreat-xi.vercel.app/cottage/viking</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://forest-retreat-xi.vercel.app/cottage/viking?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="lv" href="https://forest-retreat-xi.vercel.app/cottage/viking?lang=lv" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://forest-retreat-xi.vercel.app/cottage/viking?lang=en" />
+    <image:image>
+      <image:loc>https://forest-retreat-xi.vercel.app/content/viking-house/photo/266611698.jpg</image:loc>
+      <image:title>Viking House — viking-style tree cabin with sauna</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://forest-retreat-xi.vercel.app/cottage/farm</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://forest-retreat-xi.vercel.app/cottage/farm?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="lv" href="https://forest-retreat-xi.vercel.app/cottage/farm?lang=lv" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://forest-retreat-xi.vercel.app/cottage/farm?lang=en" />
+    <image:image>
+      <image:loc>https://forest-retreat-xi.vercel.app/content/farm-lodge/photo/302520638.jpg</image:loc>
+      <image:title>Private Farm Lodge — cabin with alpacas and ponies</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://forest-retreat-xi.vercel.app/cottage/black</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://forest-retreat-xi.vercel.app/cottage/black?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="lv" href="https://forest-retreat-xi.vercel.app/cottage/black?lang=lv" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://forest-retreat-xi.vercel.app/cottage/black?lang=en" />
+    <image:image>
+      <image:loc>https://forest-retreat-xi.vercel.app/content/black-house/photo/593775112.jpg</image:loc>
+      <image:title>Black House — stylish black chalet with home theater</image:title>
+    </image:image>
+  </url>
+
+</urlset>

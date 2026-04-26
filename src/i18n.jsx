@@ -348,8 +348,13 @@ const LocaleContext = createContext({ locale: 'ru', setLocale: () => {} });
 export function LocaleProvider({ children }) {
   const [locale, setLocaleState] = useState(() => {
     if (typeof window === 'undefined') return 'ru';
+    // 1. URL ?lang= param has top priority (for crawlers + shareable links)
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    if (urlLang && LOCALES.includes(urlLang)) return urlLang;
+    // 2. user's stored choice
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored && LOCALES.includes(stored)) return stored;
+    // 3. navigator language fallback
     const nav = navigator.language?.slice(0, 2);
     return LOCALES.includes(nav) ? nav : 'ru';
   });
@@ -358,6 +363,12 @@ export function LocaleProvider({ children }) {
     if (typeof window === 'undefined') return;
     localStorage.setItem(STORAGE_KEY, locale);
     document.documentElement.lang = locale;
+    // Sync URL ?lang= without triggering navigation, so links shared from this page keep the language
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('lang') !== locale) {
+      url.searchParams.set('lang', locale);
+      window.history.replaceState({}, '', url.toString());
+    }
   }, [locale]);
 
   const value = useMemo(() => ({
