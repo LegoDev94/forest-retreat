@@ -25,11 +25,19 @@
     heroBg.style.transition = 'opacity 0.7s ease';
   }
 
-  // --- Stats ---
+  // --- Stats: set data-to so motion-extras can animate count-up ---
   const statRating = document.getElementById('statRating');
   const statReviews = document.getElementById('statReviews');
-  if (statRating) statRating.textContent = STATS.avgRating;
-  if (statReviews) statReviews.textContent = STATS.totalReviews + '+';
+  if (statRating) {
+    statRating.dataset.to = STATS.avgRating;
+    statRating.dataset.decimals = '1';
+    statRating.textContent = '0.0';
+  }
+  if (statReviews) {
+    statReviews.dataset.to = String(STATS.totalReviews);
+    statReviews.dataset.suffix = '+';
+    statReviews.textContent = '0';
+  }
 
   // --- Pre-fill default dates (today+3 / today+5) ---
   const checkIn = document.getElementById('checkIn');
@@ -41,12 +49,12 @@
     checkOut.value = t2.toISOString().slice(0, 10);
   }
 
-  // --- Render cottage cards ---
+  // --- Render cottage cards (with 3D tilt) ---
   const grid = document.getElementById('cottagesGrid');
   if (grid) {
     grid.innerHTML = COTTAGES.map(c => `
-      <a class="cottage-card reveal" href="cottage.html?id=${c.id}">
-        <div class="cottage-card-media">
+      <a class="cottage-card tilt reveal" href="cottage.html?id=${c.id}" data-reveal>
+        <div class="cottage-card-media tilt-inner">
           <img src="${photoUrl(c, c.photos[0])}" alt="${c.name}" loading="lazy" />
           <span class="cottage-badge">${c.badge}</span>
           <span class="cottage-rating">${c.rating}</span>
@@ -62,6 +70,19 @@
       </a>
     `).join('');
   }
+
+  // --- Story section visuals (pull representative photos) ---
+  const storyImages = [
+    { id: 'story1Visual', cottage: COTTAGES[0], idx: 4 },  // Dragon — interior/atmosphere
+    { id: 'story2Visual', cottage: COTTAGES[1], idx: 6 },  // Viking — wellness
+    { id: 'story3Visual', cottage: COTTAGES[2], idx: 0 },  // Farm — animals
+  ];
+  storyImages.forEach(({ id, cottage, idx }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const photo = cottage.photos[idx] || cottage.photos[0];
+    el.innerHTML = `<img src="${photoUrl(cottage, photo)}" alt="${cottage.name}" loading="lazy" />`;
+  });
 
   // --- Render featured reviews ---
   const reviewsPreview = document.getElementById('reviewsPreview');

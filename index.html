@@ -15,6 +15,9 @@
 
 <div class="bg-atmosphere"></div>
 <div class="bg-grain"></div>
+<div class="aurora"></div>
+<div class="cursor-glow"></div>
+<div class="scroll-progress"></div>
 
 <!-- ============ NAV ============ -->
 <nav class="nav" id="nav">
@@ -45,7 +48,7 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero">
-  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-bg kenburns" id="heroBg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <span class="hero-eyebrow">Латвия · Līči · 4 уникальных дома</span>
@@ -84,15 +87,15 @@
 
     <div class="hero-stats">
       <div class="hero-stat">
-        <span class="hero-stat-num" id="statRating">9.0</span>
+        <span class="hero-stat-num counter" id="statRating" data-to="9.0" data-decimals="1">0.0</span>
         <span class="hero-stat-label">Средняя оценка</span>
       </div>
       <div class="hero-stat">
-        <span class="hero-stat-num" id="statReviews">464</span>
+        <span class="hero-stat-num counter" id="statReviews" data-to="464" data-suffix="+">0</span>
         <span class="hero-stat-label">Отзывов гостей</span>
       </div>
       <div class="hero-stat">
-        <span class="hero-stat-num">4</span>
+        <span class="hero-stat-num counter" data-to="4">0</span>
         <span class="hero-stat-label">Уникальных дома</span>
       </div>
       <div class="hero-stat">
@@ -130,6 +133,92 @@
     <p class="section-sub">Каждый домик — это история. Выберите свою: дом-дракон с кинотеатром, аутентичная вилла викингов, ферма с альпаками или загадочное чёрное шале.</p>
   </div>
   <div class="cottages" id="cottagesGrid"><!-- injected by JS --></div>
+</section>
+
+<!-- ============ STORY 1 ============ -->
+<section class="section" style="padding-top:60px;padding-bottom:60px;">
+  <div class="story" data-reveal>
+    <div class="story-visual" id="story1Visual"></div>
+    <div class="story-text">
+      <span class="eyebrow">— История места</span>
+      <h3>Где время <em>замедляется</em>, а душа <em>выдыхает</em>.</h3>
+      <p>Лес. Озеро. Тёплый свет от костра. Каждый домик — это миниатюрная вселенная, где интерьер собран по крупицам, мебель — с историей, а вид из окна меняется с временем суток.</p>
+      <p>Никаких типовых отелей с пластиковыми ключами и лифтами. Только дерево, ткань, тёплый свет и ритм природы.</p>
+      <div class="pill-row">
+        <span class="pill-sm">🌲 1.5 ч от Риги</span>
+        <span class="pill-sm">🛏 До 4 гостей</span>
+        <span class="pill-sm">🐾 С питомцами бесплатно</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST STRIP ============ -->
+<section class="section" style="padding-top:30px;padding-bottom:30px;">
+  <div class="trust-strip" data-stagger>
+    <div class="trust-item">
+      <div class="trust-icon">✓</div>
+      <div class="trust-title">Без предоплаты</div>
+      <div class="trust-desc">Платите при заезде</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">⏱</div>
+      <div class="trust-title">Бесплатная отмена</div>
+      <div class="trust-desc">До 48 часов до заезда</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      <div class="trust-title">Безопасная оплата</div>
+      <div class="trust-desc">Защищённые транзакции</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">⭐</div>
+      <div class="trust-title">9.0 / 10</div>
+      <div class="trust-desc">464 проверенных отзыва</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">📞</div>
+      <div class="trust-title">Хост 24/7</div>
+      <div class="trust-desc">На связи всегда</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY 2 ============ -->
+<section class="section" style="padding-top:60px;padding-bottom:60px;">
+  <div class="story reverse" data-reveal>
+    <div class="story-visual" id="story2Visual"></div>
+    <div class="story-text">
+      <span class="eyebrow">— Spa &amp; Wellness</span>
+      <h3>Джакузи под звёздами. <em>Сауна</em> на закате.</h3>
+      <p>Гидромассажная купель прямо под открытым небом — 39° тёплой воды, тишина леса и небо в звёздах. Финская сауна с ароматом дерева. Перепрыгивание из жара в холодное озеро — и снова в тепло.</p>
+      <p>Лучший способ сбросить городской стресс — встретить ночь в купели с бокалом вина под пение совы.</p>
+      <div class="pill-row">
+        <span class="pill-sm">♨️ Гидромассажная ванна</span>
+        <span class="pill-sm">🧖 Финская сауна</span>
+        <span class="pill-sm">🔥 Камин и BBQ</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY 3 ============ -->
+<section class="section" style="padding-top:60px;padding-bottom:60px;">
+  <div class="story" data-reveal>
+    <div class="story-visual" id="story3Visual"></div>
+    <div class="story-text">
+      <span class="eyebrow">— Для души и детей</span>
+      <h3>Альпаки, пони, кролики — <em>прямо у порога</em>.</h3>
+      <p>Кролики выходят к крыльцу за морковкой. Альпаки и пони пасутся за оградой. Собаки хозяев — самые добрые в Латвии. Возьмите с собой яблок и моркови — это лучшие друзья на отпуск.</p>
+      <p>Дети будут заняты весь день: животные, лодки, рыбалка, велосипеды, детская площадка. Взрослые — тоже.</p>
+      <div class="pill-row">
+        <span class="pill-sm">🦙 Альпаки</span>
+        <span class="pill-sm">🐰 Свободные кролики</span>
+        <span class="pill-sm">🎣 Озеро с рыбой</span>
+        <span class="pill-sm">🚴 Велосипеды</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ============ WHY US ============ -->
@@ -182,6 +271,22 @@
   <div class="reviews-preview" id="reviewsPreview"><!-- injected by JS --></div>
 </section>
 
+<!-- ============ MAP ============ -->
+<section class="section" style="padding-top:80px;">
+  <div class="section-head" data-reveal>
+    <span class="section-eyebrow">— Где мы</span>
+    <h2 class="section-title">В сердце <span class="accent">Курземе</span>. <br />1.5 часа от Риги.</h2>
+    <p class="section-sub">Līči, Латвия — посёлок среди лесов и озёр. Свой пруд у каждого домика, до ближайшего магазина 20 км — то самое уединение, за которым едут.</p>
+  </div>
+  <div class="map-wrap" data-reveal>
+    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=22.45%2C57.18%2C22.65%2C57.30&amp;layer=mapnik&amp;marker=57.235%2C22.55" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Forest Retreat — карта"></iframe>
+    <div class="map-pin">
+      <span class="map-pin-label">Forest Retreat · Līči</span>
+      <span class="map-pin-dot"></span>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CTA ============ -->
 <section class="section" id="contact">
   <div class="cta-banner reveal">
@@ -190,6 +295,14 @@
     <a href="#cottages" class="btn btn-primary">Выбрать дом</a>
   </div>
 </section>
+
+<!-- Floating booking button (mobile) -->
+<a href="#cottages" class="fab">
+  <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="18" height="18">
+    <path d="M5 12h14M12 5l7 7-7 7"/>
+  </svg>
+  Забронировать
+</a>
 
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
@@ -235,5 +348,6 @@
 
 <script src="assets/js/data.js"></script>
 <script src="assets/js/main.js"></script>
+<script type="module" src="assets/js/motion-extras.js"></script>
 </body>
 </html>
