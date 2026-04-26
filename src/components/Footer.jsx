@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useT } from '../i18n.jsx';
 import { COTTAGES } from '../data';
+import Logo from './Logo';
 
 export default function Footer() {
   const { t, pick } = useT();
@@ -8,10 +9,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-grid">
         <div className="footer-brand">
-          <Link to="/" className="logo">
-            <span className="logo-mark" />
-            <span className="logo-name">Forest <span>Retreat</span></span>
-          </Link>
+          <Logo />
           <p>{t('footer.tagline')}</p>
         </div>
         <div className="footer-col">

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { COTTAGES, STATS, photoUrl } from '../data';
 import { useT, DICT } from '../i18n.jsx';
 import Nav from '../components/Nav';
@@ -9,20 +9,31 @@ import Reveal from '../components/Reveal';
 import Counter from '../components/Counter';
 import ReviewCard from '../components/ReviewCard';
 import DateField from '../components/DateField';
+import Icon from '../components/Icon';
+import useMagnetic from '../hooks/useMagnetic';
+
+const HERO_VIDEO = 'https://videos.pexels.com/video-files/3209663/3209663-hd_1920_1080_25fps.mp4';
+
+const FEATURE_ICONS = ['tree', 'hottub', 'alpaca', 'film', 'paw', 'fish'];
+const TRUST_ICONS = ['check', 'clock', 'lock', 'star', 'phone'];
 
 const offset = (days) => { const d = new Date(); d.setDate(d.getDate() + days); return d.toISOString().slice(0, 10); };
 
 function Hero() {
-  const { t, locale, pick } = useT();
+  const { t, locale } = useT();
   const heroRef = useRef(null);
+  const videoRef = useRef(null);
+  const searchBtnRef = useMagnetic({ strength: 0.3 });
+
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const bgY    = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
+  const bgY    = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -90]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0.15]);
 
   const [checkIn, setCheckIn]   = useState(offset(3));
   const [checkOut, setCheckOut] = useState(offset(5));
+  const [videoReady, setVideoReady] = useState(false);
 
   const onCheckInChange = (v) => {
     setCheckIn(v);
@@ -32,26 +43,46 @@ function Hero() {
     }
   };
 
-  const featured = [
-    photoUrl(COTTAGES[0], COTTAGES[0].photos[0]),
-    photoUrl(COTTAGES[1], COTTAGES[1].photos[0]),
-    photoUrl(COTTAGES[2], COTTAGES[2].photos[0]),
-    photoUrl(COTTAGES[3], COTTAGES[3].photos[0]),
-  ];
-  const [bgIdx, setBgIdx] = useState(0);
+  // Respect prefers-reduced-motion + saveData; otherwise autoplay video
   useEffect(() => {
-    const id = setInterval(() => setBgIdx(i => (i + 1) % featured.length), 6500);
-    return () => clearInterval(id);
+    const v = videoRef.current;
+    if (!v) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = navigator.connection?.saveData;
+    if (reduce || saveData) return;
+    v.play().catch(() => { /* autoplay denied — that's OK, poster stays */ });
   }, []);
 
+  const posterImage = photoUrl(COTTAGES[0], COTTAGES[0].photos[0]);
   const guestOpts = DICT.guestsOptions[locale];
 
   return (
     <section className="hero" ref={heroRef}>
+      {/* Poster image — instant, then video fades in once loaded */}
       <motion.div
-        className="hero-bg kenburns"
-        style={{ backgroundImage: `url("${featured[bgIdx]}")`, y: bgY, scale: bgScale }}
+        className="hero-bg"
+        style={{
+          backgroundImage: `url("${posterImage}")`,
+          y: bgY,
+          scale: bgScale,
+          opacity: videoReady ? 0 : 1,
+          transition: 'opacity 0.8s ease',
+        }}
       />
+      <motion.video
+        ref={videoRef}
+        className="hero-video"
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        autoPlay
+        poster={posterImage}
+        onCanPlay={() => setVideoReady(true)}
+        style={{ y: bgY, scale: bgScale }}
+      >
+        <source src={HERO_VIDEO} type="video/mp4" />
+      </motion.video>
       <div className="hero-overlay" />
       <motion.div className="hero-content" style={{ y: contentY, opacity: contentOpacity }}>
         <motion.span className="hero-eyebrow"
@@ -88,10 +119,8 @@ function Hero() {
               {guestOpts.map((g, i) => <option key={i}>{g}</option>)}
             </select>
           </div>
-          <button className="search-btn" type="submit">
-            <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
+          <button className="search-btn" type="submit" ref={searchBtnRef}>
+            <Icon name="search" size={18} stroke={2.4} />
             {t('hero.search')}
           </button>
         </motion.form>
@@ -193,7 +222,7 @@ export default function Home() {
             <motion.div key={i} className="trust-item"
               variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
-              <div className="trust-icon">{tt.icon}</div>
+              <div className="trust-icon"><Icon name={TRUST_ICONS[i]} size={22} stroke={1.8} /></div>
               <div className="trust-title">{pick(tt.title)}</div>
               <div className="trust-desc">{pick(tt.desc)}</div>
             </motion.div>
@@ -229,7 +258,7 @@ export default function Home() {
         <div className="features-grid">
           {DICT.features.map((f, i) => (
             <Reveal key={i} className="feature" delay={i * 0.06}>
-              <div className="feature-icon">{f.icon}</div>
+              <div className="feature-icon"><Icon name={FEATURE_ICONS[i]} size={26} stroke={1.6} /></div>
               <h3>{pick(f.title)}</h3>
               <p>{pick(f.text)}</p>
             </Reveal>
@@ -274,6 +303,9 @@ export default function Home() {
         </Reveal>
       </section>
 
+      {/* FAQ */}
+      <Faq />
+
       {/* CTA */}
       <section className="section" id="contact">
         <Reveal className="cta-banner">
@@ -284,9 +316,7 @@ export default function Home() {
       </section>
 
       <a href="#cottages" className="fab">
-        <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="18" height="18">
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
+        <Icon name="arrowRight" size={18} stroke={2.4} />
         {t('fab')}
       </a>
 

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useT } from '../i18n.jsx';
 import LanguageSwitcher from './LanguageSwitcher';
+import Logo from './Logo';
+import useMagnetic from '../hooks/useMagnetic';
 
 export default function Nav({ alwaysScrolled = false }) {
   const { t } = useT();
   const [scrolled, setScrolled] = useState(alwaysScrolled);
   const [open, setOpen] = useState(false);
+  const ctaRef = useMagnetic({ strength: 0.25 });
 
   useEffect(() => {
     if (alwaysScrolled) return;
@@ -20,10 +22,7 @@ export default function Nav({ alwaysScrolled = false }) {
   return (
     <>
       <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-        <Link to="/" className="logo">
-          <span className="logo-mark" />
-          <span className="logo-name">Forest <span>Retreat</span></span>
-        </Link>
+        <Logo />
         <div className="nav-links">
           <a href="/#cottages">{t('nav.cottages')}</a>
           <a href="/#why">{t('nav.why')}</a>
@@ -32,7 +31,7 @@ export default function Nav({ alwaysScrolled = false }) {
         </div>
         <div className="nav-actions">
           <LanguageSwitcher />
-          <a href="/#cottages" className="nav-cta">{t('nav.book')}</a>
+          <a href="/#cottages" className="nav-cta" ref={ctaRef}>{t('nav.book')}</a>
         </div>
         <button className="nav-burger" aria-label={t('nav.menu')} onClick={() => setOpen(o => !o)}>
           <span /><span /><span />
