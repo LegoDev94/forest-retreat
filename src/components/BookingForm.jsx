@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import DateField from './DateField';
 
 function pluralNight(n) {
   const m = Math.abs(n) % 100, m2 = m % 10;
@@ -33,8 +34,7 @@ export default function BookingForm({ cottage }) {
     return { nights, base, fee, total };
   }, [checkIn, checkOut, cottage.pricePerNight]);
 
-  const onCheckInChange = (e) => {
-    const v = e.target.value;
+  const onCheckInChange = (v) => {
     setCheckIn(v);
     if (new Date(checkOut) <= new Date(v)) {
       const next = new Date(v); next.setDate(next.getDate() + 1);
@@ -54,14 +54,22 @@ export default function BookingForm({ cottage }) {
 
         <form className="booking-form" onSubmit={onSubmit}>
           <div className="bf-row">
-            <div className="bf-field">
-              <label>Заезд</label>
-              <input type="date" min={today()} value={checkIn} onChange={onCheckInChange} required />
-            </div>
-            <div className="bf-field">
-              <label>Выезд</label>
-              <input type="date" min={checkIn} value={checkOut} onChange={(e) => setCheckOut(e.target.value)} required />
-            </div>
+            <DateField
+              label="Заезд"
+              value={checkIn}
+              onChange={onCheckInChange}
+              minDate={today()}
+              fieldClassName="bf-field"
+              align="left"
+            />
+            <DateField
+              label="Выезд"
+              value={checkOut}
+              onChange={setCheckOut}
+              minDate={checkIn}
+              fieldClassName="bf-field"
+              align="right"
+            />
           </div>
           <div className="bf-field">
             <label>Гостей</label>

@@ -7,6 +7,7 @@ import CottageCard from '../components/CottageCard';
 import Reveal from '../components/Reveal';
 import Counter from '../components/Counter';
 import ReviewCard from '../components/ReviewCard';
+import DateField from '../components/DateField';
 
 const offset = (days) => { const d = new Date(); d.setDate(d.getDate() + days); return d.toISOString().slice(0, 10); };
 
@@ -39,6 +40,17 @@ function Hero() {
   const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -90]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0.15]);
+
+  const [checkIn, setCheckIn]   = useState(offset(3));
+  const [checkOut, setCheckOut] = useState(offset(5));
+
+  const onCheckInChange = (v) => {
+    setCheckIn(v);
+    if (new Date(checkOut) <= new Date(v)) {
+      const next = new Date(v); next.setDate(next.getDate() + 1);
+      setCheckOut(next.toISOString().slice(0, 10));
+    }
+  };
 
   const featured = [
     photoUrl(COTTAGES[0], COTTAGES[0].photos[0]),
@@ -95,14 +107,8 @@ function Hero() {
             <label>Куда</label>
             <input type="text" defaultValue="Латвия, Līči" readOnly />
           </div>
-          <div className="search-field">
-            <label>Заезд</label>
-            <input type="date" defaultValue={offset(3)} />
-          </div>
-          <div className="search-field">
-            <label>Выезд</label>
-            <input type="date" defaultValue={offset(5)} />
-          </div>
+          <DateField label="Заезд" value={checkIn} onChange={onCheckInChange} minDate={offset(0)} align="left" />
+          <DateField label="Выезд" value={checkOut} onChange={setCheckOut} minDate={checkIn} align="left" />
           <div className="search-field">
             <label>Гостей</label>
             <select defaultValue="2 гостя">
