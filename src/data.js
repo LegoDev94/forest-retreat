@@ -4,7 +4,7 @@ export const COTTAGES = [
     id: 'dragon',
     name: 'Dragon House in the Tree',
     tagline: 'Дом-сказка на дереве',
-    folder: 'Dragon house in the tree! Jacuzzi, Sauna ,Cinema,Heated',
+    folder: 'dragon-house',
     rating: 9.3,
     reviewsCount: 170,
     ratingLabel: 'Превосходно',
@@ -63,7 +63,7 @@ export const COTTAGES = [
     id: 'viking',
     name: 'Viking House in the Tree',
     tagline: 'Дом викингов на дереве',
-    folder: 'Viking house in the tree! Jacuzzi, Sauna,apkure!',
+    folder: 'viking-house',
     rating: 9.0,
     reviewsCount: 137,
     ratingLabel: 'Превосходно',
@@ -123,7 +123,7 @@ export const COTTAGES = [
     id: 'farm',
     name: 'Private Farm Lodge',
     tagline: 'Частная ферма с альпаками',
-    folder: 'Private Farm Jakuzzi Sauna in the forest',
+    folder: 'farm-lodge',
     rating: 9.1,
     reviewsCount: 120,
     ratingLabel: 'Превосходно',
@@ -182,7 +182,7 @@ export const COTTAGES = [
     id: 'black',
     name: 'Black House in the Forest',
     tagline: 'Чёрный дом с домашним кинотеатром',
-    folder: 'Black house in the forest with Hot Tube and Home theater for movies',
+    folder: 'black-house',
     rating: 8.7,
     reviewsCount: 37,
     ratingLabel: 'Потрясающе',
@@ -242,7 +242,7 @@ export const STATS = (() => {
 })();
 
 export function photoUrl(cottage, filename) {
-  return `/content/${encodeURIComponent(cottage.folder)}/photo/${filename}`;
+  return `/content/${cottage.folder}/photo/${filename}`;
 }
 
 export function findCottage(id) {
