@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Forest Retreat — Дом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23c9a86a'/%3E%3Ccircle cx='50' cy='50' r='30' fill='%230a0e0c'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+<div class="bg-atmosphere"></div>
+<div class="bg-grain"></div>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav">
+  <a href="index.html" class="logo">
+    <span class="logo-mark"></span>
+    <span class="logo-name">Forest <span>Retreat</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#cottages">Дома</a>
+    <a href="index.html#why">Почему мы</a>
+    <a href="index.html#reviews">Отзывы</a>
+    <a href="index.html#contact">Контакты</a>
+  </div>
+  <a href="#booking" class="nav-cta">Забронировать</a>
+  <button class="nav-burger" id="navBurger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#cottages">Дома</a>
+  <a href="index.html#why">Почему мы</a>
+  <a href="index.html#reviews">Отзывы</a>
+  <a href="index.html#contact">Контакты</a>
+</div>
+
+<!-- DETAIL HERO -->
+<section class="detail-hero">
+  <nav class="breadcrumb" id="breadcrumb">
+    <a href="index.html">Главная</a> <span>›</span> <a href="index.html#cottages">Дома</a> <span>›</span> <strong id="bcCurrent">—</strong>
+  </nav>
+
+  <div class="detail-title-row">
+    <div>
+      <h1 class="detail-title" id="title">—</h1>
+      <div class="detail-meta-row" id="metaRow"></div>
+    </div>
+    <div class="rating-big" id="ratingBig"></div>
+  </div>
+</section>
+
+<!-- GALLERY MOSAIC -->
+<div class="gallery-mosaic" id="galleryMosaic"><!-- injected --></div>
+
+<!-- DETAIL BODY -->
+<div class="detail-body">
+  <div>
+    <section class="detail-section reveal">
+      <h2>Об этом доме</h2>
+      <p id="description">—</p>
+    </section>
+
+    <section class="detail-section reveal">
+      <h2>Удобства и услуги</h2>
+      <div class="amenities-grid" id="amenitiesGrid"></div>
+    </section>
+
+    <section class="detail-section reveal">
+      <h2>Оценки гостей</h2>
+      <div class="categories-grid" id="categoriesGrid"></div>
+    </section>
+
+    <section class="detail-section reveal" id="reviews">
+      <h2>Отзывы <span style="color:var(--text-3);font-size:.7em;font-style:italic;">— реальные истории гостей</span></h2>
+      <div class="reviews-grid" id="reviewsGrid"></div>
+    </section>
+  </div>
+
+  <!-- BOOKING SIDEBAR -->
+  <aside>
+    <div class="booking-card" id="booking">
+      <div class="booking-price">
+        <span class="booking-price-num" id="priceNum">—</span>
+        <span class="booking-price-unit">€ / ночь</span>
+      </div>
+
+      <form class="booking-form" id="bookingForm">
+        <div class="bf-row">
+          <div class="bf-field">
+            <label>Заезд</label>
+            <input type="date" id="bCheckIn" required />
+          </div>
+          <div class="bf-field">
+            <label>Выезд</label>
+            <input type="date" id="bCheckOut" required />
+          </div>
+        </div>
+        <div class="bf-field">
+          <label>Гостей</label>
+          <select id="bGuests">
+            <option value="1">1 гость</option>
+            <option value="2" selected>2 гостя</option>
+            <option value="3">3 гостя</option>
+            <option value="4">4 гостя</option>
+          </select>
+        </div>
+        <div class="bf-field">
+          <label>Имя</label>
+          <input type="text" id="bName" placeholder="Ваше имя" required />
+        </div>
+        <div class="bf-row">
+          <div class="bf-field">
+            <label>E-mail</label>
+            <input type="email" id="bEmail" placeholder="you@email.com" required />
+          </div>
+          <div class="bf-field">
+            <label>Телефон</label>
+            <input type="tel" id="bPhone" placeholder="+371…" required />
+          </div>
+        </div>
+
+        <div class="booking-summary" id="bookingSummary">
+          <div class="booking-summary-row"><span id="sNights">— ночей</span><span id="sBase">— €</span></div>
+          <div class="booking-summary-row"><span>Уборка</span><span>30 €</span></div>
+          <div class="booking-summary-row"><span>Сервисный сбор</span><span id="sFee">— €</span></div>
+          <div class="booking-summary-total">Итого <strong id="sTotal">— €</strong></div>
+        </div>
+
+        <button type="submit" class="book-btn">Забронировать сейчас</button>
+        <p class="book-help">Без предоплаты · Бесплатная отмена</p>
+      </form>
+    </div>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">
+        <span class="logo-mark"></span>
+        <span class="logo-name">Forest <span>Retreat</span></span>
+      </a>
+      <p>Уединённые домики на природе в Латвии. Сауна, джакузи, озеро, лес — всё, чтобы перезагрузиться.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Дома</h4>
+      <ul>
+        <li><a href="cottage.html?id=dragon">Dragon House</a></li>
+        <li><a href="cottage.html?id=viking">Viking House</a></li>
+        <li><a href="cottage.html?id=farm">Private Farm</a></li>
+        <li><a href="cottage.html?id=black">Black House</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Информация</h4>
+      <ul>
+        <li><a href="index.html#why">Почему мы</a></li>
+        <li><a href="index.html#reviews">Отзывы</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Контакты</h4>
+      <ul>
+        <li>Līči, Латвия</li>
+        <li>+371 00 000 000</li>
+        <li>hello@forestretreat.lv</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Forest Retreat · Все права защищены</span>
+    <span>Сделано с любовью в латвийском лесу</span>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog">
+  <button class="lightbox-close" id="lbClose" aria-label="Закрыть">✕</button>
+  <button class="lightbox-arrow prev" id="lbPrev" aria-label="Предыдущее">‹</button>
+  <img class="lightbox-img" id="lbImg" alt="" />
+  <button class="lightbox-arrow next" id="lbNext" aria-label="Следующее">›</button>
+  <div class="lightbox-counter" id="lbCounter">1 / 1</div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal" id="successModal" role="dialog">
+  <div class="modal-card">
+    <div class="modal-icon">✓</div>
+    <h3>Заявка отправлена!</h3>
+    <p>Мы свяжемся с вами в течение часа, чтобы подтвердить бронирование. Спасибо, что выбрали Forest Retreat.</p>
+    <button class="btn btn-primary" id="modalClose">Прекрасно</button>
+  </div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/cottage.js"></script>
+</body>
+</html>

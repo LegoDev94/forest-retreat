@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Forest Retreat — четыре уникальных дома в латвийских лесах. Сауна, джакузи, озеро. Уединение, природа и ВАУ-эффект." />
+<title>Forest Retreat — Уединение в латвийских лесах</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23c9a86a'/%3E%3Ccircle cx='50' cy='50' r='30' fill='%230a0e0c'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+<div class="bg-atmosphere"></div>
+<div class="bg-grain"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <a href="#" class="logo">
+    <span class="logo-mark"></span>
+    <span class="logo-name">Forest <span>Retreat</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#cottages">Дома</a>
+    <a href="#why">Почему мы</a>
+    <a href="#reviews">Отзывы</a>
+    <a href="#contact">Контакты</a>
+  </div>
+  <a href="#cottages" class="nav-cta">Забронировать</a>
+  <button class="nav-burger" id="navBurger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#cottages">Дома</a>
+  <a href="#why">Почему мы</a>
+  <a href="#reviews">Отзывы</a>
+  <a href="#contact">Контакты</a>
+  <a href="#cottages" class="btn btn-primary">Забронировать</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Латвия · Līči · 4 уникальных дома</span>
+    <h1>
+      Где лес <br />
+      встречает <span class="accent">тишину</span>
+    </h1>
+    <p class="lead">Уединённые домики у озера, джакузи под звёздами, сауна на закате и животные, которые приходят прямо к порогу. Сбегите в сказку всего за 2 часа от Риги.</p>
+
+    <form class="search-bar" id="searchBar" onsubmit="event.preventDefault(); document.getElementById('cottages').scrollIntoView({behavior:'smooth'});">
+      <div class="search-field">
+        <label>Куда</label>
+        <input type="text" value="Латвия, Līči" readonly />
+      </div>
+      <div class="search-field">
+        <label>Заезд</label>
+        <input type="date" id="checkIn" />
+      </div>
+      <div class="search-field">
+        <label>Выезд</label>
+        <input type="date" id="checkOut" />
+      </div>
+      <div class="search-field">
+        <label>Гостей</label>
+        <select id="guests">
+          <option>2 гостя</option><option>3 гостя</option><option>4 гостя</option>
+        </select>
+      </div>
+      <button class="search-btn" type="submit">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        Искать
+      </button>
+    </form>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="statRating">9.0</span>
+        <span class="hero-stat-label">Средняя оценка</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="statReviews">464</span>
+        <span class="hero-stat-label">Отзывов гостей</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">4</span>
+        <span class="hero-stat-label">Уникальных дома</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">∞</span>
+        <span class="hero-stat-label">Тишины и леса</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">Прокрути</div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Джакузи под звёздами</span>
+    <span class="marquee-item">Сауна на закате</span>
+    <span class="marquee-item">Альпаки и пони</span>
+    <span class="marquee-item">Озеро у порога</span>
+    <span class="marquee-item">Кино под открытым небом</span>
+    <span class="marquee-item">Камин и тишина</span>
+    <span class="marquee-item">Джакузи под звёздами</span>
+    <span class="marquee-item">Сауна на закате</span>
+    <span class="marquee-item">Альпаки и пони</span>
+    <span class="marquee-item">Озеро у порога</span>
+    <span class="marquee-item">Кино под открытым небом</span>
+    <span class="marquee-item">Камин и тишина</span>
+  </div>
+</div>
+
+<!-- ============ COTTAGES ============ -->
+<section class="section" id="cottages">
+  <div class="section-head reveal">
+    <span class="section-eyebrow">— Наши дома</span>
+    <h2 class="section-title">Четыре характера. <br /><span class="accent">Одна магия</span> леса.</h2>
+    <p class="section-sub">Каждый домик — это история. Выберите свою: дом-дракон с кинотеатром, аутентичная вилла викингов, ферма с альпаками или загадочное чёрное шале.</p>
+  </div>
+  <div class="cottages" id="cottagesGrid"><!-- injected by JS --></div>
+</section>
+
+<!-- ============ WHY US ============ -->
+<section class="section" id="why">
+  <div class="section-head reveal">
+    <span class="section-eyebrow">— Почему Forest Retreat</span>
+    <h2 class="section-title">Не отель. <br /><span class="accent">Личный мир</span> в лесу.</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature reveal">
+      <div class="feature-icon">🌲</div>
+      <h3>Полное уединение</h3>
+      <p>Каждый дом стоит отдельно в окружении леса и озера. Никаких соседей за стенкой — только звук ветра и пение птиц.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feature-icon">♨️</div>
+      <h3>Джакузи и сауна</h3>
+      <p>Парная по-чёрному, гидромассажная купель под открытым небом — расслабьтесь после прогулки по лесу.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feature-icon">🦙</div>
+      <h3>Мини-зоопарк</h3>
+      <p>Альпаки, пони, овечки, козы и кролики, которые едят с рук. Дети будут счастливы. Взрослые — тоже.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feature-icon">🎬</div>
+      <h3>Кино в лесу</h3>
+      <p>Кинопроектор с Netflix в тишине леса. Фильм, плед, бокал вина — лучшая премьера в вашей жизни.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feature-icon">🐾</div>
+      <h3>С питомцами — бесплатно</h3>
+      <p>Берите с собой собак — они будут в восторге от свободы. Никаких доплат, только радостные хвосты.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feature-icon">🎣</div>
+      <h3>Рыбалка и лодки</h3>
+      <p>Карп, линь, щука, карась — в озере прямо у домика. Лодки — бесплатно. Удочки можно прихватить с собой.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="section" id="reviews">
+  <div class="section-head reveal">
+    <span class="section-eyebrow">— Отзывы гостей</span>
+    <h2 class="section-title">Что говорят те, <br />кто <span class="accent">уже вернулся</span>.</h2>
+    <p class="section-sub">464 отзыва на Booking.com со средней оценкой 9.0/10. Вот лучшие из них.</p>
+  </div>
+  <div class="reviews-preview" id="reviewsPreview"><!-- injected by JS --></div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="section" id="contact">
+  <div class="cta-banner reveal">
+    <h2>Готовы сбежать <br />в <span style="font-style:italic;color:var(--accent-2)">тишину</span>?</h2>
+    <p>Забронируйте свой уголок леса прямо сейчас. Лучшие даты разбирают за месяц вперёд.</p>
+    <a href="#cottages" class="btn btn-primary">Выбрать дом</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">
+        <span class="logo-mark"></span>
+        <span class="logo-name">Forest <span>Retreat</span></span>
+      </a>
+      <p>Уединённые домики на природе в Латвии. Сауна, джакузи, озеро, лес — всё, чтобы перезагрузиться.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Дома</h4>
+      <ul>
+        <li><a href="cottage.html?id=dragon">Dragon House</a></li>
+        <li><a href="cottage.html?id=viking">Viking House</a></li>
+        <li><a href="cottage.html?id=farm">Private Farm</a></li>
+        <li><a href="cottage.html?id=black">Black House</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Информация</h4>
+      <ul>
+        <li><a href="#why">Почему мы</a></li>
+        <li><a href="#reviews">Отзывы</a></li>
+        <li><a href="#cottages">Бронирование</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Контакты</h4>
+      <ul>
+        <li>Līči, Латвия</li>
+        <li>+371 00 000 000</li>
+        <li>hello@forestretreat.lv</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Forest Retreat · Все права защищены</span>
+    <span>Сделано с любовью в латвийском лесу</span>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
