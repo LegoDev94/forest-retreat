@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useT } from '../i18n.jsx';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Nav({ alwaysScrolled = false }) {
+  const { t } = useT();
   const [scrolled, setScrolled] = useState(alwaysScrolled);
   const [open, setOpen] = useState(false);
 
@@ -22,13 +25,16 @@ export default function Nav({ alwaysScrolled = false }) {
           <span className="logo-name">Forest <span>Retreat</span></span>
         </Link>
         <div className="nav-links">
-          <a href="/#cottages">Дома</a>
-          <a href="/#why">Почему мы</a>
-          <a href="/#reviews">Отзывы</a>
-          <a href="/#contact">Контакты</a>
+          <a href="/#cottages">{t('nav.cottages')}</a>
+          <a href="/#why">{t('nav.why')}</a>
+          <a href="/#reviews">{t('nav.reviews')}</a>
+          <a href="/#contact">{t('nav.contact')}</a>
         </div>
-        <a href="/#cottages" className="nav-cta">Забронировать</a>
-        <button className="nav-burger" aria-label="Меню" onClick={() => setOpen(o => !o)}>
+        <div className="nav-actions">
+          <LanguageSwitcher />
+          <a href="/#cottages" className="nav-cta">{t('nav.book')}</a>
+        </div>
+        <button className="nav-burger" aria-label={t('nav.menu')} onClick={() => setOpen(o => !o)}>
           <span /><span /><span />
         </button>
       </nav>
@@ -42,11 +48,12 @@ export default function Nav({ alwaysScrolled = false }) {
             exit={{ opacity: 0 }}
             onClick={() => setOpen(false)}
           >
-            <a href="/#cottages">Дома</a>
-            <a href="/#why">Почему мы</a>
-            <a href="/#reviews">Отзывы</a>
-            <a href="/#contact">Контакты</a>
-            <a href="/#cottages" className="btn btn-primary">Забронировать</a>
+            <a href="/#cottages">{t('nav.cottages')}</a>
+            <a href="/#why">{t('nav.why')}</a>
+            <a href="/#reviews">{t('nav.reviews')}</a>
+            <a href="/#contact">{t('nav.contact')}</a>
+            <div onClick={(e) => e.stopPropagation()}><LanguageSwitcher /></div>
+            <a href="/#cottages" className="btn btn-primary">{t('nav.book')}</a>
           </motion.div>
         )}
       </AnimatePresence>

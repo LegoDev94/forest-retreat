@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useT } from '../i18n.jsx';
+import { COTTAGES } from '../data';
 
 export default function Footer() {
+  const { t, pick } = useT();
   return (
     <footer className="footer">
       <div className="footer-grid">
@@ -9,37 +12,36 @@ export default function Footer() {
             <span className="logo-mark" />
             <span className="logo-name">Forest <span>Retreat</span></span>
           </Link>
-          <p>Уединённые домики на природе в Латвии. Сауна, джакузи, озеро, лес — всё, чтобы перезагрузиться.</p>
+          <p>{t('footer.tagline')}</p>
         </div>
         <div className="footer-col">
-          <h4>Дома</h4>
+          <h4>{t('footer.cottages')}</h4>
           <ul>
-            <li><Link to="/cottage/dragon">Dragon House</Link></li>
-            <li><Link to="/cottage/viking">Viking House</Link></li>
-            <li><Link to="/cottage/farm">Private Farm</Link></li>
-            <li><Link to="/cottage/black">Black House</Link></li>
+            {COTTAGES.map(c => (
+              <li key={c.id}><Link to={`/cottage/${c.id}`}>{pick(c.name)}</Link></li>
+            ))}
           </ul>
         </div>
         <div className="footer-col">
-          <h4>Информация</h4>
+          <h4>{t('footer.info')}</h4>
           <ul>
-            <li><a href="/#why">Почему мы</a></li>
-            <li><a href="/#reviews">Отзывы</a></li>
-            <li><a href="/#cottages">Бронирование</a></li>
+            <li><a href="/#why">{t('nav.why')}</a></li>
+            <li><a href="/#reviews">{t('nav.reviews')}</a></li>
+            <li><a href="/#cottages">{t('footer.booking')}</a></li>
           </ul>
         </div>
         <div className="footer-col">
-          <h4>Контакты</h4>
+          <h4>{t('footer.contact')}</h4>
           <ul>
-            <li>Līči, Латвия</li>
+            <li>Līči, Latvia</li>
             <li>+371 00 000 000</li>
             <li>hello@forestretreat.lv</li>
           </ul>
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 2026 Forest Retreat · Все права защищены</span>
-        <span>Сделано с любовью в латвийском лесу</span>
+        <span>{t('footer.rights')}</span>
+        <span>{t('footer.madeWith')}</span>
       </div>
     </footer>
   );

@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { photoUrl } from '../data';
+import { useT } from '../i18n.jsx';
 
 export default function Lightbox({ cottage, index, onClose, onChange }) {
+  const { pick } = useT();
   const open = index !== null;
+  const name = pick(cottage.name);
 
   useEffect(() => {
     if (!open) return;
@@ -38,7 +41,7 @@ export default function Lightbox({ cottage, index, onClose, onChange }) {
             key={index}
             className="lightbox-img"
             src={photoUrl(cottage, cottage.photos[index])}
-            alt={`${cottage.name} — фото ${index + 1}`}
+            alt={`${name} — ${index + 1}`}
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}

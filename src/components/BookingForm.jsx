@@ -1,13 +1,20 @@
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DateField from './DateField';
+import { useT, DICT } from '../i18n.jsx';
 
-function pluralNight(n) {
+function pluralRu(n) {
   const m = Math.abs(n) % 100, m2 = m % 10;
-  if (m > 10 && m < 20) return 'ночей';
-  if (m2 > 1 && m2 < 5) return 'ночи';
-  if (m2 === 1) return 'ночь';
-  return 'ночей';
+  if (m > 10 && m < 20) return DICT.booking.nightsMany.ru;
+  if (m2 > 1 && m2 < 5) return DICT.booking.nightsFew.ru;
+  if (m2 === 1) return DICT.booking.nights1.ru;
+  return DICT.booking.nightsMany.ru;
+}
+
+function pluralWord(n, locale) {
+  if (locale === 'ru') return pluralRu(n);
+  if (locale === 'lv') return n === 1 ? DICT.booking.nights1.lv : DICT.booking.nightsMany.lv;
+  return n === 1 ? DICT.booking.nights1.en : DICT.booking.nightsMany.en;
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -17,6 +24,7 @@ const offset = (days) => {
 };
 
 export default function BookingForm({ cottage }) {
+  const { t, locale } = useT();
   const [checkIn, setCheckIn]   = useState(offset(3));
   const [checkOut, setCheckOut] = useState(offset(5));
   const [guests, setGuests]     = useState('2');
@@ -43,19 +51,20 @@ export default function BookingForm({ cottage }) {
   };
 
   const onSubmit = (e) => { e.preventDefault(); setSuccess(true); };
+  const guestOpts = DICT.guestsOptions[locale];
 
   return (
     <>
       <div className="booking-card glass-premium" id="booking">
         <div className="booking-price">
           <span className="booking-price-num">{cottage.pricePerNight}</span>
-          <span className="booking-price-unit">€ / ночь</span>
+          <span className="booking-price-unit">{t('booking.perNight')}</span>
         </div>
 
         <form className="booking-form" onSubmit={onSubmit}>
           <div className="bf-row">
             <DateField
-              label="Заезд"
+              label={t('booking.checkIn')}
               value={checkIn}
               onChange={onCheckInChange}
               minDate={today()}
@@ -63,7 +72,7 @@ export default function BookingForm({ cottage }) {
               align="left"
             />
             <DateField
-              label="Выезд"
+              label={t('booking.checkOut')}
               value={checkOut}
               onChange={setCheckOut}
               minDate={checkIn}
@@ -72,41 +81,38 @@ export default function BookingForm({ cottage }) {
             />
           </div>
           <div className="bf-field">
-            <label>Гостей</label>
+            <label>{t('booking.guests')}</label>
             <select value={guests} onChange={(e) => setGuests(e.target.value)}>
-              <option value="1">1 гость</option>
-              <option value="2">2 гостя</option>
-              <option value="3">3 гостя</option>
-              <option value="4">4 гостя</option>
+              {guestOpts.map((opt, i) => <option key={i} value={i + 1}>{opt}</option>)}
             </select>
           </div>
           <div className="bf-field">
-            <label>Имя</label>
-            <input type="text" placeholder="Ваше имя" value={name} onChange={(e) => setName(e.target.value)} required />
+            <label>{t('booking.name')}</label>
+            <input type="text" placeholder={t('booking.namePh')} value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
           <div className="bf-row">
             <div className="bf-field">
-              <label>E-mail</label>
+              <label>{t('booking.email')}</label>
               <input type="email" placeholder="you@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div className="bf-field">
-              <label>Телефон</label>
+              <label>{t('booking.phone')}</label>
               <input type="tel" placeholder="+371…" value={phone} onChange={(e) => setPhone(e.target.value)} required />
             </div>
           </div>
 
           <div className="booking-summary">
             <div className="booking-summary-row">
-              <span>{cottage.pricePerNight} € × {summary.nights} {pluralNight(summary.nights)}</span>
+              <span>{cottage.pricePerNight} € × {summary.nights} {pluralWord(summary.nights, locale)}</span>
               <span>{summary.base} €</span>
             </div>
-            <div className="booking-summary-row"><span>Уборка</span><span>30 €</span></div>
-            <div className="booking-summary-row"><span>Сервисный сбор</span><span>{summary.fee} €</span></div>
-            <div className="booking-summary-total">Итого <strong>{summary.total} €</strong></div>
+            <div className="booking-summary-row"><span>{t('booking.cleaning')}</span><span>30 €</span></div>
+            <div className="booking-summary-row"><span>{t('booking.fee')}</span><span>{summary.fee} €</span></div>
+            <div className="booking-summary-total">{t('booking.total')} <strong>{summary.total} €</strong></div>
           </div>
 
-          <button type="submit" className="book-btn">Забронировать сейчас</button>
-          <p className="book-help">Без предоплаты · Бесплатная отмена</p>
+          <button type="submit" className="book-btn">{t('booking.submit')}</button>
+          <p className="book-help">{t('booking.helper')}</p>
         </form>
       </div>
 
@@ -127,9 +133,9 @@ export default function BookingForm({ cottage }) {
               transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
             >
               <div className="modal-icon">✓</div>
-              <h3>Заявка отправлена!</h3>
-              <p>Мы свяжемся с вами в течение часа, чтобы подтвердить бронирование. Спасибо, что выбрали Forest Retreat.</p>
-              <button className="btn btn-primary" onClick={() => setSuccess(false)}>Прекрасно</button>
+              <h3>{t('booking.successTitle')}</h3>
+              <p>{t('booking.successText')}</p>
+              <button className="btn btn-primary" onClick={() => setSuccess(false)}>{t('booking.successBtn')}</button>
             </motion.div>
           </motion.div>
         )}

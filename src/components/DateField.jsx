@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-const WEEKDAYS = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+import { DICT, useLocale } from '../i18n.jsx';
 
 const toISO = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const fromISO = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
@@ -20,13 +18,18 @@ function buildMonthGrid(year, month) {
   return days;
 }
 
-function formatDisplay(value) {
+const LOCALE_TAG = { ru: 'ru-RU', lv: 'lv-LV', en: 'en-GB' };
+
+function formatDisplay(value, locale) {
   if (!value) return '—';
   const d = fromISO(value);
-  return d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '').replace('.', '');
+  return d.toLocaleDateString(LOCALE_TAG[locale] || 'ru-RU', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
 export default function DateField({ label, value, onChange, minDate, fieldClassName = 'search-field', align = 'left' }) {
+  const { locale } = useLocale();
+  const MONTHS = DICT.months[locale];
+  const WEEKDAYS = DICT.weekdays[locale];
   const [open, setOpen] = useState(false);
   const [view, setView] = useState(() => {
     const d = value ? fromISO(value) : new Date();
@@ -74,7 +77,7 @@ export default function DateField({ label, value, onChange, minDate, fieldClassN
     >
       <label>{label}</label>
       <div className="datefield-display">
-        <span>{formatDisplay(value)}</span>
+        <span>{formatDisplay(value, locale)}</span>
         <svg className="datefield-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="4" width="18" height="18" rx="2" />
           <line x1="16" y1="2" x2="16" y2="6" />

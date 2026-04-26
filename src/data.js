@@ -1,21 +1,33 @@
-// Cottage data — extracted from info.txt files
+// Cottage data — i18n-aware text fields use {ru, lv, en} objects.
+// Resolve via pick(obj, locale) from src/i18n.jsx.
+
+const L = (ru, lv, en) => ({ ru, lv, en });
+
 export const COTTAGES = [
   {
     id: 'dragon',
-    name: 'Dragon House in the Tree',
-    tagline: 'Дом-сказка на дереве',
     folder: 'dragon-house',
     rating: 9.3,
     reviewsCount: 170,
-    ratingLabel: 'Превосходно',
     pricePerNight: 145,
     sleeps: 4,
     bedrooms: 1,
     area: 35,
-    type: 'Дом на дереве',
-    badge: 'Хит сезона',
-    shortDescription: 'Уникальный домик-дракон на дереве с джакузи, сауной и кинопроектором. Вид на озеро и лес — атмосфера, которую невозможно забыть.',
-    description: 'Dragon House — это атмосферный дом для отпуска в городе Līči, окружённый лесом и стоящий у самой кромки озера. Бесплатные велосипеды, сад, терраса, бесплатный Wi-Fi и круглосуточная стойка регистрации. Из окон открывается потрясающий вид на озеро. Идеально для тех, кто ищет уединение, природу и атмосферу сказки.',
+    name: L('Dragon House на дереве', 'Pūķu māja kokā', 'Dragon Tree House'),
+    tagline: L('Дом-сказка на дереве', 'Pasaku māja kokā', 'A fairytale tree house'),
+    type: L('Дом на дереве', 'Māja kokā', 'Tree house'),
+    badge: L('Хит сезона', 'Sezonas hīts', 'Season hit'),
+    ratingLabel: L('Превосходно', 'Izcili', 'Excellent'),
+    shortDescription: L(
+      'Уникальный домик-дракон на дереве с джакузи, сауной и кинопроектором. Вид на озеро и лес — атмосфера, которую невозможно забыть.',
+      'Unikāla pūķa mājiņa kokā ar burbuļvannu, pirti un projektoru. Skats uz ezeru un mežu — neaizmirstama atmosfēra.',
+      'A unique dragon tree house with a jacuzzi, sauna, and projector. Lake and forest views — an unforgettable atmosphere.'
+    ),
+    description: L(
+      'Dragon House — это атмосферный дом для отпуска в городе Līči, окружённый лесом и стоящий у самой кромки озера. Бесплатные велосипеды, сад, терраса, бесплатный Wi-Fi и круглосуточная стойка регистрации. Из окон открывается потрясающий вид на озеро. Идеально для тех, кто ищет уединение, природу и атмосферу сказки.',
+      'Dragon House — atmosfēriska brīvdienu māja Līčos, mežā pie ezera krasta. Bezmaksas velosipēdi, dārzs, terase, bezmaksas Wi-Fi un reģistratūra visu diennakti. No logiem paveras lielisks skats uz ezeru. Ideāli tiem, kas meklē vientulību, dabu un pasakas atmosfēru.',
+      'Dragon House is an atmospheric vacation home in Līči, surrounded by forest and standing at the very edge of a lake. Free bikes, a garden, a terrace, free Wi-Fi, and a 24/7 reception. The windows open onto a stunning lake view. Perfect for those seeking solitude, nature, and a fairytale atmosphere.'
+    ),
     photos: [
       '268163332.jpg','268163334.jpg','270691627.jpg','270691664.jpg','270691675.jpg',
       '332274112.jpg','332274113.jpg','332274114.jpg','332274117.jpg','332274119.jpg',
@@ -25,20 +37,20 @@ export const COTTAGES = [
       '486818375.jpg','486818450.jpg'
     ],
     amenities: [
-      {icon: 'wifi', label: 'Бесплатный Wi-Fi'},
-      {icon: 'parking', label: 'Бесплатная парковка'},
-      {icon: 'jacuzzi', label: 'Гидромассажная ванна'},
-      {icon: 'sauna', label: 'Сауна'},
-      {icon: 'cinema', label: 'Кинопроектор Netflix'},
-      {icon: 'pet', label: 'Можно с питомцами'},
-      {icon: 'kitchen', label: 'Полная мини-кухня'},
-      {icon: 'ac', label: 'Кондиционер'},
-      {icon: 'lake', label: 'Вид на озеро'},
-      {icon: 'fishing', label: 'Рыбалка'},
-      {icon: 'bbq', label: 'Барбекю-зона'},
-      {icon: 'bike', label: 'Бесплатные велосипеды'},
-      {icon: 'transfer', label: 'Трансфер от/до аэропорта'},
-      {icon: 'family', label: 'Семейные номера'}
+      {icon: 'wifi',     key: 'Бесплатный Wi-Fi'},
+      {icon: 'parking',  key: 'Бесплатная парковка'},
+      {icon: 'jacuzzi',  key: 'Гидромассажная ванна'},
+      {icon: 'sauna',    key: 'Сауна'},
+      {icon: 'cinema',   key: 'Кинопроектор Netflix'},
+      {icon: 'pet',      key: 'Можно с питомцами'},
+      {icon: 'kitchen',  key: 'Полная мини-кухня'},
+      {icon: 'ac',       key: 'Кондиционер'},
+      {icon: 'lake',     key: 'Вид на озеро'},
+      {icon: 'fishing',  key: 'Рыбалка'},
+      {icon: 'bbq',      key: 'Барбекю-зона'},
+      {icon: 'bike',     key: 'Бесплатные велосипеды'},
+      {icon: 'transfer', key: 'Трансфер от/до аэропорта'},
+      {icon: 'family',   key: 'Семейные номера'}
     ],
     categories: {
       'Персонал': 9.1, 'Удобства': 9.2, 'Чистота': 9.6,
@@ -61,20 +73,28 @@ export const COTTAGES = [
   },
   {
     id: 'viking',
-    name: 'Viking House in the Tree',
-    tagline: 'Дом викингов на дереве',
     folder: 'viking-house',
     rating: 9.0,
     reviewsCount: 137,
-    ratingLabel: 'Превосходно',
     pricePerNight: 135,
     sleeps: 4,
     bedrooms: 1,
     area: 35,
-    type: 'Дом на дереве',
-    badge: 'Романтика',
-    shortDescription: 'Аутентичный дом в стиле викингов с джакузи и сауной. Большие панорамные окна с видом на озеро и закаты, которые запомнятся надолго.',
-    description: 'Viking House — атмосферный домик на дереве в окружении леса с прекрасным видом на озеро. В озере много рыбы — карп, линь, щука, карась. Есть отопление, кондиционер, бесплатный Wi-Fi и собственный балкон со столиком. Идеально для романтического отдыха или семейного уикенда.',
+    name: L('Viking House на дереве', 'Vikingu māja kokā', 'Viking Tree House'),
+    tagline: L('Дом викингов на дереве', 'Vikingu mājiņa kokā', 'Viking-style tree cabin'),
+    type: L('Дом на дереве', 'Māja kokā', 'Tree house'),
+    badge: L('Романтика', 'Romantika', 'Romantic'),
+    ratingLabel: L('Превосходно', 'Izcili', 'Excellent'),
+    shortDescription: L(
+      'Аутентичный дом в стиле викингов с джакузи и сауной. Большие панорамные окна с видом на озеро и закаты, которые запомнятся надолго.',
+      'Autentiska vikingu stila māja ar burbuļvannu un pirti. Lieli panorāmas logi ar skatu uz ezeru un saulrieti, kas paliek atmiņā.',
+      'An authentic viking-style cabin with a jacuzzi and sauna. Large panoramic windows facing the lake and unforgettable sunsets.'
+    ),
+    description: L(
+      'Viking House — атмосферный домик на дереве в окружении леса с прекрасным видом на озеро. В озере много рыбы — карп, линь, щука, карась. Есть отопление, кондиционер, бесплатный Wi-Fi и собственный балкон со столиком. Идеально для романтического отдыха или семейного уикенда.',
+      'Viking House — atmosfēriska mājiņa kokā meža ielokā ar lielisku skatu uz ezeru. Ezerā ir daudz zivju — karpa, līnis, līdaka, karūsa. Apkure, kondicionieris, bezmaksas Wi-Fi un savs balkons ar galdiņu. Ideāli romantiskai atpūtai vai ģimenes nedēļas nogalei.',
+      'Viking House is an atmospheric tree cabin nestled in the forest with a beautiful lake view. The lake holds plenty of fish — carp, tench, pike, crucian. Heating, AC, free Wi-Fi, and a private balcony with a table. Perfect for a romantic retreat or family weekend.'
+    ),
     photos: [
       '266611698.jpg','266611731.jpg','266611735.jpg','266611745.jpg','266611769.jpg',
       '266611782.jpg','266611790.jpg','266611796.jpg','268163533.jpg','270691697.jpg',
@@ -85,20 +105,20 @@ export const COTTAGES = [
       '486815050.jpg','486815107.jpg'
     ],
     amenities: [
-      {icon: 'wifi', label: 'Бесплатный Wi-Fi'},
-      {icon: 'parking', label: 'Бесплатная парковка'},
-      {icon: 'jacuzzi', label: 'Гидромассажная ванна'},
-      {icon: 'sauna', label: 'Сауна'},
-      {icon: 'pet', label: 'Можно с питомцами'},
-      {icon: 'kitchen', label: 'Полная мини-кухня'},
-      {icon: 'ac', label: 'Кондиционер'},
-      {icon: 'balcony', label: 'Балкон с видом'},
-      {icon: 'lake', label: 'Вид на озеро'},
-      {icon: 'fishing', label: 'Рыбалка'},
-      {icon: 'bbq', label: 'Барбекю-зона'},
-      {icon: 'transfer', label: 'Трансфер от/до аэропорта'},
-      {icon: 'family', label: 'Семейные номера'},
-      {icon: 'fire', label: 'Отопление'}
+      {icon: 'wifi',     key: 'Бесплатный Wi-Fi'},
+      {icon: 'parking',  key: 'Бесплатная парковка'},
+      {icon: 'jacuzzi',  key: 'Гидромассажная ванна'},
+      {icon: 'sauna',    key: 'Сауна'},
+      {icon: 'pet',      key: 'Можно с питомцами'},
+      {icon: 'kitchen',  key: 'Полная мини-кухня'},
+      {icon: 'ac',       key: 'Кондиционер'},
+      {icon: 'balcony',  key: 'Балкон с видом'},
+      {icon: 'lake',     key: 'Вид на озеро'},
+      {icon: 'fishing',  key: 'Рыбалка'},
+      {icon: 'bbq',      key: 'Барбекю-зона'},
+      {icon: 'transfer', key: 'Трансфер от/до аэропорта'},
+      {icon: 'family',   key: 'Семейные номера'},
+      {icon: 'fire',     key: 'Отопление'}
     ],
     categories: {
       'Персонал': 9.0, 'Удобства': 9.0, 'Чистота': 9.0,
@@ -121,20 +141,28 @@ export const COTTAGES = [
   },
   {
     id: 'farm',
-    name: 'Private Farm Lodge',
-    tagline: 'Частная ферма с альпаками',
     folder: 'farm-lodge',
     rating: 9.1,
     reviewsCount: 120,
-    ratingLabel: 'Превосходно',
     pricePerNight: 125,
     sleeps: 4,
     bedrooms: 1,
     area: 30,
-    type: 'Лодж на ферме',
-    badge: 'С животными',
-    shortDescription: 'Уютный лодж в самом сердце леса с собственной мини-фермой: альпаки, пони, овцы, кролики. Идеально для детей и романтического отдыха.',
-    description: 'Private Farm Lodge — лодж в окружении леса с собственной мини-фермой: альпаки, пони, козы, овцы и милейшие кролики, бегающие свободно. Сауна, гидромассаж, бесплатный трансфер, круглосуточная стойка регистрации, бесплатный Wi-Fi. До озера 3 минуты пешком.',
+    name: L('Private Farm Lodge', 'Privātā saimniecība', 'Private Farm Lodge'),
+    tagline: L('Частная ферма с альпаками', 'Privāta ferma ar alpakām', 'Private farm with alpacas'),
+    type: L('Лодж на ферме', 'Lauku mājiņa', 'Farm lodge'),
+    badge: L('С животными', 'Ar dzīvniekiem', 'With animals'),
+    ratingLabel: L('Превосходно', 'Izcili', 'Excellent'),
+    shortDescription: L(
+      'Уютный лодж в самом сердце леса с собственной мини-фермой: альпаки, пони, овцы, кролики. Идеально для детей и романтического отдыха.',
+      'Mājīga mājiņa meža sirdī ar savu mini fermu: alpakas, poniji, aitas, truši. Ideāli bērniem un romantiskai atpūtai.',
+      'A cozy lodge in the heart of the forest with its own mini-farm: alpacas, ponies, sheep, rabbits. Perfect for kids and romantic stays.'
+    ),
+    description: L(
+      'Private Farm Lodge — лодж в окружении леса с собственной мини-фермой: альпаки, пони, козы, овцы и милейшие кролики, бегающие свободно. Сауна, гидромассаж, бесплатный трансфер, круглосуточная стойка регистрации, бесплатный Wi-Fi. До озера 3 минуты пешком.',
+      'Private Farm Lodge — mājiņa meža ielokā ar savu mini fermu: alpakas, poniji, kazas, aitas un mīļākie truši, kas brīvi skraida pa pagalmu. Pirts, burbuļvanna, bezmaksas transfērs, reģistratūra 24/7, bezmaksas Wi-Fi. Līdz ezeram 3 minūtes ar kājām.',
+      'Private Farm Lodge sits among trees with its own mini-farm: alpacas, ponies, goats, sheep, and adorable free-roaming rabbits. Sauna, hot tub, free transfer, 24/7 reception, free Wi-Fi. Lake is a 3-minute walk away.'
+    ),
     photos: [
       '302520638.jpg','302520656.jpg','302521612.jpg','316750154.jpg','415434198.jpg',
       '415434269.jpg','415434441.jpg','415434538.jpg','415434556.jpg','416618718.jpg',
@@ -144,20 +172,20 @@ export const COTTAGES = [
       '714632488.jpg','714632908.jpg','714633147.jpg','714633441.jpg','714633594.jpg'
     ],
     amenities: [
-      {icon: 'wifi', label: 'Бесплатный Wi-Fi'},
-      {icon: 'parking', label: 'Бесплатная парковка'},
-      {icon: 'jacuzzi', label: 'Гидромассажная ванна'},
-      {icon: 'sauna', label: 'Сауна'},
-      {icon: 'pet', label: 'Можно с питомцами'},
-      {icon: 'animals', label: 'Альпаки, пони, кролики'},
-      {icon: 'fire', label: 'Камин'},
-      {icon: 'kitchen', label: 'Кухня с плитой'},
-      {icon: 'darts', label: 'Дартс'},
-      {icon: 'fishing', label: 'Рыбалка'},
-      {icon: 'bbq', label: 'Принадлежности для BBQ'},
-      {icon: 'lake', label: 'Вид на озеро'},
-      {icon: 'transfer', label: 'Трансфер от/до аэропорта'},
-      {icon: 'family', label: 'Семейные номера'}
+      {icon: 'wifi',     key: 'Бесплатный Wi-Fi'},
+      {icon: 'parking',  key: 'Бесплатная парковка'},
+      {icon: 'jacuzzi',  key: 'Гидромассажная ванна'},
+      {icon: 'sauna',    key: 'Сауна'},
+      {icon: 'pet',      key: 'Можно с питомцами'},
+      {icon: 'animals',  key: 'Альпаки, пони, кролики'},
+      {icon: 'fire',     key: 'Камин'},
+      {icon: 'kitchen',  key: 'Кухня с плитой'},
+      {icon: 'darts',    key: 'Дартс'},
+      {icon: 'fishing',  key: 'Рыбалка'},
+      {icon: 'bbq',      key: 'Принадлежности для BBQ'},
+      {icon: 'lake',     key: 'Вид на озеро'},
+      {icon: 'transfer', key: 'Трансфер от/до аэропорта'},
+      {icon: 'family',   key: 'Семейные номера'}
     ],
     categories: {
       'Персонал': 9.1, 'Удобства': 8.9, 'Чистота': 9.1,
@@ -180,20 +208,28 @@ export const COTTAGES = [
   },
   {
     id: 'black',
-    name: 'Black House in the Forest',
-    tagline: 'Чёрный дом с домашним кинотеатром',
     folder: 'black-house',
     rating: 8.7,
     reviewsCount: 37,
-    ratingLabel: 'Потрясающе',
     pricePerNight: 110,
     sleeps: 4,
     bedrooms: 1,
     area: 27,
-    type: 'Шале',
-    badge: 'Арт-интерьер',
-    shortDescription: 'Стильное чёрное шале в лесу с гидромассажной ванной и домашним кинотеатром. Уникальный интерьер, который переносит в другое время.',
-    description: 'Black House — шале в городе Līči с пасторальным видом на озеро и террасой. На территории есть частная парковка. Гидромассажная ванна, сауна, домашний кинотеатр (проектор) и оригинальный художественный интерьер. Кролики, пони, овечки и барашки прямо на пороге домика.',
+    name: L('Black House в лесу', 'Melnā māja mežā', 'Black House in the Forest'),
+    tagline: L('Чёрный дом с домашним кинотеатром', 'Melnā māja ar mājas kinoteātri', 'Black house with home theater'),
+    type: L('Шале', 'Šaleja', 'Chalet'),
+    badge: L('Арт-интерьер', 'Arta interjers', 'Art interior'),
+    ratingLabel: L('Потрясающе', 'Pārsteidzoši', 'Awesome'),
+    shortDescription: L(
+      'Стильное чёрное шале в лесу с гидромассажной ванной и домашним кинотеатром. Уникальный интерьер, который переносит в другое время.',
+      'Stilīga melnā šaleja mežā ar burbuļvannu un mājas kinoteātri. Unikāls interjers, kas pārceļ citā laikmetā.',
+      'A stylish black chalet in the forest with a hot tub and home theater. A unique interior that transports you to another time.'
+    ),
+    description: L(
+      'Black House — шале в городе Līči с пасторальным видом на озеро и террасой. На территории есть частная парковка. Гидромассажная ванна, сауна, домашний кинотеатр (проектор) и оригинальный художественный интерьер. Кролики, пони, овечки и барашки прямо на пороге домика.',
+      'Black House — šaleja Līčos ar pastorālu skatu uz ezeru un terasi. Teritorijā privāta autostāvvieta. Burbuļvanna, pirts, mājas kinoteātris (projektors) un oriģināls mākslas interjers. Truši, poniji, aitas un jēriņi tieši pie pat sliekšņa.',
+      'Black House is a chalet in Līči with a pastoral lake view and a terrace. Private on-site parking. Hot tub, sauna, home theater (projector), and an original artistic interior. Rabbits, ponies, sheep and lambs right at your doorstep.'
+    ),
     photos: [
       '593775112.jpg','593775231.jpg','593775262.jpg','593775275.jpg','593775281.jpg',
       '593775295.jpg','593775303.jpg','593775367.jpg','593775384.jpg','593775479.jpg',
@@ -201,18 +237,18 @@ export const COTTAGES = [
       '733988384.jpg','733988388.jpg','802490465.jpg','802490542.jpg'
     ],
     amenities: [
-      {icon: 'parking', label: 'Бесплатная парковка'},
-      {icon: 'jacuzzi', label: 'Гидромассажная ванна'},
-      {icon: 'sauna', label: 'Сауна'},
-      {icon: 'cinema', label: 'Домашний кинотеатр'},
-      {icon: 'pet', label: 'Можно с питомцами'},
-      {icon: 'fire', label: 'Камин'},
-      {icon: 'kitchen', label: 'Мини-кухня'},
-      {icon: 'lake', label: 'Вид на озеро'},
-      {icon: 'bbq', label: 'Барбекю'},
-      {icon: 'animals', label: 'Кролики, пони'},
-      {icon: 'sofa', label: 'Уютная гостиная'},
-      {icon: 'family', label: 'Для семьи / пары'}
+      {icon: 'parking',  key: 'Бесплатная парковка'},
+      {icon: 'jacuzzi',  key: 'Гидромассажная ванна'},
+      {icon: 'sauna',    key: 'Сауна'},
+      {icon: 'cinema',   key: 'Домашний кинотеатр'},
+      {icon: 'pet',      key: 'Можно с питомцами'},
+      {icon: 'fire',     key: 'Камин'},
+      {icon: 'kitchen',  key: 'Мини-кухня'},
+      {icon: 'lake',     key: 'Вид на озеро'},
+      {icon: 'bbq',      key: 'Барбекю'},
+      {icon: 'animals',  key: 'Кролики, пони'},
+      {icon: 'sofa',     key: 'Уютная гостиная'},
+      {icon: 'family',   key: 'Для семьи / пары'}
     ],
     categories: {
       'Персонал': 9.3, 'Удобства': 8.8, 'Чистота': 8.9,

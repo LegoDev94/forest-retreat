@@ -2,10 +2,12 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { photoUrl } from '../data';
 import { useRef } from 'react';
+import { useT } from '../i18n.jsx';
 
 const spring = { stiffness: 220, damping: 25, mass: 0.6 };
 
 export default function CottageCard({ cottage, delay = 0 }) {
+  const { t, pick } = useT();
   const ref = useRef(null);
   const mvX = useMotionValue(0);
   const mvY = useMotionValue(0);
@@ -18,6 +20,8 @@ export default function CottageCard({ cottage, delay = 0 }) {
     mvY.set((e.clientY - r.top)  / r.height - 0.5);
   };
   const onLeave = () => { mvX.set(0); mvY.set(0); };
+
+  const name = pick(cottage.name);
 
   return (
     <motion.div
@@ -32,15 +36,15 @@ export default function CottageCard({ cottage, delay = 0 }) {
     >
       <Link to={`/cottage/${cottage.id}`} className="cottage-card">
         <div className="cottage-card-media">
-          <img src={photoUrl(cottage, cottage.photos[0])} alt={cottage.name} loading="lazy" />
-          <span className="cottage-badge">{cottage.badge}</span>
+          <img src={photoUrl(cottage, cottage.photos[0])} alt={name} loading="lazy" />
+          <span className="cottage-badge">{pick(cottage.badge)}</span>
           <span className="cottage-rating">{cottage.rating}</span>
           <div className="cottage-card-info">
-            <div className="cottage-card-name">{cottage.name}</div>
-            <div className="cottage-card-tagline">{cottage.tagline}</div>
+            <div className="cottage-card-name">{name}</div>
+            <div className="cottage-card-tagline">{pick(cottage.tagline)}</div>
             <div className="cottage-card-row">
-              <div className="cottage-price"><strong>{cottage.pricePerNight}€</strong> / ночь</div>
-              <span className="cottage-link">Открыть</span>
+              <div className="cottage-price"><strong>{cottage.pricePerNight}€</strong> {t('cottages.perNight')}</div>
+              <span className="cottage-link">{t('cottages.open')}</span>
             </div>
           </div>
         </div>

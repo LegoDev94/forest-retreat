@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { findCottage, photoUrl } from '../data';
+import { useT, DICT } from '../i18n.jsx';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
@@ -18,26 +19,30 @@ const ICON = {
 export default function Cottage() {
   const { id } = useParams();
   const c = findCottage(id);
+  const { t, pick, locale } = useT();
   const [lbIdx, setLbIdx] = useState(null);
+
+  useEffect(() => {
+    if (c) document.title = `${pick(c.name)} — Forest Retreat`;
+  }, [c, locale, pick]);
 
   if (!c) {
     return (
       <>
         <Nav alwaysScrolled />
         <div style={{ padding: '160px 20px', textAlign: 'center', minHeight: '60vh' }}>
-          <h1 className="detail-title">Дом не найден</h1>
-          <Link to="/" className="btn btn-primary" style={{ marginTop: 24 }}>Вернуться</Link>
+          <h1 className="detail-title">{t('detail.notFound')}</h1>
+          <Link to="/" className="btn btn-primary" style={{ marginTop: 24 }}>{t('detail.back')}</Link>
         </div>
         <Footer />
       </>
     );
   }
 
-  if (typeof document !== 'undefined') document.title = `${c.name} — Forest Retreat`;
-
-  const [titleHead, ...titleTail] = c.name.split(' ');
-  const lastWord = c.name.split(' ').slice(-1)[0];
-  const firstWords = c.name.split(' ').slice(0, -1).join(' ');
+  const fullName = pick(c.name);
+  const parts = fullName.split(' ');
+  const lastWord = parts.slice(-1)[0];
+  const firstWords = parts.slice(0, -1).join(' ');
 
   return (
     <>
@@ -46,7 +51,9 @@ export default function Cottage() {
       {/* DETAIL HERO */}
       <section className="detail-hero">
         <nav className="breadcrumb">
-          <Link to="/">Главная</Link> <span>›</span> <Link to="/#cottages">Дома</Link> <span>›</span> <strong>{c.name}</strong>
+          <Link to="/">{t('detail.home')}</Link> <span>›</span>{' '}
+          <Link to="/#cottages">{t('detail.cottages')}</Link> <span>›</span>{' '}
+          <strong>{fullName}</strong>
         </nav>
 
         <div className="detail-title-row">
@@ -55,18 +62,18 @@ export default function Cottage() {
               {firstWords} <span className="accent">{lastWord}</span>
             </h1>
             <div className="detail-meta-row">
-              <span className="pill">★ {c.rating} · {c.reviewsCount} отзывов</span>
-              <span className="pill">📍 Līči, Латвия</span>
-              <span className="pill">🛏 {c.bedrooms} спальня · до {c.sleeps} гостей</span>
-              <span className="pill">📐 {c.area} м²</span>
-              <span className="pill">🏡 {c.type}</span>
+              <span className="pill">★ {c.rating} · {c.reviewsCount} {t('detail.reviewsCount')}</span>
+              <span className="pill">{t('detail.location')}</span>
+              <span className="pill">🛏 {c.bedrooms} {t('detail.bedroom')} {t('detail.bedroomsTo')} {c.sleeps} {t('detail.guestsLabel')}</span>
+              <span className="pill">📐 {c.area} {t('detail.sqm')}</span>
+              <span className="pill">🏡 {pick(c.type)}</span>
             </div>
           </div>
           <div className="rating-big">
             <div className="rating-num">{c.rating}</div>
             <div className="rating-detail">
-              <strong>{c.ratingLabel}</strong>
-              {c.reviewsCount} отзывов
+              <strong>{pick(c.ratingLabel)}</strong>
+              {c.reviewsCount} {t('detail.reviewsCount')}
             </div>
           </div>
         </div>
@@ -76,8 +83,8 @@ export default function Cottage() {
       <div className="gallery-mosaic">
         {c.photos.slice(0, 5).map((p, i) => (
           <div key={p} className="gallery-mosaic-item" onClick={() => setLbIdx(i)}>
-            <img src={photoUrl(c, p)} alt={`${c.name} — фото ${i + 1}`} loading={i < 2 ? 'eager' : 'lazy'} />
-            {i === 4 && <span className="show-all">📷 Все фото · {c.photos.length}</span>}
+            <img src={photoUrl(c, p)} alt={`${fullName} — ${i + 1}`} loading={i < 2 ? 'eager' : 'lazy'} />
+            {i === 4 && <span className="show-all">📷 {t('detail.showAll')} · {c.photos.length}</span>}
           </div>
         ))}
       </div>
@@ -86,28 +93,31 @@ export default function Cottage() {
       <div className="detail-body">
         <div>
           <Reveal as="section" className="detail-section">
-            <h2>Об этом доме</h2>
-            <p>{c.description}</p>
+            <h2>{t('detail.about')}</h2>
+            <p>{pick(c.description)}</p>
           </Reveal>
 
           <Reveal as="section" className="detail-section">
-            <h2>Удобства и услуги</h2>
+            <h2>{t('detail.amenities')}</h2>
             <div className="amenities-grid">
               {c.amenities.map((a, i) => (
                 <div key={i} className="amenity">
                   <div className="amenity-icon">{ICON[a.icon] || '✨'}</div>
-                  <div className="amenity-label">{a.label}</div>
+                  <div className="amenity-label">{pick(DICT.amenities[a.key]) || a.key}</div>
                 </div>
               ))}
             </div>
           </Reveal>
 
           <Reveal as="section" className="detail-section">
-            <h2>Оценки гостей</h2>
+            <h2>{t('detail.ratings')}</h2>
             <div className="categories-grid">
-              {Object.entries(c.categories).map(([name, val]) => (
-                <div key={name} className="category">
-                  <div className="category-row"><span>{name}</span><strong>{val.toFixed(1)}</strong></div>
+              {Object.entries(c.categories).map(([key, val]) => (
+                <div key={key} className="category">
+                  <div className="category-row">
+                    <span>{pick(DICT.categories[key]) || key}</span>
+                    <strong>{val.toFixed(1)}</strong>
+                  </div>
                   <div className="category-bar">
                     <div className="category-bar-fill" style={{ width: `${val * 10}%` }} />
                   </div>
@@ -118,9 +128,9 @@ export default function Cottage() {
 
           <Reveal as="section" className="detail-section" id="reviews">
             <h2>
-              Отзывы{' '}
+              {t('detail.reviewsHead')}{' '}
               <span style={{ color: 'var(--text-3)', fontSize: '.7em', fontStyle: 'italic' }}>
-                — реальные истории гостей
+                {t('detail.reviewsSub')}
               </span>
             </h2>
             <div className="reviews-grid">
