@@ -2,6 +2,7 @@
   "name": "forest-retreat",
   "private": true,
   "version": "3.0.0",
+  "type": "module",
   "description": "Forest Retreat — booking site for the only deer park in Latvia",
   "scripts": {
     "dev": "next dev",
