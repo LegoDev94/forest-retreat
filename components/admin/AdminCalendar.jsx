@@ -1,45 +1,72 @@
 'use client';
-import { useMemo } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 
 const fromISO = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
 const toISO   = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const COTTAGE_LABELS = { dragon: 'Dragon', viking: 'Viking', farm: 'Farm', black: 'Black' };
 
+const RANGES = [
+  { value: 30,  label: '30 д' },
+  { value: 60,  label: '60 д' },
+  { value: 90,  label: '90 д' },
+  { value: 180, label: '6 м' },
+];
+
+const fmtFull = (s) => new Date(s).toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' });
+
 export default function AdminCalendar({ cottages, fromISO: fromStr, toISO: toStr, bookings, blocks }) {
+  const [rangeDays, setRangeDays] = useState(60);
+  const [offset, setOffset]       = useState(0); // months relative to today
+  const [tip, setTip]             = useState(null);
+  const wrapRef = useRef(null);
+
+  // Recompute window from current offset + range
+  const window = useMemo(() => {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    start.setMonth(start.getMonth() + offset);
+    const end = new Date(start);
+    end.setDate(end.getDate() + rangeDays);
+    return { start, end };
+  }, [offset, rangeDays]);
+
   const days = useMemo(() => {
     const out = [];
-    const start = fromISO(fromStr);
-    const end = fromISO(toStr);
-    for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-      out.push(new Date(d));
-    }
+    for (let d = new Date(window.start); d < window.end; d.setDate(d.getDate() + 1)) out.push(new Date(d));
     return out;
-  }, [fromStr, toStr]);
+  }, [window]);
 
-  // Build per-cottage day maps: { 'dragon': { '2026-05-01': {kind:'booking', ...} } }
-  const byCottage = useMemo(() => {
+  // Filter incoming data into our window. Server fetches a fixed range — we
+  // operate on what we have and silently show fewer marks if window extends.
+  const cells = useMemo(() => {
     const m = Object.fromEntries(cottages.map((c) => [c, {}]));
     for (const b of bookings) {
       const start = fromISO(b.check_in);
       const end   = fromISO(b.check_out);
       for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+        if (d < window.start || d >= window.end) continue;
         if (!m[b.cottage_id]) continue;
         m[b.cottage_id][toISO(d)] = {
           kind: b.status === 'confirmed' ? 'confirmed' : 'pending',
-          label: `${b.guest_name} (${b.guests})`,
-          id: b.id,
+          booking: b,
         };
       }
     }
     for (const blk of blocks) {
-      if (!blk.blocked) continue;
+      const d = fromISO(blk.date);
+      if (d < window.start || d >= window.end) continue;
       if (!m[blk.cottage_id]) continue;
-      m[blk.cottage_id][blk.date] = m[blk.cottage_id][blk.date] || { kind: 'block', label: blk.note || 'Заблокировано' };
+      // Don't overwrite a booking; price overrides are signaled separately
+      const existing = m[blk.cottage_id][blk.date];
+      if (blk.blocked && !existing) {
+        m[blk.cottage_id][blk.date] = { kind: 'block', block: blk };
+      } else if (!blk.blocked && blk.price_override && !existing) {
+        m[blk.cottage_id][blk.date] = { kind: 'priced', block: blk };
+      }
     }
     return m;
-  }, [cottages, bookings, blocks]);
+  }, [cottages, bookings, blocks, window]);
 
-  // Group days by month for headers
   const monthHeaders = useMemo(() => {
     const groups = [];
     let cur = null;
@@ -59,72 +86,163 @@ export default function AdminCalendar({ cottages, fromISO: fromStr, toISO: toStr
     return groups;
   }, [days]);
 
+  function handleEnter(e, cottage, iso, cell) {
+    if (!wrapRef.current) return;
+    const wrapBox = wrapRef.current.getBoundingClientRect();
+    const cellBox = e.currentTarget.getBoundingClientRect();
+    setTip({
+      cottage,
+      iso,
+      cell,
+      x: cellBox.left + cellBox.width / 2 - wrapBox.left,
+      y: cellBox.top - wrapBox.top,
+    });
+  }
+  function handleLeave() { setTip(null); }
+
+  // Close tooltip on scroll
+  useEffect(() => {
+    if (!tip) return;
+    const onScroll = () => setTip(null);
+    window.addEventListener('scroll', onScroll, true);
+    return () => window.removeEventListener('scroll', onScroll, true);
+  }, [tip]);
+
   return (
-    <div className="admin-cal-wrap">
-      <div className="admin-cal-legend">
-        <span className="admin-cal-key admin-cal-pending">Ожидает</span>
-        <span className="admin-cal-key admin-cal-confirmed">Подтверждена</span>
-        <span className="admin-cal-key admin-cal-block">Блок</span>
-        <span className="admin-cal-key admin-cal-free">Свободно</span>
+    <div className="cal-wrap" ref={wrapRef}>
+      <div className="cal-toolbar">
+        <div className="cal-toolbar-group">
+          <button className="admin-btn admin-btn-sm admin-btn-ghost" onClick={() => setOffset(o => o - 1)}>‹ Назад</button>
+          <button className="admin-btn admin-btn-sm admin-btn-ghost" onClick={() => setOffset(0)} disabled={offset === 0}>Сегодня</button>
+          <button className="admin-btn admin-btn-sm admin-btn-ghost" onClick={() => setOffset(o => o + 1)}>Вперёд ›</button>
+        </div>
+        <div className="cal-toolbar-group">
+          {RANGES.map((r) => (
+            <button
+              key={r.value}
+              className={`admin-btn admin-btn-sm ${r.value === rangeDays ? 'admin-btn-primary' : 'admin-btn-ghost'}`}
+              onClick={() => setRangeDays(r.value)}
+            >{r.label}</button>
+          ))}
+        </div>
+        <div className="cal-legend">
+          <span className="cal-key cal-key-pending">Ожидает</span>
+          <span className="cal-key cal-key-confirmed">Подтверждена</span>
+          <span className="cal-key cal-key-block">Блок</span>
+          <span className="cal-key cal-key-priced">Цена</span>
+          <span className="cal-key cal-key-free">Свободно</span>
+        </div>
       </div>
-      <div className="admin-cal" style={{ gridTemplateColumns: `160px repeat(${days.length}, 32px)` }}>
-        {/* Month headers row */}
-        <div className="admin-cal-head admin-cal-corner"></div>
-        {monthHeaders.map((g, i) => (
-          <div
-            key={g.key}
-            className="admin-cal-head admin-cal-month"
-            style={{ gridColumn: `span ${g.span}` }}
-          >
-            {g.label}
-          </div>
-        ))}
 
-        {/* Day numbers row */}
-        <div className="admin-cal-corner"></div>
-        {days.map((d) => {
-          const isWeekend = d.getDay() === 0 || d.getDay() === 6;
-          return (
-            <div key={toISO(d)} className={`admin-cal-day-num${isWeekend ? ' weekend' : ''}`}>
-              {d.getDate()}
-            </div>
-          );
-        })}
+      <div className="cal-scroll">
+        <div className="cal" style={{ gridTemplateColumns: `160px repeat(${days.length}, 30px)` }}>
+          <div className="cal-corner" />
+          {monthHeaders.map((g) => (
+            <div key={g.key} className="cal-month" style={{ gridColumn: `span ${g.span}` }}>{g.label}</div>
+          ))}
 
-        {/* Cottage rows */}
-        {cottages.map((c) => (
-          <RowFragment
-            key={c}
-            cottage={c}
-            days={days}
-            cells={byCottage[c]}
-          />
-        ))}
+          <div className="cal-corner" />
+          {days.map((d) => {
+            const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+            const isToday = d.toDateString() === new Date().toDateString();
+            return (
+              <div key={toISO(d)} className={`cal-daynum${isWeekend ? ' weekend' : ''}${isToday ? ' today' : ''}`}>
+                {d.getDate()}
+              </div>
+            );
+          })}
+
+          {cottages.map((c) => (
+            <RowFragment
+              key={c}
+              cottage={c}
+              days={days}
+              cells={cells[c]}
+              onEnter={handleEnter}
+              onLeave={handleLeave}
+            />
+          ))}
+        </div>
       </div>
+
+      {tip && <Tooltip tip={tip} />}
     </div>
   );
 }
 
-function RowFragment({ cottage, days, cells }) {
+function RowFragment({ cottage, days, cells, onEnter, onLeave }) {
   return (
     <>
-      <div className="admin-cal-cottage">
-        <div className="admin-cal-cottage-label">{COTTAGE_LABELS[cottage] || cottage}</div>
-      </div>
+      <div className="cal-cottage">{COTTAGE_LABELS[cottage] || cottage}</div>
       {days.map((d) => {
         const iso = toISO(d);
         const cell = cells[iso];
         const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+        const isToday = d.toDateString() === new Date().toDateString();
         const cls = cell
-          ? `admin-cal-${cell.kind}`
-          : `admin-cal-free${isWeekend ? ' weekend' : ''}`;
-        const tooltip = cell ? `${iso} · ${cell.label}` : iso;
+          ? `cal-${cell.kind}`
+          : `cal-free${isWeekend ? ' weekend' : ''}`;
         return (
-          <div key={iso} className={`admin-cal-cell ${cls}`} title={tooltip}>
+          <div
+            key={iso}
+            className={`cal-cell ${cls}${isToday ? ' today' : ''}`}
+            onMouseEnter={(e) => onEnter(e, cottage, iso, cell)}
+            onMouseLeave={onLeave}
+          >
             {cell?.kind === 'block' && <span aria-hidden="true">×</span>}
+            {cell?.kind === 'priced' && <span aria-hidden="true">€</span>}
           </div>
         );
       })}
+    </>
+  );
+}
+
+function Tooltip({ tip }) {
+  const { cottage, iso, cell, x, y } = tip;
+  const date = fmtFull(iso);
+  return (
+    <div className="cal-tooltip" style={{ left: x, top: y }} role="tooltip">
+      <div className="cal-tooltip-head">
+        <span className="admin-pill">{cottage}</span>
+        <span>{date}</span>
+      </div>
+      {!cell && <div className="cal-tooltip-empty">— свободно</div>}
+      {cell?.kind === 'pending' && <BookingTip b={cell.booking} />}
+      {cell?.kind === 'confirmed' && <BookingTip b={cell.booking} />}
+      {cell?.kind === 'block' && (
+        <div className="cal-tooltip-row">
+          <span className="cal-tip-label">Блок</span>
+          <span>{cell.block.note || '—'}</span>
+        </div>
+      )}
+      {cell?.kind === 'priced' && (
+        <div className="cal-tooltip-row">
+          <span className="cal-tip-label">Цена</span>
+          <span>{cell.block.price_override} € / ночь {cell.block.note ? ` · ${cell.block.note}` : ''}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BookingTip({ b }) {
+  return (
+    <>
+      <div className="cal-tooltip-row">
+        <span className="cal-tip-label">Гость</span>
+        <span><strong>{b.guest_name}</strong> · {b.guests} {b.guests === 1 ? 'гость' : 'гостей'}</span>
+      </div>
+      <div className="cal-tooltip-row">
+        <span className="cal-tip-label">Заезд → Выезд</span>
+        <span>{fmtFull(b.check_in)} → {fmtFull(b.check_out)}</span>
+      </div>
+      <div className="cal-tooltip-row">
+        <span className="cal-tip-label">Статус</span>
+        <span className={`admin-status admin-status-${b.status}`}>
+          {b.status === 'pending' ? 'Ожидает' : b.status === 'confirmed' ? 'Подтверждена' : b.status}
+        </span>
+      </div>
     </>
   );
 }

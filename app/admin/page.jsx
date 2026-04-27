@@ -4,6 +4,7 @@ import { isAdminAuthenticated } from '../../lib/admin-auth';
 import { getServerSupabase, isSupabaseConfigured } from '../../lib/supabase/server';
 import AdminShell from '../../components/admin/AdminShell';
 import StatusBadge from '../../components/admin/StatusBadge';
+import LiveVisitors from '../../components/admin/LiveVisitors';
 
 export const dynamic = 'force-dynamic';
 
@@ -61,6 +62,7 @@ export default async function DashboardPage() {
               <div className="admin-stat-label">Выручка · 30 дней</div>
               <div className="admin-stat-value">{eur(stats.revenue30d)}</div>
             </div>
+            <LiveVisitors />
           </div>
 
           <section className="admin-section">

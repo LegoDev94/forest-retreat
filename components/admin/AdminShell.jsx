@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { logoutAction } from '../../app/actions/admin';
 
 const NAV = [
-  { href: '/admin',          label: 'Дашборд',     icon: '◆' },
-  { href: '/admin/bookings', label: 'Брони',       icon: '◉' },
-  { href: '/admin/calendar', label: 'Календарь',   icon: '◇' },
-  { href: '/admin/blocks',   label: 'Блокировки',  icon: '◍' },
+  { href: '/admin',           label: 'Дашборд',     icon: '◆' },
+  { href: '/admin/bookings',  label: 'Брони',       icon: '◉' },
+  { href: '/admin/calendar',  label: 'Календарь',   icon: '◇' },
+  { href: '/admin/pricing',   label: 'Цены',        icon: '€' },
+  { href: '/admin/blocks',    label: 'Блокировки',  icon: '◍' },
+  { href: '/admin/analytics', label: 'Аналитика',   icon: '⌁' },
 ];
 
 export default function AdminShell({ children }) {

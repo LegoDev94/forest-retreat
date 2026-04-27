@@ -6,6 +6,7 @@ import ScrollProgress from '../../components/ScrollProgress';
 import SmoothScroll from '../../components/SmoothScroll';
 import Nav from '../../components/Nav';
 import Footer from '../../components/Footer';
+import VisitorPing from '../../components/VisitorPing';
 
 const LOCALES = ['ru', 'lv', 'en'];
 
@@ -55,6 +56,7 @@ export default async function LocaleLayout({ children, params }) {
       <Nav />
       {children}
       <Footer />
+      <VisitorPing locale={locale} />
     </LocaleProvider>
   );
 }

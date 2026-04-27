@@ -8,23 +8,28 @@ import { COTTAGES } from '../../../lib/data';
 export const dynamic = 'force-dynamic';
 
 const COTTAGE_IDS = COTTAGES.map((c) => c.id);
-const RANGE_DAYS = 60;
+// Fetch enough data to cover the longest range the client UI offers (6 months
+// forward + 6 months prior navigation = ~12 months window) without
+// re-fetching on range/month changes.
+const FETCH_FORWARD_DAYS = 365;
+const FETCH_BACKWARD_DAYS = 30;
 
 async function loadCalendarData() {
   if (!isSupabaseConfigured()) return null;
   const sb = getServerSupabase();
   const today = new Date(); today.setHours(0, 0, 0, 0);
-  const fromISO = today.toISOString().slice(0, 10);
-  const to = new Date(today.getTime() + RANGE_DAYS * 86400000);
-  const toISO = to.toISOString().slice(0, 10);
+  const start = new Date(today.getTime() - FETCH_BACKWARD_DAYS * 86400000);
+  const end   = new Date(today.getTime() + FETCH_FORWARD_DAYS  * 86400000);
+  const fromISO = start.toISOString().slice(0, 10);
+  const toISO   = end.toISOString().slice(0, 10);
 
   const [{ data: bookings }, { data: blocks }] = await Promise.all([
     sb.from('bookings')
-      .select('id, cottage_id, check_in, check_out, status, guest_name, guests')
+      .select('id, cottage_id, check_in, check_out, status, guest_name, guest_email, guest_phone, guests, total_price')
       .in('status', ['pending', 'confirmed'])
       .lt('check_in', toISO).gt('check_out', fromISO),
     sb.from('date_overrides')
-      .select('id, cottage_id, date, blocked, note')
+      .select('id, cottage_id, date, blocked, price_override, note')
       .gte('date', fromISO).lt('date', toISO),
   ]);
 
