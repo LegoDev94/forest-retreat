@@ -1,8 +1,10 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DateField from './DateField';
 import { useT, DICT } from '../lib/i18n.jsx';
+import { rangesToDisabledSet, rangeIsBookable } from '../lib/availability';
+import { createBooking } from '../app/actions/booking';
 
 function pluralRu(n) {
   const m = Math.abs(n) % 100, m2 = m % 10;
@@ -11,18 +13,17 @@ function pluralRu(n) {
   if (m2 === 1) return DICT.booking.nights1.ru;
   return DICT.booking.nightsMany.ru;
 }
-
 function pluralWord(n, locale) {
   if (locale === 'ru') return pluralRu(n);
   if (locale === 'lv') return n === 1 ? DICT.booking.nights1.lv : DICT.booking.nightsMany.lv;
   return n === 1 ? DICT.booking.nights1.en : DICT.booking.nightsMany.en;
 }
 
-const today = () => new Date().toISOString().slice(0, 10);
 const offset = (days) => {
   const d = new Date(); d.setDate(d.getDate() + days);
   return d.toISOString().slice(0, 10);
 };
+const today = () => new Date().toISOString().slice(0, 10);
 
 export default function BookingForm({ cottage }) {
   const { t, locale } = useT();
@@ -33,6 +34,25 @@ export default function BookingForm({ cottage }) {
   const [email, setEmail]       = useState('');
   const [phone, setPhone]       = useState('');
   const [success, setSuccess]   = useState(false);
+  const [errMsg, setErrMsg]     = useState('');
+  const [pending, startTransition] = useTransition();
+
+  // Availability — fetched on mount + after successful booking
+  const [unavailable, setUnavailable] = useState([]);
+  const reloadAvailability = async () => {
+    try {
+      const r = await fetch(`/api/availability/${cottage.id}`, { cache: 'no-store' });
+      if (!r.ok) return;
+      const j = await r.json();
+      setUnavailable(j.ranges ?? []);
+    } catch (e) {
+      // Soft fail — UI still works without availability data
+      console.warn('availability fetch failed:', e);
+    }
+  };
+  useEffect(() => { reloadAvailability(); }, [cottage.id]);
+
+  const disabledSet = useMemo(() => rangesToDisabledSet(unavailable), [unavailable]);
 
   const summary = useMemo(() => {
     const d1 = new Date(checkIn), d2 = new Date(checkOut);
@@ -43,16 +63,47 @@ export default function BookingForm({ cottage }) {
     return { nights, base, fee, total };
   }, [checkIn, checkOut, cottage.pricePerNight]);
 
+  const rangeBookable = rangeIsBookable(checkIn, checkOut, disabledSet);
+
   const onCheckInChange = (v) => {
-    setCheckIn(v);
+    setCheckIn(v); setErrMsg('');
     if (new Date(checkOut) <= new Date(v)) {
       const next = new Date(v); next.setDate(next.getDate() + 1);
       setCheckOut(next.toISOString().slice(0, 10));
     }
   };
+  const onCheckOutChange = (v) => { setCheckOut(v); setErrMsg(''); };
 
-  const onSubmit = (e) => { e.preventDefault(); setSuccess(true); };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setErrMsg('');
+    if (!rangeBookable) {
+      setErrMsg(t('booking.errBlocked') || 'Selected range overlaps a booked date.');
+      return;
+    }
+    startTransition(async () => {
+      const result = await createBooking({
+        cottageId: cottage.id,
+        checkIn, checkOut,
+        guests: Number(guests),
+        name, email, phone,
+        locale,
+      });
+      if (!result.ok) {
+        setErrMsg(result.message || t('booking.errGeneric') || 'Booking failed. Please try again.');
+        if (result.code === 'CONFLICT' || result.code === 'BLOCKED') {
+          // Refresh availability — somebody just booked these dates
+          reloadAvailability();
+        }
+        return;
+      }
+      setSuccess(true);
+      reloadAvailability();
+    });
+  };
+
   const guestOpts = DICT.guestsOptions[locale];
+  const submitDisabled = pending || summary.nights < 1 || !rangeBookable;
 
   return (
     <>
@@ -69,14 +120,16 @@ export default function BookingForm({ cottage }) {
               value={checkIn}
               onChange={onCheckInChange}
               minDate={today()}
+              disabledDates={disabledSet}
               fieldClassName="bf-field"
               align="left"
             />
             <DateField
               label={t('booking.checkOut')}
               value={checkOut}
-              onChange={setCheckOut}
+              onChange={onCheckOutChange}
               minDate={checkIn}
+              disabledDates={disabledSet}
               fieldClassName="bf-field"
               align="right"
             />
@@ -112,7 +165,11 @@ export default function BookingForm({ cottage }) {
             <div className="booking-summary-total">{t('booking.total')} <strong>{summary.total} €</strong></div>
           </div>
 
-          <button type="submit" className="book-btn">{t('booking.submit')}</button>
+          {errMsg && <div className="booking-error" role="alert">{errMsg}</div>}
+
+          <button type="submit" className="book-btn" disabled={submitDisabled}>
+            {pending ? (t('booking.sending') || 'Sending…') : t('booking.submit')}
+          </button>
           <p className="book-help">{t('booking.helper')}</p>
         </form>
       </div>

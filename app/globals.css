@@ -2036,6 +2036,40 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   opacity: 0.2;
   cursor: not-allowed;
 }
+.datepicker-day.blocked {
+  position: relative;
+  color: var(--text-3);
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  text-decoration-color: rgba(225, 96, 96, 0.6);
+  text-decoration-thickness: 1.5px;
+}
+.datepicker-day.blocked::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 8px;
+  background: repeating-linear-gradient(45deg, transparent 0 4px, rgba(225, 96, 96, 0.10) 4px 5px);
+  pointer-events: none;
+}
+
+.booking-error {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(225, 96, 96, 0.10);
+  border: 1px solid rgba(225, 96, 96, 0.35);
+  color: #f5b8b8;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.book-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
 
 /* Hide native browser date picker icon (left over from before) */
 .datefield input[type="date"] { display: none; }

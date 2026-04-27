@@ -27,7 +27,7 @@ function formatDisplay(value, locale) {
   return d.toLocaleDateString(LOCALE_TAG[locale] || 'ru-RU', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-export default function DateField({ label, value, onChange, minDate, fieldClassName = 'search-field', align = 'left' }) {
+export default function DateField({ label, value, onChange, minDate, disabledDates, fieldClassName = 'search-field', align = 'left' }) {
   const { locale } = useLocale();
   const MONTHS = DICT.months[locale];
   const WEEKDAYS = DICT.weekdays[locale];
@@ -116,14 +116,17 @@ export default function DateField({ label, value, onChange, minDate, fieldClassN
                 const otherMonth = d.getMonth() !== view.month;
                 const isToday = sameDay(d, today);
                 const isSel = sel && sameDay(d, sel);
-                const disabled = min && d < min;
+                const tooEarly = min && d < min;
+                const blocked = disabledDates?.has(toISO(d));
+                const disabled = tooEarly || blocked;
                 return (
                   <button
                     key={i}
                     type="button"
                     disabled={disabled}
+                    title={blocked ? 'Booked' : undefined}
                     onClick={(e) => { e.stopPropagation(); if (!disabled) select(d); }}
-                    className={`datepicker-day${otherMonth ? ' other' : ''}${isToday ? ' today' : ''}${isSel ? ' sel' : ''}`}
+                    className={`datepicker-day${otherMonth ? ' other' : ''}${isToday ? ' today' : ''}${isSel ? ' sel' : ''}${blocked ? ' blocked' : ''}`}
                   >
                     {d.getDate()}
                   </button>
