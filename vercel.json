@@ -1,5 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/((?!api/|assets/|content/|fonts/).*)", "destination": "/index.html" }
-  ]
-}

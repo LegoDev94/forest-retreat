@@ -1,4 +1,6 @@
 node_modules/
+.next/
+out/
 dist/
 .vercel
 .env
@@ -8,5 +10,4 @@ Thumbs.db
 *.log
 
 # Old vanilla site at REPO ROOT only (kept locally until IDE releases lock)
-# Leading slash anchors to root — public/content/ stays tracked
 /content/
