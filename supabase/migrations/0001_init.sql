@@ -1,9 +1,20 @@
 -- ============================================================
 -- Forest Retreat — booking schema
--- Run this in Supabase SQL Editor (one shot)
+-- Idempotent: safe to re-run.  Run in Supabase SQL Editor.
 -- ============================================================
 
--- 1. Cottages: mirror of static data, allows admin to edit price/active
+-- ------------------------------------------------------------
+-- 1. Tables (created BEFORE any policies / triggers reference them)
+-- ------------------------------------------------------------
+
+-- Booking status enum (idempotent)
+do $$ begin
+  if not exists (select 1 from pg_type where typname = 'booking_status') then
+    create type booking_status as enum ('pending', 'confirmed', 'cancelled', 'completed');
+  end if;
+end $$;
+
+-- Cottages: mirror of static data, allows admin to edit price/active
 create table if not exists public.cottages (
   id              text primary key,
   slug            text not null unique,
@@ -17,9 +28,7 @@ create table if not exists public.cottages (
   updated_at      timestamptz not null default now()
 );
 
--- 2. Bookings
-create type booking_status as enum ('pending', 'confirmed', 'cancelled', 'completed');
-
+-- Bookings
 create table if not exists public.bookings (
   id              uuid primary key default gen_random_uuid(),
   cottage_id      text not null references public.cottages(id) on delete restrict,
@@ -45,10 +54,10 @@ create index if not exists bookings_cottage_dates_idx
   on public.bookings (cottage_id, check_in, check_out)
   where status in ('pending', 'confirmed');
 
-create index if not exists bookings_status_idx on public.bookings (status);
+create index if not exists bookings_status_idx     on public.bookings (status);
 create index if not exists bookings_created_at_idx on public.bookings (created_at desc);
 
--- 3. Manual blocks / price overrides per date (admin tool for closures, premiums)
+-- Manual blocks / price overrides per date
 create table if not exists public.date_overrides (
   id             uuid primary key default gen_random_uuid(),
   cottage_id     text not null references public.cottages(id) on delete cascade,
@@ -60,7 +69,17 @@ create table if not exists public.date_overrides (
   unique (cottage_id, date)
 );
 
--- 4. Updated_at auto-trigger
+-- Admin users (must exist before RLS policies reference it)
+create table if not exists public.admin_users (
+  user_id    uuid primary key references auth.users(id) on delete cascade,
+  email      text not null,
+  role       text not null default 'admin',
+  created_at timestamptz not null default now()
+);
+
+-- ------------------------------------------------------------
+-- 2. Triggers (updated_at)
+-- ------------------------------------------------------------
 create or replace function public.touch_updated_at()
 returns trigger language plpgsql as $$
 begin
@@ -78,10 +97,9 @@ create trigger cottages_updated_at
   before update on public.cottages
   for each row execute function public.touch_updated_at();
 
--- ============================================================
--- 5. Concurrency-safe booking creator
--- Returns the new booking row, or raises 'BOOKING_CONFLICT'.
--- ============================================================
+-- ------------------------------------------------------------
+-- 3. RPC: try_create_booking (concurrency-safe)
+-- ------------------------------------------------------------
 create or replace function public.try_create_booking(
   p_cottage_id   text,
   p_check_in     date,
@@ -104,7 +122,6 @@ declare
   v_overlap     integer;
   v_booking     public.bookings;
 begin
-  -- Validate inputs
   if p_check_out <= p_check_in then
     raise exception 'INVALID_DATES';
   end if;
@@ -122,7 +139,7 @@ begin
   v_service := round(v_base * 0.06)::integer;
   v_total  := v_base + 30 + v_service;
 
-  -- Lock conflicting bookings (FOR UPDATE) to prevent races
+  -- Lock conflicting bookings to prevent races
   perform 1
     from public.bookings
     where cottage_id = p_cottage_id
@@ -135,7 +152,6 @@ begin
     raise exception 'BOOKING_CONFLICT';
   end if;
 
-  -- Check manual blocks in the requested range
   select count(*) into v_blocked
     from public.date_overrides
     where cottage_id = p_cottage_id
@@ -160,10 +176,9 @@ begin
   return v_booking;
 end $$;
 
--- ============================================================
--- 6. Public availability fetcher (no PII)
--- Returns date ranges that should be disabled in the UI
--- ============================================================
+-- ------------------------------------------------------------
+-- 4. RPC: get_unavailable_ranges (public, no PII)
+-- ------------------------------------------------------------
 create or replace function public.get_unavailable_ranges(
   p_cottage_id text,
   p_from       date default current_date,
@@ -188,47 +203,34 @@ $$;
 grant execute on function public.get_unavailable_ranges(text, date, date) to anon, authenticated;
 grant execute on function public.try_create_booking(text, date, date, integer, text, text, text, text, text) to anon, authenticated;
 
--- ============================================================
--- 7. Row Level Security
--- ============================================================
+-- ------------------------------------------------------------
+-- 5. RLS (admin_users now exists, safe to reference)
+-- ------------------------------------------------------------
 alter table public.cottages       enable row level security;
 alter table public.bookings       enable row level security;
 alter table public.date_overrides enable row level security;
+alter table public.admin_users    enable row level security;
 
--- Cottages: anyone can read active rows; only service_role can write
 drop policy if exists cottages_public_read on public.cottages;
 create policy cottages_public_read on public.cottages
   for select using (active = true);
 
--- Bookings: NO direct SELECT/INSERT for anon — they MUST go through RPC
--- Admin (authenticated with email in admin_users) can do everything
 drop policy if exists bookings_admin_all on public.bookings;
 create policy bookings_admin_all on public.bookings
   for all using (auth.jwt() ->> 'role' = 'service_role'
               or exists (select 1 from public.admin_users where user_id = auth.uid()));
 
--- date_overrides: same as bookings
 drop policy if exists overrides_admin_all on public.date_overrides;
 create policy overrides_admin_all on public.date_overrides
   for all using (auth.jwt() ->> 'role' = 'service_role'
               or exists (select 1 from public.admin_users where user_id = auth.uid()));
 
--- ============================================================
--- 8. Admin users (linked to auth.users)
--- ============================================================
-create table if not exists public.admin_users (
-  user_id    uuid primary key references auth.users(id) on delete cascade,
-  email      text not null,
-  role       text not null default 'admin',
-  created_at timestamptz not null default now()
-);
-alter table public.admin_users enable row level security;
 drop policy if exists admin_self_read on public.admin_users;
 create policy admin_self_read on public.admin_users for select using (user_id = auth.uid());
 
--- ============================================================
--- 9. Seed: cottage rows mirroring our static data
--- ============================================================
+-- ------------------------------------------------------------
+-- 6. Seed cottages
+-- ------------------------------------------------------------
 insert into public.cottages (id, slug, name_ru, name_lv, name_en, price_per_night) values
   ('dragon', 'dragon-house', 'Dragon House на дереве', 'Pūķu māja kokā',     'Dragon Tree House',         145),
   ('viking', 'viking-house', 'Viking House на дереве', 'Vikingu māja kokā',  'Viking Tree House',         135),
