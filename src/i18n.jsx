@@ -270,6 +270,11 @@ export const DICT = {
     nightsMany:  L('ночей',          'naktis',             'nights'),
   },
   fab:           L('Забронировать',  'Rezervēt',           'Book now'),
+  mega: {
+    eyebrow:    L('— Выберите свой дом','— Izvēlieties māju',  '— Choose your cottage'),
+    footHint:   L('4 уникальных дома · Латвия','4 unikālas mājas · Latvija','4 unique cottages · Latvia'),
+    viewAll:    L('Все дома',          'Visas mājas',         'All cottages'),
+  },
   faq: {
     eyebrow:    L('— Часто спрашивают',  '— Bieži uzdotie jautājumi', '— Frequently asked'),
     titleA:     L('Если у вас остались', 'Ja jums vēl ir',            'If you still have'),
