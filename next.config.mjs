@@ -8,11 +8,10 @@ const nextConfig = {
       { protocol: 'https', hostname: 'videos.pexels.com' },
     ],
   },
-  // Allow legacy cottage paths from /content/...  (unencoded; already kebab-cased)
+  // Without middleware we still want /cottage/:id (no locale prefix) to work
   async redirects() {
     return [
-      // Old /cottage/:id (Vite SPA URL) → new locale-aware path
-      { source: '/cottage/:id', destination: '/ru/cottage/:id', permanent: true },
+      { source: '/cottage/:id', destination: '/ru/cottage/:id', permanent: false },
     ];
   },
 };
