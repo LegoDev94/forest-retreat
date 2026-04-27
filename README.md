@@ -42,6 +42,30 @@ from auth.users
 where email = 'you@yourdomain.com';
 ```
 
+## Admin panel
+
+`/admin` — protected by a single password kept server-side (no Supabase Auth, no users table dance).
+
+### One-time setup
+
+Add two env vars to Vercel (Production + Preview + Development):
+
+| Var | Value |
+|---|---|
+| `ADMIN_PASSWORD` | the password you'll type at `/admin/login` |
+| `ADMIN_SESSION_SECRET` | a long random string (≥32 chars). Generate with `openssl rand -hex 32` |
+
+Redeploy. Open `/admin/login`, enter password.
+
+The session cookie (`fr_admin_session`) is HTTP-only, secure in prod, and lives for 30 days. To log everyone out (e.g. you suspect leakage), rotate `ADMIN_SESSION_SECRET` and redeploy — every existing cookie becomes invalid.
+
+### What you can do in admin
+
+- **Dashboard** — pending count, confirmed upcoming, 30-day revenue, next 10 arrivals
+- **Bookings** — full list with filters by status / cottage; expand a row for guest contact info; confirm / cancel / complete / delete
+- **Calendar** — 60-day grid of all 4 cottages. Pending = gold, confirmed = green, blocked = red, free = empty
+- **Blocks** — close ranges of dates per cottage (renovations, personal stays, premium-only periods). Listed below the form, removable.
+
 ## Resend (optional)
 
 To send real emails on booking:
