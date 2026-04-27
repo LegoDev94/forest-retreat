@@ -20,8 +20,8 @@ export default function AdminCalendar({ cottages, fromISO: fromStr, toISO: toStr
   const [tip, setTip]             = useState(null);
   const wrapRef = useRef(null);
 
-  // Recompute window from current offset + range
-  const window = useMemo(() => {
+  // Recompute window bounds from current offset + range
+  const bounds = useMemo(() => {
     const start = new Date();
     start.setHours(0, 0, 0, 0);
     start.setMonth(start.getMonth() + offset);
@@ -32,9 +32,9 @@ export default function AdminCalendar({ cottages, fromISO: fromStr, toISO: toStr
 
   const days = useMemo(() => {
     const out = [];
-    for (let d = new Date(window.start); d < window.end; d.setDate(d.getDate() + 1)) out.push(new Date(d));
+    for (let d = new Date(bounds.start); d < bounds.end; d.setDate(d.getDate() + 1)) out.push(new Date(d));
     return out;
-  }, [window]);
+  }, [bounds]);
 
   // Filter incoming data into our window. Server fetches a fixed range — we
   // operate on what we have and silently show fewer marks if window extends.
@@ -44,7 +44,7 @@ export default function AdminCalendar({ cottages, fromISO: fromStr, toISO: toStr
       const start = fromISO(b.check_in);
       const end   = fromISO(b.check_out);
       for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-        if (d < window.start || d >= window.end) continue;
+        if (d < bounds.start || d >= bounds.end) continue;
         if (!m[b.cottage_id]) continue;
         m[b.cottage_id][toISO(d)] = {
           kind: b.status === 'confirmed' ? 'confirmed' : 'pending',
@@ -54,7 +54,7 @@ export default function AdminCalendar({ cottages, fromISO: fromStr, toISO: toStr
     }
     for (const blk of blocks) {
       const d = fromISO(blk.date);
-      if (d < window.start || d >= window.end) continue;
+      if (d < bounds.start || d >= bounds.end) continue;
       if (!m[blk.cottage_id]) continue;
       // Don't overwrite a booking; price overrides are signaled separately
       const existing = m[blk.cottage_id][blk.date];
@@ -65,7 +65,7 @@ export default function AdminCalendar({ cottages, fromISO: fromStr, toISO: toStr
       }
     }
     return m;
-  }, [cottages, bookings, blocks, window]);
+  }, [cottages, bookings, blocks, bounds]);
 
   const monthHeaders = useMemo(() => {
     const groups = [];

@@ -5,7 +5,7 @@
 
 .admin-root {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 220px minmax(0, 1fr);
   min-height: 100vh;
   min-height: 100dvh;
   background: var(--bg-0);
@@ -74,9 +74,9 @@
 .admin-logout { margin-top: auto; }
 
 .admin-main {
-  padding: 32px 36px 60px;
-  max-width: 1400px;
+  padding: 32px clamp(20px, 3vw, 48px) 60px;
   width: 100%;
+  min-width: 0;
   overflow-x: auto;
 }
 .admin-header { margin-bottom: 24px; }
@@ -92,9 +92,33 @@
 /* Stats */
 .admin-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+}
+/* Analytics layout: live visitors as a wide hero card on top, then stats grid */
+.admin-stats .live-stat {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.admin-stats .live-stat .admin-stat-label,
+.admin-stats .live-stat .admin-stat-value {
+  grid-column: 1;
+}
+.admin-stats .live-stat .live-pages,
+.admin-stats .live-stat .live-empty {
+  grid-column: 2;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+@media (max-width: 720px) {
+  .admin-stats .live-stat { grid-template-columns: 1fr; }
+  .admin-stats .live-stat .live-pages,
+  .admin-stats .live-stat .live-empty { grid-column: 1; }
 }
 .admin-stat {
   padding: 18px 20px;

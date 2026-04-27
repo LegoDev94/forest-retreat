@@ -47,7 +47,7 @@ export default async function CalendarPage() {
     <AdminShell>
       <header className="admin-header">
         <h1>Календарь</h1>
-        <p className="admin-sub">{RANGE_DAYS} дней вперёд по всем 4 домам.</p>
+        <p className="admin-sub">До {FETCH_FORWARD_DAYS} дней вперёд. Прокручивай месяц или меняй диапазон в тулбаре.</p>
       </header>
       {!data ? (
         <div className="admin-warn">Supabase env vars не настроены.</div>
