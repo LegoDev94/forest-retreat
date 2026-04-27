@@ -41,7 +41,7 @@ export default function MegaMenu({ open, onClose, onMouseEnter, onMouseLeave }) 
                   transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
                 >
                   <Link
-                    to={`/cottage/${c.id}`}
+                    href={`/cottage/${c.id}`}
                     className="mega-card"
                     onClick={onClose}
                   >
