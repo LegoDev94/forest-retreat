@@ -4,20 +4,24 @@ import { COTTAGES, photoUrl } from '../data';
 import { useT } from '../i18n.jsx';
 import Icon from './Icon';
 
-export default function MegaMenu({ open, onClose }) {
+export default function MegaMenu({ open, onClose, onMouseEnter, onMouseLeave }) {
   const { t, pick } = useT();
 
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
-          className="mega-menu"
-          initial={{ opacity: 0, y: -14 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -14 }}
-          transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
+        <div
+          className="mega-menu-portal"
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
         >
-          <div className="mega-menu-inner">
+          <motion.div
+            className="mega-menu"
+            initial={{ opacity: 0, y: -14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
+          >
             <div className="mega-menu-head">
               <span className="mega-eyebrow">{t('mega.eyebrow')}</span>
               <span className="mega-counter">{`01 → 0${COTTAGES.length}`}</span>
@@ -68,8 +72,8 @@ export default function MegaMenu({ open, onClose }) {
                 {t('mega.viewAll')} <Icon name="arrowRight" size={14} />
               </a>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

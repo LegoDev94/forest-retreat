@@ -148,14 +148,15 @@ export default function Nav({ alwaysScrolled = false }) {
           <span className={open ? 'x3' : ''} />
         </button>
 
-        {/* Mega-menu */}
-        <div
-          onMouseEnter={openMega}
-          onMouseLeave={closeMega}
-        >
-          <MegaMenu open={mega} onClose={() => setMega(false)} />
-        </div>
       </motion.nav>
+
+      {/* Mega-menu lives outside nav to avoid containing-block / flex issues */}
+      <MegaMenu
+        open={mega}
+        onClose={() => setMega(false)}
+        onMouseEnter={openMega}
+        onMouseLeave={closeMega}
+      />
 
       {/* MOBILE MENU — editorial full-screen */}
       <AnimatePresence>
