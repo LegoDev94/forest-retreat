@@ -26,14 +26,14 @@ export const DICT = {
     menu:        L('Меню',         'Izvēlne',      'Menu'),
   },
   hero: {
-    eyebrow:     L('Латвия · Līči · 4 уникальных дома', 'Latvija · Līči · 4 unikālas mājas', 'Latvia · Līči · 4 unique cottages'),
-    titleA:      L('Где лес',        'Kur mežs',     'Where the forest'),
-    titleB:      L('встречает',      'satiek',       'meets'),
-    titleAccent: L('тишину',         'klusumu',      'silence'),
+    eyebrow:     L('Единственный олений парк в Латвии', 'Vienīgais briežu parks Latvijā', 'The only deer park in Latvia'),
+    titleA:      L('Покорми',          'Pabaro',           'Feed a'),
+    titleB:      L('оленя',             'briedi',           'deer'),
+    titleAccent: L('у самого порога',   'pie pat sliekšņa', 'at your doorstep'),
     lead:        L(
-      'Уединённые домики у озера, джакузи под звёздами, сауна на закате и животные, которые приходят прямо к порогу. Сбегите в сказку всего за 2 часа от Риги.',
-      'Nomaļas mājiņas pie ezera, burbuļvanna zem zvaigznēm, pirts saulrietā un dzīvnieki, kas nāk pat pie sliekšņa. Aizbēdziet pasakā tikai 2 stundu attālumā no Rīgas.',
-      'Secluded cabins by the lake, jacuzzi under the stars, sauna at sunset, and animals that come right to your doorstep. Escape into a fairytale just 2 hours from Riga.'
+      'Олений парк, карповник у озера и четыре дома, в которых остаются на ночь. Не туристический аттракцион — частный лес, где можно гулять с оленями. 2 часа от Риги.',
+      'Briežu parks, karpu dīķis pie ezera un četras mājas, kurās palikt uz nakti. Nevis tūrisma atrakcija — privāts mežs, kur var pastaigāties kopā ar briežiem. 2 stundas no Rīgas.',
+      'A deer park, a carp pond by the lake, and four cottages to stay the night. Not a tourist attraction — a private forest where you can walk among deer. 2 hours from Riga.'
     ),
     where:       L('Куда',           'Kur',          'Where'),
     checkIn:     L('Заезд',          'Ierašanās',    'Check-in'),
@@ -49,12 +49,12 @@ export const DICT = {
     scroll:      L('Прокрути',       'Ritini',       'Scroll'),
   },
   marquee: [
+    L('Покормить оленя',              'Pabarot briedi',             'Feed a deer'),
+    L('Карповник у дома',             'Karpu dīķis pie mājas',      'Carp pond by the cottage'),
+    L('Прогулки по парку',            'Pastaigas pa parku',         'Walks through the park'),
+    L('Озеро у порога',               'Ezers pie durvīm',           'Lake at the doorstep'),
     L('Джакузи под звёздами',         'Burbuļvanna zem zvaigznēm',  'Jacuzzi under the stars'),
     L('Сауна на закате',              'Pirts saulrietā',            'Sauna at sunset'),
-    L('Альпаки и пони',               'Alpakas un poniji',          'Alpacas and ponies'),
-    L('Озеро у порога',               'Ezers pie durvīm',           'Lake at the doorstep'),
-    L('Кино под открытым небом',      'Kino zem klajas debess',     'Cinema under open sky'),
-    L('Камин и тишина',               'Kamīns un klusums',          'Fireplace and stillness'),
   ],
   cottages: {
     eyebrow:    L('— Наши дома', '— Mūsu mājas',    '— Our cottages'),
@@ -68,6 +68,99 @@ export const DICT = {
     ),
     open:       L('Открыть',         'Atvērt',           'View'),
     perNight:   L('/ ночь',          '/ naktī',          '/ night'),
+  },
+  // ▸ THE LEAD MAGNET — Deer Park
+  deer: {
+    eyebrow:    L('— Deer Park',         '— Briežu parks',         '— The Deer Park'),
+    titleA:     L('Олени, которые',      'Brieži, kas',            'Deer that'),
+    titleAccent:L('сами подходят',       'paši pienāk',            'come to you'),
+    titleB:     L('к тебе.',             'klāt.',                  '.'),
+    p1:         L(
+      'Не зоопарк за стеклом — частный парк, по которому олени гуляют свободно. Возьми морковь или яблоко, и они подойдут так близко, что ты услышишь их дыхание. Дети не отходят, взрослые забывают про телефоны.',
+      'Nav zoodārzs aiz stikla — privāts parks, pa kuru brieži brīvi staigā. Paņem burkānu vai ābolu, un tie pienāks tik tuvu, ka dzirdēsi to elpošanu. Bērnus nevar aizvilkt, pieaugušie aizmirst par telefoniem.',
+      'Not a zoo behind glass — a private park where deer roam free. Bring a carrot or an apple, and they\'ll come close enough to hear their breath. Kids don\'t want to leave; adults forget about their phones.'
+    ),
+    p2:         L(
+      'Парк наш собственный. Идти туда от любого домика — пять минут. Можешь зайти на рассвете, на закате, ночью с фонарём. Это часть проживания, не отдельный билет.',
+      'Parks ir mūsu pašu. No jebkuras mājas līdz tam — piecas minūtes. Vari ieiet rītausmā, saulrietā, naktī ar lukturīti. Tas ir daļa no uzturēšanās, nevis atsevišķa biļete.',
+      'The park is ours. Five-minute walk from any cottage. Drop in at dawn, at sunset, at night with a torch. It\'s part of your stay, not a separate ticket.'
+    ),
+    pills: [
+      L('🦌 Олени',                 '🦌 Brieži',                  '🦌 Deer'),
+      L('🥕 Корм с собой',          '🥕 Barība līdzi',            '🥕 Bring food'),
+      L('🌅 Любое время',           '🌅 Jebkurā laikā',           '🌅 Any time of day'),
+    ],
+    cta:        L('Узнать больше',   'Uzzināt vairāk',             'Learn more'),
+  },
+  // ▸ FISHING — second magnet
+  fishing: {
+    eyebrow:    L('— Карповник у озера', '— Karpu dīķis pie ezera', '— Carp pond by the lake'),
+    titleA:     L('Закинул удочку',      'Iemeti makšķeri',         'Cast the line'),
+    titleAccent:L('— через минуту клюёт.','— pēc minūtes ķeras.',    '— it bites in a minute.'),
+    titleB:     L('',                    '',                        ''),
+    p1:         L(
+      'Озеро прямо у домиков, рыба — карп, линь, щука, карась. Карповник — отдельный пруд только для гостей. Удочки и лодки бесплатно. Поймал — пожарил на гриле у себя на террасе. Отпустил — никто не считает.',
+      'Ezers pie pat mājām, zivis — karpa, līnis, līdaka, karūsa. Karpu dīķis — atsevišķs dīķis tikai viesiem. Makšķeres un laivas bez maksas. Noķēri — apcepi uz grila pie savas terases. Atlaidi — neviens nesaskaita.',
+      'The lake is right at the cottages — carp, tench, pike, crucian. The carp pond is a separate water for guests only. Rods and boats are free. Catch one and grill it on your terrace. Release it — no one counts.'
+    ),
+    p2:         L(
+      'Лучший клёв — на рассвете. Хозяин расскажет, где ловить и на что. Это не платная рыбалка с лимитом, а уединение с природой.',
+      'Vislabāk ķeras rītausmā. Saimnieks pastāstīs, kur un uz ko ķert. Tā nav maksas makšķerēšana ar limitu, bet vientulība ar dabu.',
+      'Best biting at dawn. The host will tell you where and what to use. Not paid fishing with limits — solitude with nature.'
+    ),
+    pills: [
+      L('🎣 Удочки бесплатно',     '🎣 Makšķeres bez maksas',     '🎣 Free rods'),
+      L('🚣 Лодки',                '🚣 Laivas',                   '🚣 Boats included'),
+      L('🐟 Карп · Щука · Линь',   '🐟 Karpa · Līdaka · Līnis',   '🐟 Carp · Pike · Tench'),
+    ],
+  },
+  // ▸ USP banner
+  usp: {
+    badge:      L('Только в Латвии',   'Tikai Latvijā',            'Only in Latvia'),
+    title:      L(
+      'Единственный <em>олений парк</em> с проживанием.',
+      'Vienīgais <em>briežu parks</em> ar nakšņošanu.',
+      'The only <em>deer park</em> you can stay overnight at.'
+    ),
+    sub:        L(
+      'В Латвии всего 25% домиков стоят у озера. С оленьим парком — мы одни.',
+      'Latvijā tikai 25% māju atrodas pie ezera. Ar briežu parku — esam vieni.',
+      'Only 25% of Latvian rentals sit by a lake. With a deer park — we are alone.'
+    ),
+  },
+  // ▸ How it works
+  how: {
+    eyebrow:    L('— Как это работает',  '— Kā tas notiek',         '— How it works'),
+    titleA:     L('Три шага до встречи', 'Trīs soļi līdz tikšanās', 'Three steps to'),
+    titleAccent:L('с оленями',           'ar briežiem',             'meeting deer'),
+    titleB:     L('.',                   '.',                       '.'),
+    steps: [
+      { num: '01',
+        title: L('Заселяешься в дом',   'Ieved māju',                'Check into the cottage'),
+        text:  L('Ключ в коробке. Рассказываем по WhatsApp всё, что нужно. Никаких очередей.',
+                 'Atslēga kastē. Pa WhatsApp pastāstām visu vajadzīgo. Nekādu rindu.',
+                 'Key in a lockbox. We send everything you need on WhatsApp. No queues.') },
+      { num: '02',
+        title: L('Берёшь корм',          'Paņem barību',              'Grab some food'),
+        text:  L('Морковь, яблоки, специальный корм — у нас на стойке. Бесплатно. Можно взять с собой.',
+                 'Burkāni, āboli, speciāla barība — pie reģistratūras. Bez maksas. Var paņemt līdzi.',
+                 'Carrots, apples, special feed — at our counter. Free. Take it with you.') },
+      { num: '03',
+        title: L('Идёшь в парк',         'Ej uz parku',               'Walk to the park'),
+        text:  L('Пять минут пешком от любого домика. Олени уже ждут — особенно если ты не первый раз.',
+                 'Piecas minūtes ar kājām no jebkuras mājas. Brieži jau gaida — īpaši, ja neesi pirmo reizi.',
+                 'Five minutes from any cottage. The deer are already waiting — especially if you\'ve been before.') },
+    ],
+  },
+  // ▸ Cottage detail: "What's around"
+  around: {
+    eyebrow:    L('— Что рядом',         '— Kas ir tuvumā',           '— What\'s around'),
+    title:      L('В шаговой доступности','Pieejams ar kājām',         'Within walking distance'),
+    deerLabel:  L('Олений парк',         'Briežu parks',              'Deer Park'),
+    fishLabel:  L('Карповник',           'Karpu dīķis',               'Carp pond'),
+    lakeLabel:  L('Озеро',               'Ezers',                     'Lake'),
+    saunaLabel: L('Сауна',               'Pirts',                     'Sauna'),
+    walkUnit:   L('мин пешком',          'min ar kājām',              'min walk'),
   },
   story1: {
     eyebrow:    L('— История места',  '— Vietas stāsts',  '— Place story'),

@@ -8,6 +8,7 @@ import Reveal from '../components/Reveal';
 import ReviewCard from '../components/ReviewCard';
 import Lightbox from '../components/Lightbox';
 import BookingForm from '../components/BookingForm';
+import Icon from '../components/Icon';
 
 const ICON = {
   wifi: '📶', parking: '🅿️', jacuzzi: '♨️', sauna: '🧖', cinema: '🎬',
@@ -96,6 +97,42 @@ export default function Cottage() {
             <h2>{t('detail.about')}</h2>
             <p>{pick(c.description)}</p>
           </Reveal>
+
+          {c.nearby && (
+            <Reveal as="section" className="detail-section">
+              <h2>{t('around.title')}</h2>
+              <div className="around-grid">
+                <div className="around-item">
+                  <div className="around-item-icon"><Icon name="deer" size={20} stroke={1.8} /></div>
+                  <div className="around-item-text">
+                    <span className="around-item-name">{t('around.deerLabel')}</span>
+                    <span className="around-item-dist">{c.nearby.deer} {t('around.walkUnit')}</span>
+                  </div>
+                </div>
+                <div className="around-item">
+                  <div className="around-item-icon"><Icon name="rod" size={20} stroke={1.8} /></div>
+                  <div className="around-item-text">
+                    <span className="around-item-name">{t('around.fishLabel')}</span>
+                    <span className="around-item-dist">{c.nearby.fishing} {t('around.walkUnit')}</span>
+                  </div>
+                </div>
+                <div className="around-item">
+                  <div className="around-item-icon"><Icon name="lake" size={20} stroke={1.8} /></div>
+                  <div className="around-item-text">
+                    <span className="around-item-name">{t('around.lakeLabel')}</span>
+                    <span className="around-item-dist">{c.nearby.lake} {t('around.walkUnit')}</span>
+                  </div>
+                </div>
+                <div className="around-item">
+                  <div className="around-item-icon"><Icon name="sauna" size={20} stroke={1.8} /></div>
+                  <div className="around-item-text">
+                    <span className="around-item-name">{t('around.saunaLabel')}</span>
+                    <span className="around-item-dist">{c.nearby.sauna} {t('around.walkUnit')}</span>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          )}
 
           <Reveal as="section" className="detail-section">
             <h2>{t('detail.amenities')}</h2>

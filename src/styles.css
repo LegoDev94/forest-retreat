@@ -243,6 +243,11 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   -webkit-background-clip: text; background-clip: text; color: transparent;
   font-style: italic;
 }
+.hero h1 .accent-soft {
+  color: var(--text-2);
+  font-style: italic;
+  font-weight: 400;
+}
 .hero p.lead {
   font-size: clamp(16px, 2vw, 20px); color: var(--text-2);
   max-width: 620px; margin: 0 auto 44px;
@@ -1198,6 +1203,384 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 @media (max-width: 480px) {
   .mobile-menu-label { font-size: clamp(30px, 11vw, 44px); }
   .mobile-menu-contact { font-size: 11px; }
+}
+
+/* =========================================================
+   ▸ USP BANNER — Only in Latvia ◂
+========================================================= */
+
+.usp-section { padding: 60px clamp(20px, 5vw, 60px) 30px; }
+.usp-banner {
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(50px, 8vw, 80px) clamp(30px, 6vw, 70px);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(800px 500px at 50% 0%, rgba(201,168,106,0.18), transparent 60%),
+    linear-gradient(135deg, #1c2820, #0f1612);
+  border: 1px solid rgba(201,168,106,0.25);
+  text-align: center;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(201,168,106,0.2),
+    0 30px 80px rgba(0,0,0,0.5);
+}
+.usp-orbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .5;
+}
+.usp-orbit span {
+  position: absolute;
+  width: 1px; height: 1px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 16px 4px var(--accent);
+  animation: usp-orbit 14s linear infinite;
+}
+.usp-orbit span:nth-child(1) {
+  top: 20%; left: 10%;
+  animation-delay: 0s;
+}
+.usp-orbit span:nth-child(2) {
+  bottom: 25%; right: 15%;
+  animation-delay: -5s;
+}
+.usp-orbit span:nth-child(3) {
+  top: 60%; left: 20%;
+  animation-delay: -9s;
+}
+@keyframes usp-orbit {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translate(40px, -60px) scale(2.5); opacity: 0; }
+}
+.usp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(201, 168, 106, 0.14);
+  border: 1px solid rgba(201, 168, 106, 0.4);
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  position: relative;
+}
+.usp-badge::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 168, 106, 0.3);
+  animation: usp-pulse 2.5s ease-in-out infinite;
+}
+@keyframes usp-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.18); opacity: 0; }
+}
+.usp-title {
+  position: relative;
+  font-family: var(--ff-display);
+  font-size: clamp(36px, 5.5vw, 64px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  margin-bottom: 18px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.usp-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.usp-sub {
+  position: relative;
+  color: var(--text-2);
+  font-size: 17px;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   ▸ DEER PARK SECTION ◂
+========================================================= */
+
+.deer-section { padding: clamp(80px, 12vw, 140px) clamp(20px, 5vw, 60px); }
+.deer-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+}
+.deer-text {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.deer-text .section-title {
+  font-size: clamp(36px, 5.5vw, 64px);
+  margin-bottom: 8px;
+}
+.deer-text .section-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.deer-text p {
+  color: var(--text-2);
+  font-size: 16px;
+  line-height: 1.8;
+}
+.deer-text .pill-row { margin-top: 8px; }
+.deer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--accent-2);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: .3px;
+  width: fit-content;
+  transition: gap .3s var(--ease);
+}
+.deer-link:hover { gap: 14px; }
+
+/* Photo collage — staggered grid */
+.deer-collage {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 8px;
+  aspect-ratio: 1 / 1;
+  position: relative;
+}
+.deer-photo {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-2);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+.deer-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 1.5s var(--ease);
+}
+.deer-photo:hover img { transform: scale(1.07); }
+.deer-photo-1 { grid-column: 1 / 4; grid-row: 1 / 4; }
+.deer-photo-2 { grid-column: 4 / 7; grid-row: 1 / 3; }
+.deer-photo-3 { grid-column: 4 / 6; grid-row: 3 / 5; }
+.deer-photo-4 { grid-column: 6 / 7; grid-row: 3 / 5; }
+.deer-photo-5 { grid-column: 1 / 3; grid-row: 4 / 7; }
+.deer-photo-6 { grid-column: 3 / 7; grid-row: 5 / 7; }
+
+@media (max-width: 880px) {
+  .deer-grid { grid-template-columns: 1fr; }
+  .deer-collage { aspect-ratio: 5 / 4; }
+}
+
+/* =========================================================
+   ▸ HOW IT WORKS ◂
+========================================================= */
+
+.how-section { padding: clamp(80px, 10vw, 120px) clamp(20px, 5vw, 60px); }
+.how-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  position: relative;
+}
+.how-grid::before {
+  content: "";
+  position: absolute;
+  top: 56px;
+  left: 12%; right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-2), transparent);
+  z-index: 0;
+}
+.how-step {
+  position: relative;
+  padding: 36px 28px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  text-align: left;
+  z-index: 1;
+  transition: transform .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease);
+}
+.how-step:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201,168,106,0.3);
+  box-shadow: 0 24px 50px rgba(0,0,0,0.4);
+}
+.how-step-num {
+  position: absolute;
+  top: 24px; right: 28px;
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 64px;
+  font-weight: 500;
+  color: rgba(201, 168, 106, 0.18);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.how-step-icon {
+  width: 56px; height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(201,168,106,.18), rgba(201,168,106,.04));
+  border: 1px solid rgba(201,168,106,.25);
+  color: var(--accent-2);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 22px;
+}
+.how-step-title {
+  font-family: var(--ff-display);
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  letter-spacing: -.3px;
+}
+.how-step-text {
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+@media (max-width: 880px) {
+  .how-grid { grid-template-columns: 1fr; gap: 16px; }
+  .how-grid::before { display: none; }
+}
+
+/* =========================================================
+   ▸ FISHING SECTION ◂
+========================================================= */
+
+.fishing-section { padding: clamp(60px, 8vw, 90px) clamp(20px, 5vw, 60px); }
+.fishing-visual {
+  position: relative;
+  overflow: visible;
+}
+.fishing-visual > img:first-of-type {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+.fishing-visual-overlay {
+  position: absolute !important;
+  bottom: -32px;
+  right: -24px;
+  width: 45% !important;
+  height: 45% !important;
+  object-fit: cover !important;
+  border-radius: var(--radius-lg);
+  border: 6px solid var(--bg-0);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+@media (max-width: 880px) {
+  .fishing-visual-overlay { display: none; }
+}
+
+/* =========================================================
+   ▸ COTTAGE CARD: Proximity badges ◂
+========================================================= */
+
+.cottage-card-nearby {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 2;
+  pointer-events: none;
+}
+.cottage-card-nearby-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(10,14,12,0.78);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-2);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .3px;
+  color: var(--accent-2);
+}
+.cottage-card-nearby-row svg { width: 12px; height: 12px; }
+.cottage-card-nearby-row strong { color: var(--text); font-weight: 600; }
+
+/* Move existing badge up so nearby has room */
+.cottage-card-nearby + .cottage-badge,
+.cottage-card .cottage-badge { top: auto; bottom: auto; }
+
+/* =========================================================
+   ▸ "WHAT'S AROUND" — cottage detail ◂
+========================================================= */
+
+.around-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+.around-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: border-color .25s var(--ease), transform .25s var(--ease);
+}
+.around-item:hover {
+  border-color: rgba(201,168,106,0.3);
+  transform: translateY(-3px);
+}
+.around-item-icon {
+  width: 42px; height: 42px;
+  flex: none;
+  border-radius: 12px;
+  background: rgba(201,168,106,.14);
+  border: 1px solid rgba(201,168,106,.25);
+  color: var(--accent-2);
+  display: flex; align-items: center; justify-content: center;
+}
+.around-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.around-item-name { font-size: 14px; color: var(--text); font-weight: 500; }
+.around-item-dist {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--accent-2);
 }
 
 /* === Selection === */

@@ -217,6 +217,73 @@ const ICONS = {
       <line x1="12" y1="17" x2="12" y2="20" stroke="currentColor" strokeWidth="1.6" />
     </>
   ),
+  // Deer / antlers
+  deer: (
+    <>
+      {/* antlers */}
+      <path d="M9 4l-2 -2M9 4l1.5 -2.5M9 4l-2.5 2" />
+      <path d="M15 4l2 -2M15 4l-1.5 -2.5M15 4l2.5 2" />
+      {/* head */}
+      <path d="M12 14c-1.7 0-3-1.3-3-3v-2c0-1.6 1.4-3 3-3s3 1.4 3 3v2c0 1.7-1.3 3-3 3z" />
+      {/* eyes */}
+      <circle cx="10.5" cy="9" r="0.4" fill="currentColor" stroke="none" />
+      <circle cx="13.5" cy="9" r="0.4" fill="currentColor" stroke="none" />
+      {/* nose */}
+      <path d="M11.5 12.5h1" />
+      {/* neck/body hint */}
+      <path d="M9 14l-1 7M15 14l1 7" />
+    </>
+  ),
+  // Fishing rod with line
+  rod: (
+    <>
+      <path d="M3 21l16-16" />
+      <line x1="3" y1="21" x2="6" y2="20" />
+      <path d="M19 5l1-1" />
+      <path d="M14 8c0 0 0 4 1 5s4 1 4 1" />
+      <line x1="19" y1="14" x2="19" y2="18" />
+    </>
+  ),
+  // Carp / generic fish (better detail than existing 'fish')
+  carp: (
+    <>
+      <path d="M2 12c2-4 6-6 10-6s7 2 9 5c-2 3-5 6-9 6s-8-2-10-5z" />
+      <path d="M22 11c1-1 1.5-2 1.5-3M22 13c1 1 1.5 2 1.5 3" />
+      <circle cx="7" cy="11" r="0.7" fill="currentColor" stroke="none" />
+      <path d="M11 12c0-1 0-2 1-2M14 12c0-1 0-2 1-2" />
+    </>
+  ),
+  // Footprints / paw trail (for "walking with deer")
+  steps: (
+    <>
+      <ellipse cx="7" cy="6" rx="1.4" ry="2" />
+      <ellipse cx="14" cy="11" rx="1.4" ry="2" />
+      <ellipse cx="7" cy="16" rx="1.4" ry="2" />
+      <ellipse cx="14" cy="20" rx="1.4" ry="1.5" />
+    </>
+  ),
+  // Sparkle/award (for "only in Latvia" badge)
+  award: (
+    <>
+      <circle cx="12" cy="9" r="6" />
+      <path d="M8 13l-2 8 6-3 6 3-2-8" />
+      <path d="M9 9l2 2 4-4" />
+    </>
+  ),
+  // Compass/direction
+  compass: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <polygon points="16 8 11 13 8 16 13 11" fill="currentColor" stroke="none" opacity=".6" />
+    </>
+  ),
+  // Carrot (food for deer)
+  carrot: (
+    <>
+      <path d="M14 4l-1 1c-1 1-2 1-3 0-2 2-3 5-3 7l5 5c2 0 5-1 7-3-1-1-1-2 0-3l1-1z" />
+      <path d="M11 14l3-3" />
+    </>
+  ),
 };
 
 export default function Icon({ name, size = 24, stroke = 1.6, className = '', ...rest }) {

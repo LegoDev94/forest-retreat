@@ -12,10 +12,16 @@ import DateField from '../components/DateField';
 import Icon from '../components/Icon';
 import useMagnetic from '../hooks/useMagnetic';
 import Faq from '../components/Faq';
+import DeerPark from '../components/DeerPark';
+import Fishing from '../components/Fishing';
+import UspBanner from '../components/UspBanner';
+import HowItWorks from '../components/HowItWorks';
 
-const HERO_VIDEO = 'https://videos.pexels.com/video-files/3209663/3209663-hd_1920_1080_25fps.mp4';
+// Pexels — "Deer in the forest" (free license, hot-link friendly CDN)
+const HERO_VIDEO = 'https://videos.pexels.com/video-files/7710443/7710443-hd_1920_1080_25fps.mp4';
+const HERO_POSTER = '/content/deer-park/photo/29157100.jpg';
 
-const FEATURE_ICONS = ['tree', 'hottub', 'alpaca', 'film', 'paw', 'fish'];
+const FEATURE_ICONS = ['tree', 'hottub', 'deer', 'film', 'paw', 'rod'];
 const TRUST_ICONS = ['check', 'clock', 'lock', 'star', 'phone'];
 
 const offset = (days) => { const d = new Date(); d.setDate(d.getDate() + days); return d.toISOString().slice(0, 10); };
@@ -54,7 +60,7 @@ function Hero() {
     v.play().catch(() => { /* autoplay denied — that's OK, poster stays */ });
   }, []);
 
-  const posterImage = photoUrl(COTTAGES[0], COTTAGES[0].photos[0]);
+  const posterImage = HERO_POSTER;
   const guestOpts = DICT.guestsOptions[locale];
 
   return (
@@ -94,7 +100,7 @@ function Hero() {
         <motion.h1
           initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, delay: 0.15, ease: [0.2, 0.8, 0.2, 1] }}>
-          {t('hero.titleA')} <br />{t('hero.titleB')} <span className="accent">{t('hero.titleAccent')}</span>
+          {t('hero.titleA')} <span className="accent">{t('hero.titleB')}</span> <br />{t('hero.titleAccent')}
         </motion.h1>
         <motion.p className="lead"
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
@@ -192,6 +198,15 @@ export default function Home() {
         </div>
       </div>
 
+      {/* USP — Only deer park in Latvia */}
+      <UspBanner />
+
+      {/* DEER PARK — primary lead magnet */}
+      <DeerPark />
+
+      {/* HOW IT WORKS — 3 steps */}
+      <HowItWorks />
+
       {/* COTTAGES */}
       <section className="section" id="cottages">
         <Reveal className="section-head">
@@ -241,14 +256,8 @@ export default function Home() {
         pills={DICT.story2.pills.map(pick)}
       />
 
-      {/* STORY 3 */}
-      <Story
-        image={photoUrl(COTTAGES[2], COTTAGES[2].photos[0])}
-        eyebrow={t('story3.eyebrow')}
-        titleHTML={t('story3.title')}
-        paragraphs={[t('story3.p1'), t('story3.p2')]}
-        pills={DICT.story3.pills.map(pick)}
-      />
+      {/* FISHING — second magnet */}
+      <Fishing />
 
       {/* WHY US */}
       <section className="section" id="why">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { photoUrl } from '../data';
 import { useRef } from 'react';
 import { useT } from '../i18n.jsx';
+import Icon from './Icon';
 
 const spring = { stiffness: 220, damping: 25, mass: 0.6 };
 
@@ -37,6 +38,14 @@ export default function CottageCard({ cottage, delay = 0 }) {
       <Link to={`/cottage/${cottage.id}`} className="cottage-card">
         <div className="cottage-card-media">
           <img src={photoUrl(cottage, cottage.photos[0])} alt={name} loading="lazy" />
+          {cottage.nearby && (
+            <div className="cottage-card-nearby">
+              <span className="cottage-card-nearby-row">
+                <Icon name="deer" size={12} stroke={1.8} />
+                <strong>{cottage.nearby.deer}</strong> {t('around.walkUnit')}
+              </span>
+            </div>
+          )}
           <span className="cottage-badge">{pick(cottage.badge)}</span>
           <span className="cottage-rating">{cottage.rating}</span>
           <div className="cottage-card-info">
