@@ -37,9 +37,16 @@ function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -90]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0.15]);
 
-  const [checkIn, setCheckIn]   = useState(offset(3));
-  const [checkOut, setCheckOut] = useState(offset(5));
+  // Avoid hydration mismatch on static prerender: default dates are computed
+  // post-mount, so the build-time date doesn't disagree with today on the client.
+  const [checkIn, setCheckIn]   = useState('');
+  const [checkOut, setCheckOut] = useState('');
   const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    setCheckIn(offset(3));
+    setCheckOut(offset(5));
+  }, []);
 
   const onCheckInChange = (v) => {
     setCheckIn(v);

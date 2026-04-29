@@ -27,8 +27,11 @@ const today = () => new Date().toISOString().slice(0, 10);
 
 export default function BookingForm({ cottage }) {
   const { t, locale } = useT();
-  const [checkIn, setCheckIn]   = useState(offset(3));
-  const [checkOut, setCheckOut] = useState(offset(5));
+  // Empty initial state + post-mount fill avoids hydration mismatch (the
+  // page is statically prerendered, so a Date()-derived initial value would
+  // disagree with the client's "today" once the build is older than a day).
+  const [checkIn, setCheckIn]   = useState('');
+  const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests]     = useState('2');
   const [name, setName]         = useState('');
   const [email, setEmail]       = useState('');
@@ -36,6 +39,12 @@ export default function BookingForm({ cottage }) {
   const [success, setSuccess]   = useState(false);
   const [errMsg, setErrMsg]     = useState('');
   const [pending, startTransition] = useTransition();
+
+  // Set defaults after mount so initial server-rendered HTML doesn't disagree
+  useEffect(() => {
+    setCheckIn(offset(3));
+    setCheckOut(offset(5));
+  }, []);
 
   // Availability — fetched on mount + after successful booking
   const [unavailable, setUnavailable] = useState([]);
