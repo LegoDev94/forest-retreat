@@ -1,5 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/((?!api/|assets/|content/|fonts/).*)", "destination": "/index.html" }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next"
 }
