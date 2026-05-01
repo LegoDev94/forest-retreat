@@ -205,6 +205,17 @@
   flex-wrap: wrap;
 }
 .admin-mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12px; color: var(--text-3); }
+.admin-ref {
+  color: var(--accent-2);
+  background: rgba(201, 168, 106, 0.10);
+  border: 1px solid rgba(201, 168, 106, 0.28);
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  user-select: all;
+}
 
 .admin-dl {
   display: grid;

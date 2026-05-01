@@ -5,6 +5,7 @@ import { getServerSupabase, isSupabaseConfigured } from '../../lib/supabase/serv
 import AdminShell from '../../components/admin/AdminShell';
 import StatusBadge from '../../components/admin/StatusBadge';
 import LiveVisitors from '../../components/admin/LiveVisitors';
+import { bookingRef } from '../../lib/booking-ref';
 
 export const dynamic = 'force-dynamic';
 
@@ -76,12 +77,13 @@ export default async function DashboardPage() {
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>Дом</th><th>Заезд</th><th>Выезд</th><th>Гость</th><th>Гостей</th><th>Сумма</th><th>Статус</th>
+                    <th>№</th><th>Дом</th><th>Заезд</th><th>Выезд</th><th>Гость</th><th>Гостей</th><th>Сумма</th><th>Статус</th>
                   </tr>
                 </thead>
                 <tbody>
                   {stats.upcoming.map((b) => (
                     <tr key={b.id}>
+                      <td><span className="admin-mono admin-ref">{bookingRef(b.id)}</span></td>
                       <td><span className="admin-pill">{b.cottage_id}</span></td>
                       <td>{fmt(b.check_in)}</td>
                       <td>{fmt(b.check_out)}</td>

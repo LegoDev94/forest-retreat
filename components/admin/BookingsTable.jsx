@@ -2,6 +2,7 @@
 import { useState, useTransition } from 'react';
 import StatusBadge from './StatusBadge';
 import { setBookingStatus, deleteBooking } from '../../app/actions/admin';
+import { bookingRef } from '../../lib/booking-ref';
 
 const PAYMENT_LABELS = {
   unpaid:    { label: 'Не оплачен', cls: 'pending' },
@@ -54,6 +55,7 @@ export default function BookingsTable({ bookings }) {
         <thead>
           <tr>
             <th></th>
+            <th>№</th>
             <th>Дом</th>
             <th>Заезд</th>
             <th>Выезд</th>
@@ -93,6 +95,7 @@ function FragmentRow({ b, isOpen, onToggle, onStatus, onDelete, busy }) {
             {isOpen ? '▾' : '▸'}
           </button>
         </td>
+        <td><span className="admin-mono admin-ref">{bookingRef(b.id)}</span></td>
         <td><span className="admin-pill">{b.cottage_id}</span></td>
         <td>{fmt(b.check_in)}</td>
         <td>{fmt(b.check_out)}</td>
@@ -123,7 +126,7 @@ function FragmentRow({ b, isOpen, onToggle, onStatus, onDelete, busy }) {
       </tr>
       {isOpen && (
         <tr className="admin-row-detail">
-          <td colSpan={11}>
+          <td colSpan={12}>
             <dl className="admin-dl">
               <dt>Email</dt><dd><a href={`mailto:${b.guest_email}`}>{b.guest_email}</a></dd>
               <dt>Телефон</dt><dd><a href={`tel:${b.guest_phone}`}>{b.guest_phone}</a></dd>

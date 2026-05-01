@@ -2896,6 +2896,141 @@ input:focus-visible, select:focus-visible { outline-offset: 0; }
 }
 .account-link:hover { text-decoration: underline; }
 
+/* Booking ref pill */
+.account-booking-ref {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: var(--accent-2);
+  background: rgba(201, 168, 106, 0.10);
+  border: 1px solid rgba(201, 168, 106, 0.32);
+  padding: 4px 10px;
+  border-radius: 6px;
+  user-select: all;
+  cursor: text;
+}
+.account-booking-cottage-line {
+  margin-bottom: 8px;
+}
+
+/* Account calendar */
+.acc-cal {
+  background: rgba(15, 22, 18, 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.acc-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.acc-cal-title {
+  font-family: var(--ff-display);
+  font-size: 18px;
+  text-transform: capitalize;
+}
+.acc-cal-title em {
+  font-style: italic;
+  color: var(--accent-2);
+  margin-left: 6px;
+}
+.acc-cal-nav {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.acc-cal-nav:hover { background: rgba(255,255,255,.08); color: var(--accent-2); }
+.acc-cal-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: center;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.acc-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.acc-cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border-radius: 8px;
+  color: var(--text);
+  background: transparent;
+  position: relative;
+}
+.acc-cal-other  { color: var(--text-3); opacity: 0.4; }
+.acc-cal-today  { box-shadow: inset 0 0 0 1.5px rgba(201, 168, 106, 0.55); color: var(--accent-2); font-weight: 600; }
+.acc-cal-booked.acc-cal-confirmed { background: rgba(90,162,118,.55); color: #fff; font-weight: 600; }
+.acc-cal-booked.acc-cal-pending   { background: rgba(201,168,106,.40); color: #1a1410; font-weight: 600; }
+.acc-cal-booked.acc-cal-completed { background: rgba(125,143,168,.45); color: #fff; }
+.acc-cal-empty {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-3);
+  font-style: italic;
+}
+
+/* Quick contact */
+.quick-contact { display: flex; flex-direction: column; gap: 10px; }
+.quick-contact-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.quick-contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.quick-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform .2s, background .2s;
+}
+.quick-btn:hover { transform: translateY(-1px); }
+.quick-btn-wa {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #fff;
+}
+.quick-btn-phone {
+  background: rgba(201, 168, 106, 0.18);
+  color: var(--accent-2);
+  border: 1px solid rgba(201, 168, 106, 0.4);
+}
+.quick-btn-phone:hover { background: rgba(201, 168, 106, 0.28); }
+.quick-btn-mail {
+  background: rgba(255,255,255,.04);
+  color: var(--text-2);
+  border: 1px solid var(--border-2);
+}
+.quick-btn-mail:hover { background: rgba(255,255,255,.08); color: var(--text); }
+
 .account-bookings {
   list-style: none;
   margin: 0; padding: 0;
