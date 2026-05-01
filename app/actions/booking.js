@@ -64,43 +64,57 @@ export async function createBooking(input) {
     return { ok: false, code: 'SERVER_ERROR', message: 'Could not save booking. Please try again.' };
   }
 
-  // Fire-and-forget email (don't fail the booking if email fails)
+  // STRICT MODE: payment is required. If EveryPay isn't configured OR
+  // creating the payment fails, we delete the booking row we just made
+  // and return an error so the user gets a clear signal.
+  if (!isEverypayConfigured()) {
+    await sb.from('bookings').delete().eq('id', data.id);
+    return {
+      ok: false,
+      code: 'PAYMENT_UNAVAILABLE',
+      message: 'Платёжная система временно недоступна. Свяжитесь с нами на hello@forestretreat.lv',
+    };
+  }
+
+  let pay;
+  try {
+    const h = await headers();
+    const proto = h.get('x-forwarded-proto') || 'https';
+    const host = h.get('x-forwarded-host') || h.get('host');
+    const origin = `${proto}://${host}`;
+    pay = await createOneoffPayment({
+      amount:          data.total_price,
+      orderReference:  `bk-${data.id.slice(0, 18)}`,
+      customerUrl:     `${origin}/${locale}/payment/return`,
+      email:           data.guest_email,
+      locale,
+      description:     `Forest Retreat ${cottage.name?.en || cottageId} ${data.check_in}/${data.check_out}`,
+    });
+  } catch (err) {
+    console.error('EveryPay init failed — rolling back booking:', err);
+    await sb.from('bookings').delete().eq('id', data.id);
+    return {
+      ok: false,
+      code: 'PAYMENT_INIT_FAILED',
+      message: 'Не удалось создать платёж. Проверь данные и попробуй ещё раз.',
+    };
+  }
+
+  // Persist payment fields on the booking row
+  await sb.from('bookings').update({
+    payment_state:        mapEverypayState(pay.payment_state),
+    payment_reference:    pay.payment_reference,
+    payment_link:         pay.payment_link,
+    payment_initiated_at: new Date().toISOString(),
+    payment_raw:          pay.raw,
+  }).eq('id', data.id);
+
+  // Send the host an email FYI (guest email goes after payment confirmation)
   sendBookingNotifications(data, cottage.name?.en || cottageId).catch((e) =>
     console.error('email error (non-fatal):', e)
   );
 
-  // If EveryPay is configured, initiate payment immediately and return pay_url.
-  // Don't fail the booking if payment init fails — the host can charge offline.
-  let payUrl = null;
-  if (isEverypayConfigured()) {
-    try {
-      const h = await headers();
-      const proto = h.get('x-forwarded-proto') || 'https';
-      const host = h.get('x-forwarded-host') || h.get('host');
-      const origin = `${proto}://${host}`;
-      const pay = await createOneoffPayment({
-        amount:          data.total_price,
-        orderReference:  `bk-${data.id.slice(0, 18)}`,
-        customerUrl:     `${origin}/${locale}/payment/return`,
-        email:           data.guest_email,
-        locale,
-        description:     `Forest Retreat ${cottage.name?.en || cottageId} ${data.check_in}/${data.check_out}`,
-      });
-      // Persist what we got back
-      await sb.from('bookings').update({
-        payment_state:        mapEverypayState(pay.payment_state),
-        payment_reference:    pay.payment_reference,
-        payment_link:         pay.payment_link,
-        payment_initiated_at: new Date().toISOString(),
-        payment_raw:          pay.raw,
-      }).eq('id', data.id);
-      payUrl = pay.payment_link;
-    } catch (err) {
-      console.error('EveryPay init failed (booking still created):', err);
-    }
-  }
-
-  return { ok: true, booking: data, pay_url: payUrl };
+  return { ok: true, booking: data, pay_url: pay.payment_link };
 }
 
 // Manual re-fetch from EveryPay (used by /payment/return when customer comes back).

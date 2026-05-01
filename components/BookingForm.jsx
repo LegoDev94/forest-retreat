@@ -203,16 +203,9 @@ export default function BookingForm({ cottage }) {
             >
               <div className="modal-icon">✓</div>
               <h3>{t('booking.successTitle')}</h3>
-              <p>{payUrl ? t('booking.successPayText') : t('booking.successText')}</p>
+              <p>{t('booking.successPayText')}</p>
               {payUrl ? (
-                <>
-                  <a className="btn btn-primary" href={payUrl}>{t('booking.payNow')}</a>
-                  <button
-                    className="booking-pay-later"
-                    onClick={() => setSuccess(false)}
-                    type="button"
-                  >{t('booking.payLater')}</button>
-                </>
+                <a className="btn btn-primary" href={payUrl}>{t('booking.payNow')}</a>
               ) : (
                 <button className="btn btn-primary" onClick={() => setSuccess(false)}>{t('booking.successBtn')}</button>
               )}
