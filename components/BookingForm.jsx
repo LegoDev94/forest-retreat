@@ -37,6 +37,7 @@ export default function BookingForm({ cottage }) {
   const [email, setEmail]       = useState('');
   const [phone, setPhone]       = useState('');
   const [success, setSuccess]   = useState(false);
+  const [payUrl,  setPayUrl]    = useState('');
   const [errMsg, setErrMsg]     = useState('');
   const [pending, startTransition] = useTransition();
 
@@ -107,6 +108,7 @@ export default function BookingForm({ cottage }) {
         return;
       }
       setSuccess(true);
+      if (result.pay_url) setPayUrl(result.pay_url);
       reloadAvailability();
     });
   };
@@ -201,8 +203,19 @@ export default function BookingForm({ cottage }) {
             >
               <div className="modal-icon">✓</div>
               <h3>{t('booking.successTitle')}</h3>
-              <p>{t('booking.successText')}</p>
-              <button className="btn btn-primary" onClick={() => setSuccess(false)}>{t('booking.successBtn')}</button>
+              <p>{payUrl ? t('booking.successPayText') : t('booking.successText')}</p>
+              {payUrl ? (
+                <>
+                  <a className="btn btn-primary" href={payUrl}>{t('booking.payNow')}</a>
+                  <button
+                    className="booking-pay-later"
+                    onClick={() => setSuccess(false)}
+                    type="button"
+                  >{t('booking.payLater')}</button>
+                </>
+              ) : (
+                <button className="btn btn-primary" onClick={() => setSuccess(false)}>{t('booking.successBtn')}</button>
+              )}
             </motion.div>
           </motion.div>
         )}

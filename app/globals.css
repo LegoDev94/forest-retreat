@@ -2610,3 +2610,81 @@ input:focus-visible, select:focus-visible { outline-offset: 0; }
   .rules-disclaimer { padding: 18px 22px; }
 }
 
+/* =========================================================
+   ▸ PAYMENT RETURN PAGE ◂
+========================================================= */
+.payment-return {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: var(--bg-0);
+  position: relative;
+  z-index: 1;
+}
+.payment-return-card {
+  max-width: 460px;
+  width: 100%;
+  padding: 44px 32px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(20,28,23,0.95), rgba(15,22,18,0.95));
+  border: 1px solid var(--border-2);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+.payment-return-card h1 {
+  font-family: var(--ff-display);
+  font-size: 28px;
+  font-weight: 500;
+  margin: 18px 0 10px;
+}
+.payment-return-card p {
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 0 24px;
+}
+.payment-return-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.payment-return-paid {
+  background: radial-gradient(circle at 30% 30%, #5aa276, #3d7a52);
+  color: #fff;
+  box-shadow: 0 0 36px rgba(90,162,118,0.45);
+}
+.payment-return-pending {
+  background: radial-gradient(circle at 30% 30%, var(--accent-2), var(--accent));
+  color: #1a1410;
+}
+.payment-return-failed {
+  background: radial-gradient(circle at 30% 30%, #e16060, #b34040);
+  color: #fff;
+}
+.payment-return-meta {
+  margin-top: 18px !important;
+  font-size: 11px !important;
+  color: var(--text-3) !important;
+}
+
+/* "Pay later" link inside booking success modal */
+.booking-pay-later {
+  display: block;
+  margin: 14px auto 0;
+  background: none;
+  border: 0;
+  color: var(--text-3);
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+  letter-spacing: .3px;
+}
+.booking-pay-later:hover { color: var(--text-2); }
+

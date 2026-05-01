@@ -3,6 +3,21 @@ import { useState, useTransition } from 'react';
 import StatusBadge from './StatusBadge';
 import { setBookingStatus, deleteBooking } from '../../app/actions/admin';
 
+const PAYMENT_LABELS = {
+  unpaid:    { label: 'Не оплачен', cls: 'pending' },
+  initiated: { label: 'Ожидает оплаты', cls: 'pending' },
+  pending:   { label: 'В обработке',cls: 'pending' },
+  paid:      { label: 'Оплачен',     cls: 'confirmed' },
+  failed:    { label: 'Ошибка',      cls: 'cancelled' },
+  abandoned: { label: 'Брошен',      cls: 'cancelled' },
+  refunded:  { label: 'Возврат',     cls: 'completed' },
+  voided:    { label: 'Отменён',     cls: 'cancelled' },
+};
+function PaymentBadge({ state }) {
+  const meta = PAYMENT_LABELS[state] || { label: state || '—', cls: 'pending' };
+  return <span className={`admin-status admin-status-${meta.cls}`}>{meta.label}</span>;
+}
+
 const fmt = (s) => new Date(s).toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' });
 const fmtFull = (s) => new Date(s).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const eur = (n) => `${n} €`;
@@ -45,6 +60,7 @@ export default function BookingsTable({ bookings }) {
             <th>Гостей</th>
             <th>Гость</th>
             <th>Сумма</th>
+            <th>Оплата</th>
             <th>Статус</th>
             <th>Создана</th>
             <th></th>
@@ -83,6 +99,7 @@ function FragmentRow({ b, isOpen, onToggle, onStatus, onDelete, busy }) {
         <td>{b.guests}</td>
         <td>{b.guest_name}</td>
         <td>{eur(b.total_price)}</td>
+        <td><PaymentBadge state={b.payment_state} /></td>
         <td><StatusBadge status={b.status} /></td>
         <td className="admin-mono">{fmtFull(b.created_at)}</td>
         <td>
@@ -106,7 +123,7 @@ function FragmentRow({ b, isOpen, onToggle, onStatus, onDelete, busy }) {
       </tr>
       {isOpen && (
         <tr className="admin-row-detail">
-          <td colSpan={10}>
+          <td colSpan={11}>
             <dl className="admin-dl">
               <dt>Email</dt><dd><a href={`mailto:${b.guest_email}`}>{b.guest_email}</a></dd>
               <dt>Телефон</dt><dd><a href={`tel:${b.guest_phone}`}>{b.guest_phone}</a></dd>
@@ -116,6 +133,16 @@ function FragmentRow({ b, isOpen, onToggle, onStatus, onDelete, busy }) {
               <dt>Уборка</dt><dd>{eur(b.cleaning_fee)}</dd>
               <dt>Сервис</dt><dd>{eur(b.service_fee)}</dd>
               <dt>ID</dt><dd className="admin-mono">{b.id}</dd>
+              {b.payment_reference && (<>
+                <dt>Платёж ref</dt><dd className="admin-mono">{b.payment_reference}</dd>
+              </>)}
+              {b.payment_link && b.payment_state !== 'paid' && (<>
+                <dt>Ссылка на оплату</dt>
+                <dd><a href={b.payment_link} target="_blank" rel="noreferrer">Открыть форму</a></dd>
+              </>)}
+              {b.payment_paid_at && (<>
+                <dt>Оплачено</dt><dd>{fmtFull(b.payment_paid_at)}</dd>
+              </>)}
             </dl>
           </td>
         </tr>
