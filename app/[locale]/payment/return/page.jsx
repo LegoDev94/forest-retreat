@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { refreshPaymentStatus } from '../../../actions/booking';
 import { DICT, pick } from '../../../../lib/dict';
+import { getCurrentUser } from '../../../../lib/supabase/session';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,7 +46,15 @@ export default async function PaymentReturn({ params, searchParams }) {
     outcome = 'failed';
   }
 
+  // If the visitor already has a session AND payment is settled, send them
+  // straight to the dashboard with a welcome banner.
+  if (outcome === 'paid') {
+    const user = await getCurrentUser();
+    if (user) redirect(`/${locale}/account?welcome=1`);
+  }
+
   const copy = COPY[outcome][locale] || COPY[outcome].ru;
+  const accountHref = `/${locale}/account/login`;
 
   return (
     <main className="payment-return">
@@ -58,6 +67,7 @@ export default async function PaymentReturn({ params, searchParams }) {
         <h1>{copy.title}</h1>
         <p>{copy.body}</p>
         <Link href={`/${locale}`} className="btn btn-primary">{copy.cta}</Link>
+        <Link href={accountHref} className="payment-return-secondary">Войти в кабинет →</Link>
         {result?.booking && (
           <p className="payment-return-meta">
             ID: <code>{result.booking.id.slice(0, 8)}…</code>

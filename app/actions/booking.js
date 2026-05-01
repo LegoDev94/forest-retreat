@@ -7,6 +7,7 @@ import { sendBookingNotifications } from '../../lib/email';
 import {
   createOneoffPayment, isEverypayConfigured, mapEverypayState,
 } from '../../lib/everypay';
+import { upsertGuestAccount } from './account';
 
 const ERRORS = {
   BOOKING_CONFLICT: { code: 'CONFLICT',     message: 'These dates have just been booked. Please pick others.' },
@@ -64,6 +65,19 @@ export async function createBooking(input) {
     return { ok: false, code: 'SERVER_ERROR', message: 'Could not save booking. Please try again.' };
   }
 
+  // ----------------------------------------------------------
+  // Auto-create / link the guest account by phone (best-effort)
+  // ----------------------------------------------------------
+  let account = null;
+  try {
+    account = await upsertGuestAccount({ phone, fullName: name, email });
+    if (account?.user_id) {
+      await sb.from('bookings').update({ user_id: account.user_id }).eq('id', data.id);
+    }
+  } catch (e) {
+    console.error('account link failed (non-fatal):', e);
+  }
+
   // STRICT MODE: payment is required. If EveryPay isn't configured OR
   // creating the payment fails, we delete the booking row we just made
   // and return an error so the user gets a clear signal.
@@ -114,7 +128,18 @@ export async function createBooking(input) {
     console.error('email error (non-fatal):', e)
   );
 
-  return { ok: true, booking: data, pay_url: pay.payment_link };
+  return {
+    ok: true,
+    booking: data,
+    pay_url: pay.payment_link,
+    account: account
+      ? {
+          phone:        account.phone,
+          isNew:        account.isNew,
+          tempPassword: account.tempPassword, // null when reusing existing account
+        }
+      : null,
+  };
 }
 
 // Manual re-fetch from EveryPay (used by /payment/return when customer comes back).

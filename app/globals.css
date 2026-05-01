@@ -2688,3 +2688,285 @@ input:focus-visible, select:focus-visible { outline-offset: 0; }
 }
 .booking-pay-later:hover { color: var(--text-2); }
 
+.booking-creds {
+  margin: 18px 0;
+  padding: 16px 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(201, 168, 106, 0.08);
+  border: 1px solid rgba(201, 168, 106, 0.32);
+  text-align: left;
+}
+.booking-creds-head {
+  font-family: var(--ff-display);
+  font-size: 16px;
+  color: var(--accent-2);
+  margin-bottom: 12px;
+}
+.booking-creds-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 6px;
+  gap: 12px;
+}
+.booking-creds-row span { color: var(--text-3); }
+.booking-creds-row code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  background: rgba(0,0,0,0.35);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+  user-select: all;
+}
+.booking-creds-hint {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 0.3px;
+  font-style: italic;
+}
+.booking-creds-existing {
+  font-size: 13px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+.payment-return-secondary {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--accent-2);
+}
+.payment-return-secondary:hover { text-decoration: underline; }
+
+/* =========================================================
+   ▸ ACCOUNT (guest cabinet) ◂
+========================================================= */
+.account-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: var(--bg-0);
+  position: relative;
+  z-index: 1;
+}
+.account-screen-wide { align-items: flex-start; padding: 100px 20px 60px; }
+.account-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 32px;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-lg);
+}
+.account-shell {
+  width: 100%;
+  max-width: 880px;
+}
+.account-card h1, .account-shell h1 {
+  font-family: var(--ff-display);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -.5px;
+  margin: 0 0 6px;
+}
+.account-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.account-sub {
+  color: var(--text-3);
+  font-size: 14px;
+  margin: 0 0 24px;
+}
+.account-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.btn-link {
+  background: none; border: 0; padding: 0;
+  color: var(--text-3);
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.btn-link:hover { color: var(--accent-2); }
+
+.account-banner {
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  border-radius: var(--radius-sm);
+  background: rgba(90, 162, 118, 0.10);
+  border: 1px solid rgba(90, 162, 118, 0.4);
+  color: #b8e0c5;
+  font-size: 14px;
+}
+.account-section {
+  margin-bottom: 36px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.account-section h2 {
+  font-family: var(--ff-display);
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 16px;
+  letter-spacing: -.3px;
+}
+
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.account-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.account-label > span {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.account-input {
+  background: rgba(15, 22, 18, 0.6);
+  border: 1px solid var(--border-2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s var(--ease);
+}
+.account-input:focus { border-color: var(--accent); }
+.account-submit { padding: 14px; }
+
+.account-error {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(225, 96, 96, 0.10);
+  border: 1px solid rgba(225, 96, 96, 0.4);
+  color: #f5b8b8;
+  font-size: 13px;
+}
+.account-ok {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(90, 162, 118, 0.10);
+  border: 1px solid rgba(90, 162, 118, 0.4);
+  color: #b8e0c5;
+  font-size: 13px;
+}
+
+.account-empty {
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--text-3);
+  font-style: italic;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+.account-link {
+  color: var(--accent-2);
+  text-decoration: none;
+}
+.account-link:hover { text-decoration: underline; }
+
+.account-bookings {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.account-booking {
+  padding: 18px;
+  background: rgba(15, 22, 18, 0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.account-booking-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.account-booking-cottage {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 6px;
+  color: var(--text-2);
+}
+.account-status {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+.account-status-pending   { background: rgba(201,168,106,.10); border-color: rgba(201,168,106,.4);  color: #e0c585; }
+.account-status-confirmed { background: rgba(90,162,118,.10);  border-color: rgba(90,162,118,.4);   color: #7fc8a0; }
+.account-status-cancelled { background: rgba(225, 96, 96,.10); border-color: rgba(225, 96, 96,.4);  color: #f5b8b8; }
+.account-status-completed { background: rgba(125,143,168,.10); border-color: rgba(125,143,168,.4);  color: #a5b4cd; }
+
+.account-booking-dates {
+  font-family: var(--ff-display);
+  font-size: 18px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.account-arrow { color: var(--text-3); }
+.account-booking-nights {
+  font-size: 13px;
+  color: var(--text-3);
+  font-family: var(--ff-body);
+}
+.account-booking-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--text-2);
+}
+.account-pay {
+  font-weight: 600;
+}
+.account-pay-paid     { color: #7fc8a0; }
+.account-pay-failed,
+.account-pay-abandoned,
+.account-pay-voided   { color: #f5b8b8; }
+.account-pay-unpaid,
+.account-pay-initiated,
+.account-pay-pending  { color: var(--accent-2); }
+
+@media (max-width: 600px) {
+  .account-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .account-section { padding: 18px; }
+}
+

@@ -38,6 +38,7 @@ export default function BookingForm({ cottage }) {
   const [phone, setPhone]       = useState('');
   const [success, setSuccess]   = useState(false);
   const [payUrl,  setPayUrl]    = useState('');
+  const [account, setAccount]   = useState(null);
   const [errMsg, setErrMsg]     = useState('');
   const [pending, startTransition] = useTransition();
 
@@ -109,6 +110,7 @@ export default function BookingForm({ cottage }) {
       }
       setSuccess(true);
       if (result.pay_url) setPayUrl(result.pay_url);
+      if (result.account) setAccount(result.account);
       reloadAvailability();
     });
   };
@@ -204,6 +206,29 @@ export default function BookingForm({ cottage }) {
               <div className="modal-icon">✓</div>
               <h3>{t('booking.successTitle')}</h3>
               <p>{t('booking.successPayText')}</p>
+
+              {account?.isNew && account.tempPassword && (
+                <div className="booking-creds" role="note">
+                  <div className="booking-creds-head">Мы создали для тебя кабинет</div>
+                  <div className="booking-creds-row">
+                    <span>Логин:</span>
+                    <code>{account.phone}</code>
+                  </div>
+                  <div className="booking-creds-row">
+                    <span>Пароль:</span>
+                    <code>{account.tempPassword}</code>
+                  </div>
+                  <div className="booking-creds-hint">
+                    Сохрани — после оплаты сменишь его в личном кабинете.
+                  </div>
+                </div>
+              )}
+              {account && !account.isNew && (
+                <div className="booking-creds booking-creds-existing">
+                  Кабинет уже существует на этот номер. Войди после оплаты.
+                </div>
+              )}
+
               {payUrl ? (
                 <a className="btn btn-primary" href={payUrl}>{t('booking.payNow')}</a>
               ) : (

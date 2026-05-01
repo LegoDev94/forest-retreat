@@ -258,7 +258,7 @@ export default function HomePage() {
       {/* STORY 2 */}
       <Story
         reverse
-        image={photoUrl(COTTAGES[1], COTTAGES[1].photos[6])}
+        image="/content/spa/photo/9890737.jpg"
         eyebrow={t('story2.eyebrow')}
         titleHTML={t('story2.title')}
         paragraphs={[t('story2.p1'), t('story2.p2')]}
