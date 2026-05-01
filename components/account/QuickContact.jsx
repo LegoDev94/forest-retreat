@@ -1,8 +1,8 @@
 // Quick contact buttons. Renders only what's configured server-side.
-export default function QuickContact({ whatsapp, phone, email, ref }) {
+export default function QuickContact({ whatsapp, phone, email, bookingRef }) {
   if (!whatsapp && !phone && !email) return null;
 
-  const refSuffix = ref ? ` ${ref}` : '';
+  const refSuffix = bookingRef ? ` ${bookingRef}` : '';
   const waText = encodeURIComponent(`Здравствуйте, я по бронированию${refSuffix}`);
   const waNumber = whatsapp?.replace(/\D/g, '');
   const mailSubject = encodeURIComponent(`Бронирование${refSuffix}`);

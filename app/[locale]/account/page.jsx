@@ -101,7 +101,7 @@ export default async function AccountPage({ params, searchParams }) {
           whatsapp={contact.whatsapp}
           phone={contact.phone}
           email={contact.email}
-          ref={firstRef}
+          bookingRef={firstRef}
         />
         {!contact.whatsapp && !contact.phone && !contact.email && (
           <p className="account-sub" style={{ marginTop: 12 }}>
