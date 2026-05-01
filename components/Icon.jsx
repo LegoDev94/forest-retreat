@@ -284,6 +284,21 @@ const ICONS = {
       <path d="M11 14l3-3" />
     </>
   ),
+  // Single user (head + shoulders) — for account icon
+  user: (
+    <>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c0-4 4-7 8-7s8 3 8 7" />
+    </>
+  ),
+  // Login (arrow into a doorway) — for sign-in
+  login: (
+    <>
+      <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
+      <polyline points="10 17 15 12 10 7" />
+      <line x1="15" y1="12" x2="3" y2="12" />
+    </>
+  ),
 };
 
 export default function Icon({ name, size = 24, stroke = 1.6, className = '', ...rest }) {

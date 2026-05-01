@@ -7,6 +7,7 @@ import SmoothScroll from '../../components/SmoothScroll';
 import Nav from '../../components/Nav';
 import Footer from '../../components/Footer';
 import VisitorPing from '../../components/VisitorPing';
+import { getCurrentUser } from '../../lib/supabase/session';
 
 const LOCALES = ['ru', 'lv', 'en'];
 
@@ -45,6 +46,12 @@ export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
   if (!LOCALES.includes(locale)) notFound();
 
+  // Best-effort auth probe — silent if Supabase not configured yet
+  let isAuthed = false;
+  try {
+    isAuthed = Boolean(await getCurrentUser());
+  } catch {}
+
   return (
     <LocaleProvider locale={locale}>
       <div className="bg-atmosphere" />
@@ -53,7 +60,7 @@ export default async function LocaleLayout({ children, params }) {
       <CursorGlow />
       <ScrollProgress />
       <SmoothScroll />
-      <Nav />
+      <Nav isAuthed={isAuthed} />
       {children}
       <Footer />
       <VisitorPing locale={locale} />

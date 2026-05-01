@@ -12,7 +12,7 @@ import useMagnetic from '../lib/hooks/useMagnetic';
 
 const SECTIONS = ['cottages', 'why', 'reviews', 'contact'];
 
-export default function Nav() {
+export default function Nav({ isAuthed = false }) {
   const pathname = usePathname();
   // Detail pages have no hero behind the nav, so always show "scrolled" chrome
   const alwaysScrolled = /\/cottage\//.test(pathname);
@@ -137,6 +137,14 @@ export default function Nav() {
           transition={{ duration: 0.7, delay: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
         >
           <LanguageSwitcher />
+          <a
+            href={lp(isAuthed ? '/account' : '/account/login')}
+            className="nav-account"
+            aria-label={isAuthed ? t('nav.account') : t('nav.login')}
+            title={isAuthed ? t('nav.account') : t('nav.login')}
+          >
+            <Icon name={isAuthed ? 'user' : 'login'} size={18} stroke={1.8} />
+          </a>
           <a href={lp('/#cottages')} className="nav-cta" ref={ctaRef}>
             <span>{t('nav.book')}</span>
             <Icon name="arrowRight" size={14} stroke={2.4} />
@@ -230,6 +238,14 @@ export default function Nav() {
             >
               <a href={lp('/#cottages')} className="btn btn-primary" onClick={() => setOpen(false)}>
                 {t('nav.book')}
+              </a>
+              <a
+                href={lp(isAuthed ? '/account' : '/account/login')}
+                className="mobile-menu-account"
+                onClick={() => setOpen(false)}
+              >
+                <Icon name={isAuthed ? 'user' : 'login'} size={18} stroke={1.8} />
+                {isAuthed ? t('nav.account') : t('nav.login')}
               </a>
               <div className="mobile-menu-meta">
                 <LanguageSwitcher />
