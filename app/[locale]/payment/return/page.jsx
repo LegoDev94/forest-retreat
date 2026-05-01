@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { refreshPaymentStatus } from '../../../actions/booking';
 import { DICT, pick } from '../../../../lib/dict';
 import { getCurrentUser } from '../../../../lib/supabase/session';
+import PaymentReturnPoller from '../../../../components/PaymentReturnPoller';
 
 export const dynamic = 'force-dynamic';
 
@@ -66,8 +67,11 @@ export default async function PaymentReturn({ params, searchParams }) {
         </div>
         <h1>{copy.title}</h1>
         <p>{copy.body}</p>
-        <Link href={`/${locale}`} className="btn btn-primary">{copy.cta}</Link>
-        <Link href={accountHref} className="payment-return-secondary">Войти в кабинет →</Link>
+        <div className="payment-return-actions">
+          <Link href={`/${locale}`} className="btn btn-primary">{copy.cta}</Link>
+          <Link href={accountHref} className="payment-return-secondary">Войти в кабинет →</Link>
+        </div>
+        {outcome === 'pending' && ref && <PaymentReturnPoller paymentReference={ref} />}
         {result?.booking && (
           <p className="payment-return-meta">
             ID: <code>{result.booking.id.slice(0, 8)}…</code>
