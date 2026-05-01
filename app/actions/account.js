@@ -62,6 +62,29 @@ export async function changePasswordAction(_prevState, formData) {
 // ------------------------------------------------------------
 // Used by booking action: ensure user exists, return email + isNew + tempPassword
 // ------------------------------------------------------------
+async function findUserByEmail(admin, email) {
+  // Paginate listUsers (Supabase Admin API has no direct email lookup)
+  for (let page = 1; page <= 5; page++) {
+    const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 200 });
+    if (error || !data?.users?.length) return null;
+    const hit = data.users.find((u) => u.email?.toLowerCase() === email.toLowerCase());
+    if (hit) return hit;
+    if (data.users.length < 200) return null;
+  }
+  return null;
+}
+
+async function upsertProfileRow(admin, { userId, phone, fullName, email }) {
+  try {
+    await admin.from('profiles').upsert(
+      { user_id: userId, phone, full_name: fullName, email },
+      { onConflict: 'user_id' },
+    );
+  } catch (e) {
+    console.error('upsertProfileRow error:', e?.message || e);
+  }
+}
+
 export async function upsertGuestAccount({ phone, fullName, email }) {
   const normalized = normalizePhone(phone);
   if (!normalized) return null;
@@ -69,18 +92,18 @@ export async function upsertGuestAccount({ phone, fullName, email }) {
   const admin = getServerSupabase();
   const internalEmail = email || syntheticEmailForPhone(normalized);
 
-  // Look for existing profile
-  const { data: existing } = await admin
+  // 1) Look for existing profile by phone
+  const { data: existingProfile } = await admin
     .from('profiles')
     .select('user_id')
     .eq('phone', normalized)
     .maybeSingle();
 
-  if (existing?.user_id) {
-    return { user_id: existing.user_id, isNew: false, tempPassword: null, email: internalEmail, phone: normalized };
+  if (existingProfile?.user_id) {
+    return { user_id: existingProfile.user_id, isNew: false, tempPassword: null, email: internalEmail, phone: normalized };
   }
 
-  // Create new auth user
+  // 2) No profile — try to create the auth user
   const password = generatePassword(10);
   const { data: created, error: createErr } = await admin.auth.admin.createUser({
     email: internalEmail,
@@ -88,24 +111,20 @@ export async function upsertGuestAccount({ phone, fullName, email }) {
     email_confirm: true,
     user_metadata: { phone: normalized, full_name: fullName },
   });
-  if (createErr) {
-    console.error('createUser error:', createErr);
-    // Edge case: user with this email might already exist (rare race)
-    if (createErr.message?.toLowerCase().includes('already')) {
-      const { data: list } = await admin.auth.admin.listUsers({ filter: `email.eq.${internalEmail}` });
-      const u = list?.users?.[0];
-      if (u) return { user_id: u.id, isNew: false, tempPassword: null, email: internalEmail, phone: normalized };
-    }
-    return null;
+
+  if (!createErr && created?.user?.id) {
+    await upsertProfileRow(admin, { userId: created.user.id, phone: normalized, fullName, email: internalEmail });
+    return { user_id: created.user.id, isNew: true, tempPassword: password, email: internalEmail, phone: normalized };
   }
 
-  const userId = created.user.id;
-  await admin.from('profiles').insert({
-    user_id:   userId,
-    phone:     normalized,
-    full_name: fullName,
-    email:     internalEmail,
-  });
+  // 3) Auth user already existed (orphaned — no profile row). Recover by finding it
+  //    and backfilling the profile so future lookups find it via phone.
+  console.error('createUser error:', createErr?.message || createErr);
+  const orphan = await findUserByEmail(admin, internalEmail);
+  if (orphan) {
+    await upsertProfileRow(admin, { userId: orphan.id, phone: normalized, fullName, email: internalEmail });
+    return { user_id: orphan.id, isNew: false, tempPassword: null, email: internalEmail, phone: normalized };
+  }
 
-  return { user_id: userId, isNew: true, tempPassword: password, email: internalEmail, phone: normalized };
+  return null;
 }
