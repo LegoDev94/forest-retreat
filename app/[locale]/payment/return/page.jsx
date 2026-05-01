@@ -29,7 +29,7 @@ const COPY = {
 
 export default async function PaymentReturn({ params, searchParams }) {
   const { locale } = await params;
-  if (!LOCALES.includes(locale)) redirect('/ru');
+  if (!LOCALES.includes(locale)) redirect('/lv');
   const sp = (await searchParams) || {};
   const ref = String(sp.payment_reference || '');
 

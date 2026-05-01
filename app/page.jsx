@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { headers, cookies } from 'next/headers';
 
 const LOCALES = ['ru', 'lv', 'en'];
-const DEFAULT_LOCALE = 'ru';
+const DEFAULT_LOCALE = 'lv';
 
 // Server component for / — detect locale and 308-redirect to /[locale].
 // Replaces edge middleware (which kept hitting __dirname / runtime issues on Vercel).
