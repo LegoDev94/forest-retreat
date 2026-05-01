@@ -2534,3 +2534,79 @@ html, body { -webkit-overflow-scrolling: touch; }
 button:focus-visible, a:focus-visible { outline-offset: 4px; }
 input:focus-visible, select:focus-visible { outline-offset: 0; }
 
+/* =========================================================
+   ▸ PARK RULES SECTION ◂
+========================================================= */
+
+.rules-section { padding: clamp(80px, 10vw, 120px) clamp(20px, 5vw, 60px); }
+.rules-grid {
+  max-width: 1200px;
+  margin: 0 auto 36px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.rules-card {
+  position: relative;
+  padding: 36px 30px 32px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(20, 28, 23, 0.65), rgba(15, 22, 18, 0.55));
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  transition: transform .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease);
+}
+.rules-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(201, 168, 106, 0.32);
+  box-shadow: 0 22px 46px rgba(0,0,0,.4);
+}
+.rules-card-emoji {
+  font-size: 38px;
+  line-height: 1;
+  margin-bottom: 18px;
+  display: inline-flex;
+  width: 60px;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(201,168,106,.18), rgba(201,168,106,.04));
+  border: 1px solid rgba(201,168,106,.28);
+}
+.rules-card-title {
+  font-family: var(--ff-display);
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 14px;
+  letter-spacing: -.2px;
+  color: var(--text);
+}
+.rules-card-text {
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.rules-disclaimer {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 22px 28px;
+  border-radius: var(--radius-sm);
+  border-left: 2px solid rgba(201, 168, 106, 0.5);
+  background: linear-gradient(90deg, rgba(201,168,106,0.06), transparent 70%);
+}
+.rules-disclaimer p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-3);
+  letter-spacing: 0.1px;
+  font-style: italic;
+}
+
+@media (max-width: 880px) {
+  .rules-grid { grid-template-columns: 1fr; gap: 12px; }
+  .rules-card { padding: 26px 22px 24px; }
+  .rules-disclaimer { padding: 18px 22px; }
+}
+
