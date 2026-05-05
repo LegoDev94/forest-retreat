@@ -33,8 +33,16 @@ export default function Footer() {
           <h4>{t('footer.contact')}</h4>
           <ul>
             <li>Līči, Latvia</li>
-            <li>+371 00 000 000</li>
+            <li>+371 25 674 959</li>
             <li>hello@forestretreat.lv</li>
+          </ul>
+        </div>
+        <div className="footer-col">
+          <h4>{t('footer.legal')}</h4>
+          <ul>
+            <li><Link href="/legal/terms">{t('footer.terms')}</Link></li>
+            <li><Link href="/legal/privacy">{t('footer.privacy')}</Link></li>
+            <li><Link href="/legal/refund">{t('footer.refund')}</Link></li>
           </ul>
         </div>
       </div>

@@ -40,6 +40,7 @@ export default function BookingForm({ cottage }) {
   const [payUrl,  setPayUrl]    = useState('');
   const [account, setAccount]   = useState(null);
   const [errMsg, setErrMsg]     = useState('');
+  const [consent, setConsent]   = useState(false);
   const [pending, startTransition] = useTransition();
 
   // Set defaults after mount so initial server-rendered HTML doesn't disagree
@@ -88,6 +89,10 @@ export default function BookingForm({ cottage }) {
   const onSubmit = (e) => {
     e.preventDefault();
     setErrMsg('');
+    if (!consent) {
+      setErrMsg(t('booking.consentRequired'));
+      return;
+    }
     if (!rangeBookable) {
       setErrMsg(t('booking.errBlocked') || 'Selected range overlaps a booked date.');
       return;
@@ -116,7 +121,17 @@ export default function BookingForm({ cottage }) {
   };
 
   const guestOpts = DICT.guestsOptions[locale];
-  const submitDisabled = pending || summary.nights < 1 || !rangeBookable;
+  const submitDisabled = pending || summary.nights < 1 || !rangeBookable || !consent;
+
+  const consentLabel = (() => {
+    const parts = (t('booking.consentLabel') || '').split(/\{(terms|privacy|refund)\}/);
+    return parts.map((p, i) => {
+      if (p === 'terms')   return <a key={i} href={`/${locale}/legal/terms`}   target="_blank" rel="noopener">{t('booking.consentTerms')}</a>;
+      if (p === 'privacy') return <a key={i} href={`/${locale}/legal/privacy`} target="_blank" rel="noopener">{t('booking.consentPrivacy')}</a>;
+      if (p === 'refund')  return <a key={i} href={`/${locale}/legal/refund`}  target="_blank" rel="noopener">{t('booking.consentRefund')}</a>;
+      return <span key={i}>{p}</span>;
+    });
+  })();
 
   return (
     <>
@@ -179,6 +194,16 @@ export default function BookingForm({ cottage }) {
           </div>
 
           {errMsg && <div className="booking-error" role="alert">{errMsg}</div>}
+
+          <label className="booking-consent">
+            <input
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              required
+            />
+            <span>{consentLabel}</span>
+          </label>
 
           <button type="submit" className="book-btn" disabled={submitDisabled}>
             {pending ? (t('booking.sending') || 'Sending…') : t('booking.submit')}
