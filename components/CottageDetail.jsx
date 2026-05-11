@@ -9,6 +9,7 @@ import ReviewCard from './ReviewCard';
 import Lightbox from './Lightbox';
 import BookingForm from './BookingForm';
 import Icon from './Icon';
+import { trackViewItem } from '../lib/analytics';
 
 const ICON = {
   wifi: '📶', parking: '🅿️', jacuzzi: '♨️', sauna: '🧖', cinema: '🎬',
@@ -26,6 +27,10 @@ export default function CottageDetail() {
   useEffect(() => {
     if (c) document.title = `${pick(c.name)} — Forest Retreat`;
   }, [c, locale, pick]);
+
+  useEffect(() => {
+    if (c) trackViewItem(c, locale);
+  }, [c?.id, locale]);
 
   if (!c) {
     return (

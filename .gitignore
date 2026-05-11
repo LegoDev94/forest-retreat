@@ -8,6 +8,7 @@ dist/
 .DS_Store
 Thumbs.db
 *.log
+.claude/
 
 # Old vanilla site at REPO ROOT only (kept locally until IDE releases lock)
 /content/

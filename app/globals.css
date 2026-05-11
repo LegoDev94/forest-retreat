@@ -3212,3 +3212,81 @@ input:focus-visible, select:focus-visible { outline-offset: 0; }
 .booking-consent a:hover {
   text-decoration: none;
 }
+
+/* ---------- Cookie consent banner (Consent Mode v2) ---------- */
+.consent-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.consent-banner-inner {
+  pointer-events: auto;
+  max-width: 720px;
+  width: 100%;
+  background: rgba(15, 22, 18, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 168, 106, 0.25);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.consent-banner-text {
+  flex: 1 1 280px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.consent-banner-link {
+  color: var(--accent-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.consent-banner-link:hover { text-decoration: none; }
+.consent-banner-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.consent-btn {
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .15s, background .2s, border-color .2s;
+}
+.consent-btn:hover { transform: translateY(-1px); }
+.consent-btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0a0e0c;
+}
+.consent-btn-primary:hover {
+  box-shadow: 0 6px 18px var(--accent-glow);
+}
+.consent-btn-secondary {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-2);
+  border-color: rgba(255,255,255,0.12);
+}
+.consent-btn-secondary:hover {
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+}
+@media (max-width: 520px) {
+  .consent-banner { left: 8px; right: 8px; bottom: 8px; }
+  .consent-banner-inner { padding: 14px; }
+  .consent-banner-actions { width: 100%; }
+  .consent-btn { flex: 1; }
+}
