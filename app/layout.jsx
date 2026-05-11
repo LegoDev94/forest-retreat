@@ -1,4 +1,5 @@
 import './globals.css';
+import Analytics from '../components/Analytics';
 
 export const metadata = {
   metadataBase: new URL('https://forest-retreat-xi.vercel.app'),
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap"
         />
+        <Analytics />
       </head>
       <body>{children}</body>
     </html>

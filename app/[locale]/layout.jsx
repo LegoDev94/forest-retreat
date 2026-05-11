@@ -7,6 +7,7 @@ import SmoothScroll from '../../components/SmoothScroll';
 import Nav from '../../components/Nav';
 import Footer from '../../components/Footer';
 import VisitorPing from '../../components/VisitorPing';
+import ConsentBanner from '../../components/ConsentBanner';
 import { getCurrentUser } from '../../lib/supabase/session';
 
 const LOCALES = ['ru', 'lv', 'en'];
@@ -64,6 +65,7 @@ export default async function LocaleLayout({ children, params }) {
       {children}
       <Footer />
       <VisitorPing locale={locale} />
+      <ConsentBanner />
     </LocaleProvider>
   );
 }

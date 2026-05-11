@@ -4,6 +4,7 @@ import { refreshPaymentStatus } from '../../../actions/booking';
 import { DICT, pick } from '../../../../lib/dict';
 import { getCurrentUser } from '../../../../lib/supabase/session';
 import PaymentReturnPoller from '../../../../components/PaymentReturnPoller';
+import PurchaseTracker from '../../../../components/PurchaseTracker';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,11 +48,12 @@ export default async function PaymentReturn({ params, searchParams }) {
     outcome = 'failed';
   }
 
-  // If the visitor already has a session AND payment is settled, send them
-  // straight to the dashboard with a welcome banner.
+  // For 'paid', we need to fire the GA4/Ads purchase event in the browser
+  // BEFORE auto-redirecting authed users to /account. PurchaseTracker handles
+  // the redirect client-side after the conversion has been recorded.
+  let isAuthed = false;
   if (outcome === 'paid') {
-    const user = await getCurrentUser();
-    if (user) redirect(`/${locale}/account?welcome=1`);
+    isAuthed = Boolean(await getCurrentUser());
   }
 
   const copy = COPY[outcome][locale] || COPY[outcome].ru;
@@ -72,6 +74,9 @@ export default async function PaymentReturn({ params, searchParams }) {
           <Link href={accountHref} className="payment-return-secondary">Войти в кабинет →</Link>
         </div>
         {outcome === 'pending' && ref && <PaymentReturnPoller paymentReference={ref} />}
+        {outcome === 'paid' && result?.booking && (
+          <PurchaseTracker booking={result.booking} locale={locale} redirectToAccount={isAuthed} />
+        )}
         {result?.booking && (
           <p className="payment-return-meta">
             ID: <code>{result.booking.id.slice(0, 8)}…</code>

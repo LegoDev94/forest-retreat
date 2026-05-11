@@ -5,6 +5,7 @@ import DateField from './DateField';
 import { useT, DICT } from '../lib/i18n.jsx';
 import { rangesToDisabledSet, rangeIsBookable } from '../lib/availability';
 import { createBooking } from '../app/actions/booking';
+import { trackBeginCheckout, trackGenerateLead } from '../lib/analytics';
 
 function pluralRu(n) {
   const m = Math.abs(n) % 100, m2 = m % 10;
@@ -97,6 +98,7 @@ export default function BookingForm({ cottage }) {
       setErrMsg(t('booking.errBlocked') || 'Selected range overlaps a booked date.');
       return;
     }
+    trackBeginCheckout({ cottage, nights: summary.nights, total: summary.total, locale });
     startTransition(async () => {
       const result = await createBooking({
         cottageId: cottage.id,
@@ -116,6 +118,7 @@ export default function BookingForm({ cottage }) {
       setSuccess(true);
       if (result.pay_url) setPayUrl(result.pay_url);
       if (result.account) setAccount(result.account);
+      if (result.booking) trackGenerateLead({ booking: result.booking, email });
       reloadAvailability();
     });
   };
