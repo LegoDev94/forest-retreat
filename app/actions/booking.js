@@ -8,6 +8,7 @@ import {
   createOneoffPayment, isEverypayConfigured, mapEverypayState,
 } from '../../lib/everypay';
 import { upsertGuestAccount } from './account';
+import { pushBookingToLodgify } from '../../lib/lodgify-sync';
 
 const ERRORS = {
   BOOKING_CONFLICT: { code: 'CONFLICT',     message: 'These dates have just been booked. Please pick others.' },
@@ -167,6 +168,16 @@ export async function refreshPaymentStatus(paymentReference) {
       .select()
       .single();
     if (error) return { ok: false, error: error.message };
+
+    // Mirror to Lodgify once payment settles. Best-effort: a failure here
+    // must not break the customer-facing return page. Runs in the
+    // background so the response stays fast.
+    if (row?.status === 'confirmed' && !row.lodgify_id) {
+      pushBookingToLodgify(row).catch((e) =>
+        console.error('pushBookingToLodgify failed (non-fatal):', e),
+      );
+    }
+
     return { ok: true, booking: row, payment_state: data.payment_state };
   } catch (err) {
     return { ok: false, error: String(err?.message || err) };
