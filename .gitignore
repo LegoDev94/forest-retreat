@@ -9,6 +9,8 @@ dist/
 Thumbs.db
 *.log
 .claude/
+.commit-msg.txt
+.pr-body.md
 
 # Old vanilla site at REPO ROOT only (kept locally until IDE releases lock)
 /content/

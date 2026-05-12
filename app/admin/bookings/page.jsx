@@ -3,15 +3,17 @@ import { isAdminAuthenticated } from '../../../lib/admin-auth';
 import { getServerSupabase, isSupabaseConfigured } from '../../../lib/supabase/server';
 import AdminShell from '../../../components/admin/AdminShell';
 import BookingsTable from '../../../components/admin/BookingsTable';
+import SyncLodgifyButton from '../../../components/admin/SyncLodgifyButton';
 
 export const dynamic = 'force-dynamic';
 
-async function loadBookings({ status, cottage }) {
+async function loadBookings({ status, cottage, source }) {
   if (!isSupabaseConfigured()) return [];
   const sb = getServerSupabase();
   let q = sb.from('bookings').select('*').order('created_at', { ascending: false });
   if (status && status !== 'all') q = q.eq('status', status);
   if (cottage && cottage !== 'all') q = q.eq('cottage_id', cottage);
+  if (source && source !== 'all') q = q.eq('source', source);
   const { data, error } = await q;
   if (error) {
     console.error('bookings load:', error);
@@ -25,13 +27,15 @@ export default async function BookingsPage({ searchParams }) {
   const params = (await searchParams) || {};
   const status = params.status || 'all';
   const cottage = params.cottage || 'all';
-  const bookings = await loadBookings({ status, cottage });
+  const source = params.source || 'all';
+  const bookings = await loadBookings({ status, cottage, source });
 
   return (
     <AdminShell>
       <header className="admin-header">
         <h1>Брони</h1>
         <p className="admin-sub">Все запросы и подтверждённые бронирования.</p>
+        <SyncLodgifyButton />
       </header>
 
       <div className="admin-filters">
@@ -48,6 +52,11 @@ export default async function BookingsPage({ searchParams }) {
           { value: 'viking', label: 'Viking' },
           { value: 'farm',   label: 'Farm' },
           { value: 'black',  label: 'Black' },
+        ]} />
+        <FilterGroup name="source" current={source} options={[
+          { value: 'all',     label: 'Все источники' },
+          { value: 'direct',  label: 'Сайт' },
+          { value: 'lodgify', label: 'Lodgify' },
         ]} />
       </div>
 

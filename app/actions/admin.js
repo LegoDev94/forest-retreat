@@ -5,6 +5,7 @@ import { getServerSupabase, isSupabaseConfigured } from '../../lib/supabase/serv
 import {
   isAdminAuthenticated, loginAdmin, logoutAdmin,
 } from '../../lib/admin-auth';
+import { runLodgifyInboundSync } from '../../lib/lodgify-sync';
 
 async function requireAdmin() {
   if (!(await isAdminAuthenticated())) {
@@ -170,4 +171,17 @@ export async function removePriceOverride(id) {
   revalidatePath('/admin/pricing');
   revalidatePath('/admin/calendar');
   return { ok: true };
+}
+
+// ============================================================
+// LODGIFY SYNC (admin-triggered, same logic as Vercel cron)
+// ============================================================
+export async function triggerLodgifySync() {
+  await requireAdmin();
+  const started = Date.now();
+  const result = await runLodgifyInboundSync();
+  revalidatePath('/admin/bookings');
+  revalidatePath('/admin/calendar');
+  revalidatePath('/admin');
+  return { ...result, ms: Date.now() - started };
 }

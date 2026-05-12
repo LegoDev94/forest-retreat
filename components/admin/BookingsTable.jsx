@@ -95,7 +95,12 @@ function FragmentRow({ b, isOpen, onToggle, onStatus, onDelete, busy }) {
             {isOpen ? '▾' : '▸'}
           </button>
         </td>
-        <td><span className="admin-mono admin-ref">{bookingRef(b.id)}</span></td>
+        <td>
+          <span className="admin-mono admin-ref">{bookingRef(b.id)}</span>
+          {b.source === 'lodgify' && (
+            <span className="admin-source-badge" title="Из Lodgify (Booking.com / Airbnb)">Lodgify</span>
+          )}
+        </td>
         <td><span className="admin-pill">{b.cottage_id}</span></td>
         <td>{fmt(b.check_in)}</td>
         <td>{fmt(b.check_out)}</td>
@@ -136,6 +141,10 @@ function FragmentRow({ b, isOpen, onToggle, onStatus, onDelete, busy }) {
               <dt>Уборка</dt><dd>{eur(b.cleaning_fee)}</dd>
               <dt>Сервис</dt><dd>{eur(b.service_fee)}</dd>
               <dt>ID</dt><dd className="admin-mono">{b.id}</dd>
+              <dt>Источник</dt><dd>{b.source === 'lodgify' ? 'Lodgify (Booking.com / Airbnb)' : 'Сайт (прямая)'}</dd>
+              {b.lodgify_id && (<>
+                <dt>Lodgify ID</dt><dd className="admin-mono">{b.lodgify_id}</dd>
+              </>)}
               {b.payment_reference && (<>
                 <dt>Платёж ref</dt><dd className="admin-mono">{b.payment_reference}</dd>
               </>)}
