@@ -3291,6 +3291,41 @@ input:focus-visible, select:focus-visible { outline-offset: 0; }
   .consent-btn { flex: 1; }
 }
 
+/* ---------- Floating WhatsApp button (all pages, all viewports) ---------- */
+.whatsapp-btn {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.06) inset;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .2s ease, bottom .35s cubic-bezier(.2,.8,.2,1);
+  will-change: transform, bottom;
+}
+.whatsapp-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+.whatsapp-btn:active {
+  transform: translateY(0) scale(0.96);
+}
+/* When the sticky Book-now pill is visible (cottage pages mobile),
+   lift the WhatsApp circle above it so they do not overlap. */
+body.has-sticky-book .whatsapp-btn {
+  bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+}
+@media (max-width: 520px) {
+  .whatsapp-btn { width: 52px; height: 52px; }
+}
+
 /* ---------- Sticky "Book now" button (mobile only) ---------- */
 .sticky-book-btn {
   display: none;

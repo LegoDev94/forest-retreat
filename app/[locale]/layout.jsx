@@ -8,6 +8,7 @@ import Nav from '../../components/Nav';
 import Footer from '../../components/Footer';
 import VisitorPing from '../../components/VisitorPing';
 import ConsentBanner from '../../components/ConsentBanner';
+import WhatsappButton from '../../components/WhatsappButton';
 import { getCurrentUser } from '../../lib/supabase/session';
 
 const LOCALES = ['ru', 'lv', 'en'];
@@ -65,6 +66,7 @@ export default async function LocaleLayout({ children, params }) {
       {children}
       <Footer />
       <VisitorPing locale={locale} />
+      <WhatsappButton number={process.env.HOST_WHATSAPP || '37125674959'} />
       <ConsentBanner />
     </LocaleProvider>
   );

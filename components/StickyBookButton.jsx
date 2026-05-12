@@ -26,8 +26,13 @@ export default function StickyBookButton() {
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      document.body.classList.remove('has-sticky-book');
     };
   }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('has-sticky-book', visible);
+  }, [visible]);
 
   const onClick = () => {
     const target = document.getElementById('booking');
