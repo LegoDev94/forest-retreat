@@ -9,6 +9,7 @@ import ReviewCard from './ReviewCard';
 import Lightbox from './Lightbox';
 import BookingForm from './BookingForm';
 import Icon from './Icon';
+import StickyBookButton from './StickyBookButton';
 import { trackViewItem } from '../lib/analytics';
 
 const ICON = {
@@ -190,6 +191,8 @@ export default function CottageDetail() {
         onChange={setLbIdx}
         onClose={() => setLbIdx(null)}
       />
+
+      <StickyBookButton />
     </>
   );
 }

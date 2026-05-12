@@ -1,13 +1,16 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { photoUrl } from '../lib/data';
 import { useT } from '../lib/i18n.jsx';
+
+const SWIPE_THRESHOLD = 50;
 
 export default function Lightbox({ cottage, index, onClose, onChange }) {
   const { pick } = useT();
   const open = index !== null;
   const name = pick(cottage.name);
+  const touchStart = useRef(null);
 
   useEffect(() => {
     if (!open) return;
@@ -24,6 +27,21 @@ export default function Lightbox({ cottage, index, onClose, onChange }) {
     };
   }, [open, index, cottage, onChange, onClose]);
 
+  const handleTouchStart = (e) => {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+  };
+  const handleTouchEnd = (e) => {
+    if (!touchStart.current) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStart.current.x;
+    const dy = t.clientY - touchStart.current.y;
+    touchStart.current = null;
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) onChange((index + 1) % cottage.photos.length);
+    else        onChange((index - 1 + cottage.photos.length) % cottage.photos.length);
+  };
+
   return (
     <AnimatePresence>
       {open && (
@@ -34,6 +52,8 @@ export default function Lightbox({ cottage, index, onClose, onChange }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           <button className="lightbox-close" aria-label="Закрыть" onClick={onClose}>✕</button>
           <button className="lightbox-arrow prev" aria-label="Предыдущее"
