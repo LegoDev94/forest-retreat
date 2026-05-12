@@ -66,7 +66,7 @@ export default async function LocaleLayout({ children, params }) {
       {children}
       <Footer />
       <VisitorPing locale={locale} />
-      <WhatsappButton number={process.env.HOST_WHATSAPP || '37125674959'} />
+      <WhatsappButton number="37125674959" />
       <ConsentBanner />
     </LocaleProvider>
   );
