@@ -5,7 +5,9 @@ import { getServerSupabase, isSupabaseConfigured } from '../../lib/supabase/serv
 import AdminShell from '../../components/admin/AdminShell';
 import StatusBadge from '../../components/admin/StatusBadge';
 import LiveVisitors from '../../components/admin/LiveVisitors';
+import TestPaymentButton from '../../components/admin/TestPaymentButton';
 import { bookingRef } from '../../lib/booking-ref';
+import { isEverypayDemoMode, isEverypayConfigured } from '../../lib/everypay';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,6 +40,9 @@ async function loadStats() {
 export default async function DashboardPage() {
   if (!(await isAdminAuthenticated())) redirect('/admin/login');
   const stats = await loadStats();
+  const everypayMode = isEverypayConfigured()
+    ? (isEverypayDemoMode() ? 'demo' : 'production')
+    : 'unconfigured';
 
   return (
     <AdminShell>
@@ -45,6 +50,8 @@ export default async function DashboardPage() {
         <h1>Дашборд</h1>
         <p className="admin-sub">Обзор бронирований за последние 30 дней.</p>
       </header>
+
+      <TestPaymentButton everypayMode={everypayMode} />
 
       {!stats ? (
         <div className="admin-warn">Supabase env vars не настроены.</div>

@@ -1,4 +1,5 @@
 'use server';
+import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { getServerSupabase, isSupabaseConfigured } from '../../lib/supabase/server';
@@ -6,6 +7,9 @@ import {
   isAdminAuthenticated, loginAdmin, logoutAdmin,
 } from '../../lib/admin-auth';
 import { runLodgifyInboundSync } from '../../lib/lodgify-sync';
+import {
+  createOneoffPayment, isEverypayConfigured, isEverypayDemoMode,
+} from '../../lib/everypay';
 
 async function requireAdmin() {
   if (!(await isAdminAuthenticated())) {
@@ -171,6 +175,41 @@ export async function removePriceOverride(id) {
   revalidatePath('/admin/pricing');
   revalidatePath('/admin/calendar');
   return { ok: true };
+}
+
+// ============================================================
+// EVERYPAY TEST — fires a €1 payment to verify credentials
+// (used after switching demo → production env)
+// ============================================================
+export async function createTestPayment() {
+  await requireAdmin();
+  if (!isEverypayConfigured()) {
+    return { ok: false, error: 'EveryPay env vars не настроены' };
+  }
+
+  const h = await headers();
+  const proto = h.get('x-forwarded-proto') || 'https';
+  const host  = h.get('x-forwarded-host') || h.get('host');
+  const origin = `${proto}://${host}`;
+
+  try {
+    const pay = await createOneoffPayment({
+      amount:         1,
+      orderReference: `test-${Date.now()}`,
+      customerUrl:    `${origin}/admin?payment_test=done`,
+      email:          'hello@forestretreat.lv',
+      locale:         'en',
+      description:    'EveryPay test payment €1',
+    });
+    return {
+      ok: true,
+      pay_url:           pay.payment_link,
+      payment_reference: pay.payment_reference,
+      mode:              isEverypayDemoMode() ? 'demo' : 'production',
+    };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
 }
 
 // ============================================================
