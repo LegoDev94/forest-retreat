@@ -2,6 +2,7 @@
 import { LocaleLink as Link } from '../lib/i18n.jsx';
 import { useT } from '../lib/i18n.jsx';
 import { COTTAGES } from '../lib/data';
+import { COMPANY } from '../lib/legal';
 import Logo from './Logo';
 
 export default function Footer() {
@@ -32,9 +33,11 @@ export default function Footer() {
         <div className="footer-col">
           <h4>{t('footer.contact')}</h4>
           <ul>
-            <li>Līči, Latvia</li>
-            <li>+371 25 674 959</li>
-            <li>hello@forestretreat.lv</li>
+            <li><strong>{COMPANY.name}</strong></li>
+            <li>Reģ. Nr. {COMPANY.regNo}</li>
+            <li>{COMPANY.address}</li>
+            <li><a href={`tel:${COMPANY.phone.replace(/\s+/g, '')}`}>{COMPANY.phone}</a></li>
+            <li><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
           </ul>
         </div>
         <div className="footer-col">
