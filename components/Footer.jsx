@@ -25,6 +25,7 @@ export default function Footer() {
         <div className="footer-col">
           <h4>{t('footer.info')}</h4>
           <ul>
+            <li><Link href="/services">{t('nav.services')}</Link></li>
             <li><a href="/#why">{t('nav.why')}</a></li>
             <li><a href="/#reviews">{t('nav.reviews')}</a></li>
             <li><a href="/#cottages">{t('footer.booking')}</a></li>
@@ -38,6 +39,7 @@ export default function Footer() {
             <li>{COMPANY.address}</li>
             <li><a href={`tel:${COMPANY.phone.replace(/\s+/g, '')}`}>{COMPANY.phone}</a></li>
             <li><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
+            <li className="footer-card-note">{t('services.cardOnSite')}</li>
           </ul>
         </div>
         <div className="footer-col">
