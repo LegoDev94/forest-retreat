@@ -11,7 +11,7 @@ import Icon from './Icon';
 const TILES = [
   { kind: 'deer_ticket', photo: '/content/deer-park/photo/14138716.jpg', priceChip: '10 €',
     priceUnit: { ru: '/ чел · день', lv: '/ cilv. · diena', en: '/ pers · day' } },
-  { kind: 'picnic_kit',  photo: '/content/deer-park/photo/4074167.jpg',  priceChip: '10 €',
+  { kind: 'picnic_kit',  photo: '/content/picnic/photo/grill-deer.jpeg', priceChip: '10 €',
     priceUnit: { ru: '/ час · 50 €/сутки', lv: '/ stunda · 50 €/dn', en: '/ hour · €50/day' } },
   { kind: 'tent',        photo: '/content/fishing/photo/9553530.jpg',    priceChip: '20 €',
     priceUnit: { ru: '/ сутки', lv: '/ diennakts', en: '/ day' } },

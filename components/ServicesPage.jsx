@@ -23,8 +23,8 @@ const CATALOG = [
   },
   {
     kind: 'picnic_kit',
-    photo: '/content/deer-park/photo/4074167.jpg',
-    photoAlt: '/content/deer-park/photo/8891565.jpg',
+    photo: '/content/picnic/photo/grill-deer.jpeg',
+    photoAlt: '/content/deer-park/photo/4074167.jpg',
     priceChip: '10 €',
     priceUnit: { ru: '/ час · или 50 €/сутки', lv: '/ stunda · vai 50 €/dn', en: '/ hour · or €50/day' },
     accent: '#d4a574',
