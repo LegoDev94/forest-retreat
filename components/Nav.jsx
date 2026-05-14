@@ -56,6 +56,7 @@ export default function Nav({ isAuthed = false }) {
 
   const links = [
     { id: 'cottages', href: lp('/#cottages'), label: t('nav.cottages'), hasMega: true },
+    { id: 'services', href: lp('/services'),  label: t('nav.services') },
     { id: 'why',      href: lp('/#why'),      label: t('nav.why') },
     { id: 'reviews',  href: lp('/#reviews'),  label: t('nav.reviews') },
     { id: 'contact',  href: lp('/#contact'),  label: t('nav.contact') },

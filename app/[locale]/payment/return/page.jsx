@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { refreshPaymentStatus } from '../../../actions/booking';
+import { refreshServicePaymentStatus } from '../../../actions/service-booking';
 import { DICT, pick } from '../../../../lib/dict';
 import { getCurrentUser } from '../../../../lib/supabase/session';
 import PaymentReturnPoller from '../../../../components/PaymentReturnPoller';
@@ -36,8 +37,17 @@ export default async function PaymentReturn({ params, searchParams }) {
 
   let outcome = 'pending';
   let result = null;
+  let resultKind = 'cottage';
   if (ref) {
     result = await refreshPaymentStatus(ref);
+    // Cottage booking lookup failed → try ancillary-service booking.
+    if (!result?.ok || !result.booking) {
+      const svc = await refreshServicePaymentStatus(ref);
+      if (svc?.ok && svc.booking) {
+        result = svc;
+        resultKind = 'service';
+      }
+    }
     if (result?.ok) {
       const ps = (result.payment_state || '').toLowerCase();
       if (ps === 'settled' || ps === 'authorized') outcome = 'paid';

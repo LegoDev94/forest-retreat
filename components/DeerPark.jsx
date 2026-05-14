@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { useT, DICT } from '../lib/i18n.jsx';
+import { useT, DICT, LocaleLink } from '../lib/i18n.jsx';
 import Reveal from './Reveal';
 import Icon from './Icon';
 
@@ -29,9 +29,14 @@ export default function DeerPark() {
           <div className="pill-row">
             {DICT.deer.pills.map((p, i) => <span key={i} className="pill-sm">{pick(p)}</span>)}
           </div>
-          <a href="#how-it-works" className="deer-link">
-            {t('deer.cta')} <Icon name="arrowRight" size={14} stroke={2.4} />
-          </a>
+          <div className="deer-cta-row">
+            <a href="#how-it-works" className="deer-link">
+              {t('deer.cta')} <Icon name="arrowRight" size={14} stroke={2.4} />
+            </a>
+            <LocaleLink href="/services" className="deer-link deer-link-alt">
+              {t('nav.services')} <Icon name="arrowRight" size={14} stroke={2.4} />
+            </LocaleLink>
+          </div>
         </Reveal>
 
         {/* PHOTO COLLAGE */}
