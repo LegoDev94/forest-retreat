@@ -16,6 +16,7 @@ import Fishing from './Fishing';
 import UspBanner from './UspBanner';
 import HowItWorks from './HowItWorks';
 import ParkRules from './ParkRules';
+import ServicesShowcase from './ServicesShowcase';
 
 // Pexels — "Deer in the forest" (free license, hot-link friendly CDN)
 const HERO_VIDEO = 'https://videos.pexels.com/video-files/7710443/7710443-hd_1920_1080_25fps.mp4';
@@ -209,6 +210,9 @@ export default function HomePage() {
 
       {/* DEER PARK — primary lead magnet */}
       <DeerPark />
+
+      {/* ADD-ON SERVICES — bookable extras (deer ticket, picnic, tent, spa) */}
+      <ServicesShowcase />
 
       {/* PARK RULES — safety + behaviour + liability */}
       <ParkRules />
