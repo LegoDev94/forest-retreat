@@ -192,6 +192,15 @@ export async function createTestPayment() {
   const host  = h.get('x-forwarded-host') || h.get('host');
   const origin = `${proto}://${host}`;
 
+  // Snapshot of env values for the diagnostic readout. Username and
+  // account_name are NOT secrets — they identify the merchant, not authorise it.
+  // The api_secret itself is never returned, only its length to spot whitespace.
+  const username    = process.env.EVERYPAY_API_USERNAME || '';
+  const accountName = process.env.EVERYPAY_ACCOUNT_NAME || 'EUR3D1';
+  const secretLen   = (process.env.EVERYPAY_API_SECRET || '').length;
+  const mode        = isEverypayDemoMode() ? 'demo' : 'production';
+  const diagnostics = { mode, api_username: username, account_name: accountName, api_secret_len: secretLen };
+
   try {
     const pay = await createOneoffPayment({
       amount:         1,
@@ -205,10 +214,11 @@ export async function createTestPayment() {
       ok: true,
       pay_url:           pay.payment_link,
       payment_reference: pay.payment_reference,
-      mode:              isEverypayDemoMode() ? 'demo' : 'production',
+      mode,
+      diagnostics,
     };
   } catch (err) {
-    return { ok: false, error: String(err?.message || err) };
+    return { ok: false, error: String(err?.message || err), diagnostics };
   }
 }
 
