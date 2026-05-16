@@ -131,7 +131,7 @@ export async function createServiceBooking(input) {
       customerUrl:    `${origin}/${locale}/payment/return`,
       email:          data.guest_email,
       locale,
-      description:    `Forest Retreat · ${SERVICE_DESC[kind] || kind} · ${data.service_date}`,
+      description:    `Forest Retreat - ${SERVICE_DESC[kind] || kind} - ${data.service_date}`,
     });
   } catch (err) {
     console.error('EveryPay init failed (service) — rolling back row:', err);
