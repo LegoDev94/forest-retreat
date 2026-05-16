@@ -5,4 +5,4 @@ Disallow: /assets/
 # Be nice to crawlers — wait between requests
 Crawl-delay: 1
 
-Sitemap: https://forest-retreat-xi.vercel.app/sitemap.xml
+Sitemap: https://www.forestretreat.lv/sitemap.xml
