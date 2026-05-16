@@ -7,6 +7,7 @@ import Reveal from './Reveal';
 import Icon from './Icon';
 import { createServiceBooking } from '../app/actions/service-booking';
 import { LIMITS, quoteService } from '../lib/services';
+import { trackViewService, trackBeginCheckoutService } from '../lib/analytics';
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
 
@@ -264,6 +265,7 @@ function BookingModal({ kind, onClose }) {
     }
     if (!consent) { setErrMsg(t('booking.consentRequired')); return; }
 
+    trackBeginCheckoutService({ kind, total: linePrice });
     startTransition(async () => {
       const result = await createServiceBooking({
         kind,
@@ -521,8 +523,14 @@ export default function ServicesPage() {
   const [modalKind, setModalKind] = useState(null);
 
   const jumpTo = (kind) => {
+    trackViewService(kind);
     const el = document.getElementById(`svc-${kind}`);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const openBooking = (kind) => {
+    trackViewService(kind);
+    setModalKind(kind);
   };
 
   return (
@@ -535,7 +543,7 @@ export default function ServicesPage() {
             key={entry.kind}
             entry={entry}
             index={i}
-            onBook={(k) => setModalKind(k)}
+            onBook={openBooking}
           />
         ))}
       </section>
