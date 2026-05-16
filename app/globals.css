@@ -3326,6 +3326,14 @@ input:focus-visible, select:focus-visible { outline-offset: 0; }
 body.has-sticky-book .whatsapp-btn {
   bottom: calc(86px + env(safe-area-inset-bottom, 0px));
 }
+/* When the home-page mobile FAB is visible, lift WhatsApp above it the
+   same way. CSS-only via :has() — FAB only renders on the home page and
+   only at <= 880px, so the rule self-scopes. */
+@media (max-width: 880px) {
+  body:has(.fab) .whatsapp-btn {
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+  }
+}
 @media (max-width: 520px) {
   .whatsapp-btn { width: 52px; height: 52px; }
 }
