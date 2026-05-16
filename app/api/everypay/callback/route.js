@@ -24,16 +24,34 @@ async function handleCallback(reference, eventName) {
     update.payment_paid_at = new Date().toISOString();
     update.status = 'confirmed';
   }
-  const { error } = await sb
+
+  // EveryPay sends one webhook per payment_reference; we don't know upfront
+  // whether it belongs to a cottage booking or a service booking. Try
+  // bookings first; if no row matched, try service_bookings.
+  let kind = 'cottage';
+  let res = await sb
     .from('bookings')
     .update(update)
-    .eq('payment_reference', reference);
-  if (error) {
-    console.error('callback update error:', error);
-    return { ok: false, error: error.message };
+    .eq('payment_reference', reference)
+    .select('id');
+  if (!res.error && (res.data ?? []).length === 0) {
+    kind = 'service';
+    res = await sb
+      .from('service_bookings')
+      .update(update)
+      .eq('payment_reference', reference)
+      .select('id');
   }
-  console.log(`EveryPay callback: ${reference} event=${eventName} → ${state}`);
-  return { ok: true, payment_state: state };
+  if (res.error) {
+    console.error('callback update error:', res.error);
+    return { ok: false, error: res.error.message };
+  }
+  if ((res.data ?? []).length === 0) {
+    console.warn(`EveryPay callback: ${reference} matched no row in either table`);
+    return { ok: false, error: 'unknown_reference' };
+  }
+  console.log(`EveryPay callback: ${reference} event=${eventName} kind=${kind} → ${state}`);
+  return { ok: true, payment_state: state, kind };
 }
 
 export async function POST(request) {
