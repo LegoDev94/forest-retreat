@@ -208,7 +208,7 @@ export async function createTestPayment() {
       customerUrl:    `${origin}/admin?payment_test=done`,
       email:          'hello@forestretreat.lv',
       locale:         'en',
-      description:    'EveryPay test payment €1',
+      description:    'EveryPay test payment 1 EUR',
     });
     return {
       ok: true,
